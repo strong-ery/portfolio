@@ -1,20 +1,86 @@
 [
   {
     "id": "blackout",
-    "title": "Blackout Protocol",
+    "title": "Blackout Protocol (LD57)",
     "date": "2025-04-06",
     "year": "2025",
     "category": "Horror / Game Jam",
-    "tags": ["unity", "3d"],
+    "tags": [
+      "unity",
+      "3d"
+    ],
     "w": 0.4,
     "ratio": "wide",
     "rotate": 1.2,
     "thumb": "resources/bp/bp_ss.jpg",
-    "desc": "",
+    "desc": "# Quick Notes\n\nBlackout Protocol was the result of my first gamejam.\nLudum Dare 57.\n\nThe game was developed in under 72 hours (rougly 48 hours), and was built around the theme \"Depths\".\n\nThe game relied heavily on its atmosphere, specifically its graphics, sound design, and monster design. Gameplay was lacking, but you can't ask for too much from 48 hours.\n\nI co-developed the game with Cooper Horne, and I covered all of the modeling, texturing, and the monsters many systems.\n(eg: AI, pathfinding, patrolling)\n\n# Monster Design\n\nMost game jam monsters are thrown together as fast as possible. NavMesh + a state machine. Not this one.\n\nI had never designed a proper, and well rounded monster before, so I wanted to make something special. Due to time constraints, research was short, and mostly fruitless. So I had to come up with my own method.\n\nAt a basic level, a good monster is a set of data, and rules, put together in a clever way to create good results.\n\nTo outline the monster from our game briefly:\n# Data:\nDistance to floor. (A)\nDirect raycast to player. (clamped to an FOV to prevent any unfairness, and to let the player sneak past it.) (B)\nAnother array of raycasts in a line of 6 raycasts (at an FOV of around 270.) (C)\n# Rules:\nMaintain a constant height.\nRotate towards the direction you're moving.\nCalculate a left/right ratio of what raycasts are touching cave walls, and adjust your direction accordingly.\nIf you see nothing, patrol between preset points (requires no pathfinding logic)\n\nWith this set of Data and Rules, out comes the monster from Blackout Protocol. It can pursue the player anywhere they run, even while being inside tight cave spaces. (hence why I was hesitant to try and use NavMesh)\n\nOverall, it was a good bit of fun figuring him out.\n\n# On Blackout Protocol\n\nBlackout Protocol was a great learning experience, from being my first game jam (teaching me to work with a team, under tight time constraints, and still to ship something I can be proud of), to just improving my understanding of the Unity ECS, and emergent behaviour from data and rules.\n\nThe game is available on Itch below, and as of now there are no planned updates.",
     "breakdown": [],
-    "media": [],
+    "media": [
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/bp/dev.jpg",
+        "caption": "level 2 dev screenshot"
+      },
+      {
+        "type": "audio",
+        "src": "resources/bp/Blackout Protocol Theme.mp3",
+        "caption": "Blackout Protocol Theme"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/bp/lol.jpg",
+        "caption": "1000 yard stare"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/bp/dev2.jpg",
+        "caption": "monster ai (data) overview"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/bp/bp_ss.jpg",
+        "caption": "the lift"
+      }
+    ],
     "links": [
-      { "label": "itch.io", "href": "https://eggsscrambled.itch.io/blackout-protocol", "primary": true }
+      {
+        "label": "itch.io",
+        "href": "https://eggsscrambled.itch.io/blackout-protocol",
+        "primary": true
+      }
     ]
   },
   {
@@ -23,7 +89,10 @@
     "date": "2025-09-28",
     "year": "2025",
     "category": "Puzzle / Game Jam",
-    "tags": ["unity", "2d"],
+    "tags": [
+      "unity",
+      "2d"
+    ],
     "w": 0.33,
     "ratio": "square",
     "rotate": -0.8,
@@ -31,30 +100,98 @@
     "desc": "# Quick Notes\n\nONO and its unreleased successor ONOSOUL were developed over around 6 months. ONO was made for the Alberta Game Jam 2025, and won by community vote.\n\nONOSOUL was meant to expand on the story and atmosphere the team felt was missing from the original: more world building, more feeling. It was never finished due to scope creep and burnout.\n\nONO is still available to play. I hope to return to ONOSOUL someday.\n\nMy favourite part has to be the soundtrack. Our sound guy really sold the feeling we were going for.\n\n# SNAP (Scriptable Node Action Pipeline)\n\nPuzzle logic in game jams gets hardcoded fast. One-off scripts, spaghetti conditions, nothing reusable. I built SNAP to fix that.\n\nSNAP is a node graph runtime for Unity. Each node is a self-contained behaviour. Flow ports for execution, data ports for values. Graphs are Unity ScriptableAssets, so puzzle logic lives entirely outside code. Was a word formed? Was electricity turned on? Each condition is just a node. Wire them together, done. Nodes can be single conditions, composite logic, whatever you can dream up.\n\nWhat made it different from standard behaviour trees is that graphs can be circular. Most systems enforce acyclic graphs by design. SNAP doesn't: if your puzzle needs a loop, you wire a loop.\n\nDesigners (just me lol) built graphs in an HTML editor rather than Unity's inspector since I hate writing C# GUI's, especially with Unity (at least it isn't Avalonia lol). It serialized directly to the ScriptableObject format. No code required to build a new puzzle.\n\nAll in all it was a good learning experience, and I found it had a lot of similarities to Nintendo's pracitices with their latest Zelda title: Tears of the Kingdom, and it's internal AINB (Artificial Intelligence Node Binary) system the game operates on.\n\n# Sort Mode Hell\n\nIt was our first 2D game and we fought sorting the whole way through. Our first approach was vertex-based Y displacement with a 0.001 multiplier, plus a per-shader offset value to fine-tune individual objects. It worked, but it killed batching, and flickered on non-static objects.\n\nWe went through three or four methods after that. Eventually we found the solution was already built into Unity. We'd been solving a problem that didn't need solving. That one hurt a little, but it's the kind of thing you only learn by doing it wrong first.\n\n# Notes from the Musician (Quinn DeBoer)\n\nWhat started off as just a simple game jam became one of my favourite projects that I have ever worked on. ONOSOUL was about a lot of things, but what I loved the most was that it was about growth. As a sound designer and music producer, I learned a lot trying to create a calming, yet slightly eerie, lofi atmosphere. I grew a ton throughout the process, the same way that Ono had on their journey. I find myself reminiscing on these days occasionally. Although ONOSOUL was just sounds, pixel art, and code, something about its tenderness made me feel alive. It’s kind of ironic in hindsight that working with dead ghosts was what made that feeling bloom.\n\n\n# On ONOSOUL\n\nWe planned many areas for the game, and one of my favourite ones is this area that completely lacked colour. It was meant to represent the lack of emotion the world of ONOSOUL had. ONOSOUL was a game about loss, but deeper than that: stagnation. As if the world had stopped moving forward.\n\nONOSOUL's ultimate lesson was and still is that:\n\nit's OK to say goodbye.\n\nDirectly quoting the game document, it would have ended with: 'No big music swell. Just credits with a subtle track.'",
     "breakdown": [],
     "media": [
-      { "type": "break" },
-      { "type": "break" },
-      { "type": "break" },
-      { "type": "image", "src": "resources/ono/ono_indev.jpg", "caption": "early ONOSOUL development screenshot" },
-      { "type": "audio", "src": "resources/ono/Tuning out the hate.mp3", "caption": "original ono soundtrack" },
-      { "type": "break" },
-      { "type": "break" },
-      { "type": "image", "src": "resources/ono/SNAPEditor.jpg", "caption": "large graph in the HTML SNAP editor" },
-      { "type": "image", "src": "resources/ono/SNAPEditor2.jpg", "caption": "small graph in the HTML SNAP editor" },
-      { "type": "audio", "src": "resources/ono/Forest.mp3", "caption": "onosoul starting area track 'forest'" },
-      { "type": "break" },
-      { "type": "break" },
-      { "type": "image", "src": "resources/ono/onosoul_tias.jpg", "caption": "I think it might have been a sign." },
-      { "type": "break" },
-      { "type": "break" },
-      { "type": "audio", "src": "resources/ono/Acceptance.mp3", "caption": "'acceptance'" },
-      { "type": "audio", "src": "resources/ono/Snow Town.mp3", "caption": "'snow town'" },
-      { "type": "audio", "src": "resources/ono/Soul Searching.mp3", "caption": "'soul searching'" },
-      { "type": "break" },
-      { "type": "image", "src": "resources/ono/onosoul.jpg", "caption": "quite the map I know (early screenshot)" },
-      { "type": "audio", "src": "resources/ono/Colourless_4.mp3", "caption": "onosoul track 'colourless variant 4'" }
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/ono/ono_indev.jpg",
+        "caption": "early ONOSOUL development screenshot"
+      },
+      {
+        "type": "audio",
+        "src": "resources/ono/Tuning out the hate.mp3",
+        "caption": "original ono soundtrack"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/ono/SNAPEditor.jpg",
+        "caption": "large graph in the HTML SNAP editor"
+      },
+      {
+        "type": "image",
+        "src": "resources/ono/SNAPEditor2.jpg",
+        "caption": "small graph in the HTML SNAP editor"
+      },
+      {
+        "type": "audio",
+        "src": "resources/ono/Forest.mp3",
+        "caption": "onosoul starting area track 'forest'"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/ono/onosoul_tias.jpg",
+        "caption": "I think it might have been a sign."
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "audio",
+        "src": "resources/ono/Acceptance.mp3",
+        "caption": "'acceptance'"
+      },
+      {
+        "type": "audio",
+        "src": "resources/ono/Snow Town.mp3",
+        "caption": "'snow town'"
+      },
+      {
+        "type": "audio",
+        "src": "resources/ono/Soul Searching.mp3",
+        "caption": "'soul searching'"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/ono/onosoul.jpg",
+        "caption": "quite the map I know (early screenshot)"
+      },
+      {
+        "type": "audio",
+        "src": "resources/ono/Colourless_4.mp3",
+        "caption": "onosoul track 'colourless variant 4'"
+      }
     ],
     "links": [
-      { "label": "itch.io", "href": "https://milklesscerealstudios.itch.io", "primary": true }
+      {
+        "label": "itch.io",
+        "href": "https://milklesscerealstudios.itch.io",
+        "primary": true
+      }
     ]
   },
   {
@@ -63,7 +200,11 @@
     "date": "2025-08-14",
     "year": "2025",
     "category": "Physics Sim",
-    "tags": ["unity", "3d", "multiplayer"],
+    "tags": [
+      "unity",
+      "3d",
+      "multiplayer"
+    ],
     "w": 0.25,
     "ratio": "tall",
     "rotate": 1.1,
@@ -72,7 +213,11 @@
     "breakdown": [],
     "media": [],
     "links": [
-      { "label": "itch.io", "href": "https://milklesscerealstudios.itch.io", "primary": true }
+      {
+        "label": "itch.io",
+        "href": "https://milklesscerealstudios.itch.io",
+        "primary": true
+      }
     ]
   },
   {
@@ -81,7 +226,11 @@
     "date": "2024-03-30",
     "year": "2024",
     "category": "",
-    "tags": ["unity", "3d", "VR/XR"],
+    "tags": [
+      "unity",
+      "3d",
+      "VR/XR"
+    ],
     "w": 0.25,
     "ratio": "square",
     "rotate": -0.7,
@@ -97,7 +246,12 @@
     "date": "2024-06-01",
     "year": "2024",
     "category": "",
-    "tags": ["unity", "3d", "multiplayer", "VR/XR"],
+    "tags": [
+      "unity",
+      "3d",
+      "multiplayer",
+      "VR/XR"
+    ],
     "w": 0.25,
     "ratio": "square",
     "rotate": 0.9,
@@ -113,7 +267,10 @@
     "date": "2024-10-1",
     "year": "2024",
     "category": "",
-    "tags": ["unity", "3d"],
+    "tags": [
+      "unity",
+      "3d"
+    ],
     "w": 0.33,
     "ratio": "wide",
     "rotate": 2.3,
@@ -129,7 +286,11 @@
     "date": "2025-06-24",
     "year": "2025",
     "category": "Multiplayer Horror",
-    "tags": ["unity", "3d", "multiplayer"],
+    "tags": [
+      "unity",
+      "3d",
+      "multiplayer"
+    ],
     "w": 0.45,
     "ratio": "wide",
     "rotate": 1.1,
@@ -145,7 +306,11 @@
     "date": "2025-12-02",
     "year": "2025",
     "category": "Physics Sim",
-    "tags": ["unity", "3d", "simulation"],
+    "tags": [
+      "unity",
+      "3d",
+      "simulation"
+    ],
     "w": 0.33,
     "ratio": "square",
     "rotate": -1.1,
@@ -161,7 +326,10 @@
     "date": "2023-09-11",
     "year": "2023-2025",
     "category": "Mod / TotK",
-    "tags": ["modding", "blender"],
+    "tags": [
+      "modding",
+      "blender"
+    ],
     "w": 0.33,
     "ratio": "wide",
     "rotate": -1.5,
@@ -177,7 +345,10 @@
     "date": "2025-02-17",
     "year": "2025",
     "category": "Mod Manager / Tool",
-    "tags": ["tool", "modding"],
+    "tags": [
+      "tool",
+      "modding"
+    ],
     "w": 0.36,
     "ratio": "wide",
     "rotate": -1.5,
@@ -193,7 +364,11 @@
     "date": "2026-02-24",
     "year": "2026",
     "category": "Render Pipeline Extension",
-    "tags": ["unity", "tool", "shader"],
+    "tags": [
+      "unity",
+      "tool",
+      "shader"
+    ],
     "w": 0.39,
     "ratio": "wide",
     "rotate": -0.5,
@@ -209,7 +384,12 @@
     "date": "2026-04-04",
     "year": "2026",
     "category": "Shader / Simulation",
-    "tags": ["unity", "3d", "simulation", "shader"],
+    "tags": [
+      "unity",
+      "3d",
+      "simulation",
+      "shader"
+    ],
     "w": 0.28,
     "ratio": "square",
     "rotate": 1,
@@ -225,7 +405,11 @@
     "date": "2026-03-05",
     "year": "2026",
     "category": "Shader / Simulation",
-    "tags": ["unity", "3d", "shader"],
+    "tags": [
+      "unity",
+      "3d",
+      "shader"
+    ],
     "w": 0.3,
     "ratio": "square",
     "rotate": 0.4,
@@ -241,7 +425,9 @@
     "date": "n/a",
     "year": "last updated: 2026",
     "category": "Restoration",
-    "tags": ["irl"],
+    "tags": [
+      "irl"
+    ],
     "w": 0.41,
     "ratio": "wide",
     "rotate": 1,
@@ -257,7 +443,11 @@
     "date": "n/a",
     "year": "last updated: 2026",
     "category": "Art Studies",
-    "tags": ["art", "irl", "2d"],
+    "tags": [
+      "art",
+      "irl",
+      "2d"
+    ],
     "w": 0.25,
     "ratio": "tall",
     "rotate": -0.7,
@@ -273,7 +463,11 @@
     "date": "n/a",
     "year": "last updated: 2026",
     "category": "Pencil Studies",
-    "tags": ["art", "3d", "blender"],
+    "tags": [
+      "art",
+      "3d",
+      "blender"
+    ],
     "w": 0.25,
     "ratio": "square",
     "rotate": 0.7,
