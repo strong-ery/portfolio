@@ -46,7 +46,7 @@
       { "type": "image", "src": "resources/ono/onosoul_tias.jpg", "caption": "I think it might have been a sign." },
       { "type": "break" },
       { "type": "break" },
-      { "type": "audio", "src": "resources/ono/Forest.mp3", "caption": "'acceptance'" },
+      { "type": "audio", "src": "resources/ono/Acceptance.mp3", "caption": "'acceptance'" },
       { "type": "audio", "src": "resources/ono/Snow Town.mp3", "caption": "'snow town'" },
       { "type": "audio", "src": "resources/ono/Soul Searching.mp3", "caption": "'soul searching'" },
       { "type": "break" },
