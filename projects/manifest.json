@@ -607,12 +607,12 @@
         "type": "break"
       },
       {
-        "type": "break"
-      },
-      {
         "type": "image",
         "src": "resources/fft/Screenshot_9.jpg",
         "caption": "calm lake example (if your water exists, this system can handle it)"
+      },
+      {
+        "type": "break"
       },
       {
         "type": "break"
