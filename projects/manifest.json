@@ -342,12 +342,12 @@
       },
       {
         "type": "image",
-        "src": "resources/sb/headers.webp",
+        "src": "resources/sb/headers.jpg",
         "caption": "ZX6R headers."
       },
       {
         "type": "image",
-        "src": "resources/sb/CFD.png",
+        "src": "resources/sb/CFD.jpg",
         "caption": "a CFD solver visualized (credit AngeTheGreat)"
       },
       {
@@ -474,12 +474,12 @@
       },
       {
         "type": "image",
-        "src": "resources/qrpe/pointfilter.png",
+        "src": "resources/qrpe/pointfilter.jpg",
         "caption": ""
       },
       {
         "type": "image",
-        "src": "resources/qrpe/pointupscale.png",
+        "src": "resources/qrpe/pointupscale.jpg",
         "caption": "no idea why this example is so misaligned lol"
       },
       {
@@ -490,17 +490,17 @@
       },
       {
         "type": "image",
-        "src": "resources/qrpe/WiGaRGB.png",
+        "src": "resources/qrpe/WiGaRGB.jpg",
         "caption": "wide gamut RGB visualized."
       },
       {
         "type": "image",
-        "src": "resources/qrpe/Labspace.png",
+        "src": "resources/qrpe/Labspace.jpg",
         "caption": "Lab space visualize."
       },
       {
         "type": "image",
-        "src": "resources/qrpe/4x4bayer.png",
+        "src": "resources/qrpe/4x4bayer.jpg",
         "caption": "4x4 ord. bayer dithering."
       },
       {
@@ -510,7 +510,7 @@
       },
       {
         "type": "image",
-        "src": "resources/qrpe/palette.png",
+        "src": "resources/qrpe/palette.jpg",
         "caption": "example palette I found online to fill the empty space lol."
       },
       {
@@ -518,7 +518,7 @@
       },
       {
         "type": "image",
-        "src": "resources/qrpe/Screenshot_466.png",
+        "src": "resources/qrpe/Screenshot_466.jpg",
         "caption": "an apple for your eye."
       }
     ],
@@ -545,7 +545,7 @@
     "w": 0.28,
     "ratio": "square",
     "rotate": 1,
-    "thumb": "resources/fft/Screenshot_3.png",
+    "thumb": "resources/fft/Screenshot_3.jpg",
     "desc": "# Quick Notes\n\nThis covers the FFT ocean system I developed for our studio whilst participating in the Game Name Game Jam 2026.\nAlthough we did not end up submitting our project, the FFT ocean I decided to do on a whim, is definitely worth showing off, because the math behind it, as well as the result are both really interesting.\n(scope creep sucks lol)\n\n# The Math\n\nIn our implementation (and any FFT ocean), it's not simulated wave by wave. Instead, the surface is described statistically as a distribution of energy, across frequencies and directions. This is called the JONSWAP spectrum, which is a model developed for real oceanographic use, originally for naval engineering (who would've thought it would be used to simulate the ocean in an unreleased indie title lol).\nIt takes inputs like wind speed, fetch (how far the wind has travelled over the water), and a peak enhancement factor, and outputs how much energy each wave frequency should carry.\n\nThis spectrum lives in the frequency domain. To actually get a surface out of it, you run a Inverse Fast Fourier Transform every frame on the GPU, which converts the frequency-domain description into real vertex displacements across a 512x512 grid (Render Texture) for our case. \nThe FFT and its sister IFFT is what makes this approach viable: transforming the whole grid takes the same time regardless of how many waves are in it.\n\nSomething subtle worth talking about is the conjugate-packing step before the FFT. It ensures the output is in Real values. Without it, you would get complex numbers as the displacement, which is meaningless as geometry. It's an easy detail to look over but it's something I think is interesting, and worth mentioning.\n\nThe horizontal displacements (the ih * K / |K| terms) are what separate this from more simple approaches such as heightfield water. Vertices don't just move up and down, they also curl horizontally in the direction the waves are travelling, which produces that characteristic \"roll\" you see in real ocean swells.\n\nWhere those displacements converge hard enough that the surface folds over itself, the \"Jacobian\" goes negative, and this is how we calculate sea foam.\n\nWe overlap 4 textures of varying size (Close up ripples, mid-range chop, large swells, and distant structures), and that forms the mathematical backend for our ocean, and our shader to render it.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# The Shaders\n\nThe vertex shader samples the four displacement texture arrays, and applies the FFT result directly to the mesh's vertex positions. \nFor optimizations sake (which seems to be a dying art in AAA games), the mesh itself is a clipmap of concentric LOD rings.\nNormals are derived from the slope textures (the spatial derivatives of displacement), then blended with two scrolling detail normal maps for close-up surface texture. A fun detail is that the normal is split into three separate versions for Fresnel, specular, and diffuse (each with its own strength multiplier). Which allows you to tune how agitated each lighting term looks on its own. A calm specular highlight with choppy Fresnel reads very differently than having them locked together.\n\nAs stated previously, the foam is driven by the Jacobian computed by the compute shader, and is sampled per fragment, and multiplied against an optional tiling foam texture. It accumulates and decays for added effect.\n\nReflections are driven by a cubemap, with a sharp sun disc added on top of the reflection direction (that's fun lol). Specular is a full GGX BRDF opposed to Blinn-Phong, which handles the near-glancing sun angles that you want to see in ocean water.\n\n# The Result\n\nI honestly think the results totally speak for themselves. This crazy system, alongside many other ambitious decisions, ultimately led us to give up on releasing anything finished for the Jam. It was still great fun, and I hope to use it in a future project, or maybe place it on the Asset Store.\n\nIf you're curious and want to look deeper into this topic, I couldn't recommend Acerola's series on this topic more. It carried me through implementing this system. It will be linked below.\n\nThank you for reading!\n\nP.S. if you're curious about the pixelated look, this project took advantage of our QRP Extension, there is an article on here regarding that if you're interested.",
     "breakdown": [],
     "media": [
@@ -560,7 +560,7 @@
       },
       {
         "type": "image",
-        "src": "resources/fft/Screenshot_3.png",
+        "src": "resources/fft/Screenshot_3.jpg",
         "caption": "the FFT ocean."
       },
       {
@@ -571,7 +571,7 @@
       },
       {
         "type": "image",
-        "src": "resources/fft/JONSWAP.png",
+        "src": "resources/fft/JONSWAP.jpg",
         "caption": "spectral density graph of JONSWAP"
       },
       {
@@ -586,7 +586,7 @@
       },
       {
         "type": "image",
-        "src": "resources/fft/Screenshot_5.png",
+        "src": "resources/fft/Screenshot_5.jpg",
         "caption": "a slice of one of four FFT Render Textures."
       },
       {
@@ -600,7 +600,7 @@
       },
       {
         "type": "image",
-        "src": "resources/fft/Screenshot_8.png",
+        "src": "resources/fft/Screenshot_8.jpg",
         "caption": "LOD and vertex displacement."
       },
       {
@@ -611,7 +611,7 @@
       },
       {
         "type": "image",
-        "src": "resources/fft/Screenshot_9.png",
+        "src": "resources/fft/Screenshot_9.jpg",
         "caption": "calm lake example (if your water exists, this system can handle it)"
       },
       {
@@ -619,12 +619,12 @@
       },
       {
         "type": "image",
-        "src": "resources/fft/Screenshot_1.png",
+        "src": "resources/fft/Screenshot_1.jpg",
         "caption": "QRPE off."
       },
       {
         "type": "image",
-        "src": "resources/fft/Screenshot_2.png",
+        "src": "resources/fft/Screenshot_2.jpg",
         "caption": "QRPE on."
       }
     ],
@@ -665,7 +665,7 @@
       },
       {
         "type": "image",
-        "src": "resources/vlfog/Screenshot_4.png",
+        "src": "resources/vlfog/Screenshot_4.jpg",
         "caption": "the sun peeking through leaves and volumetric fog (QRPE enabled)"
       },
       {
@@ -681,7 +681,7 @@
       },
       {
         "type": "image",
-        "src": "resources/vlfog/ray-march-diagram.webp",
+        "src": "resources/vlfog/ray-march-diagram.jpg",
         "caption": "ray marching simplified."
       },
       {
@@ -692,7 +692,7 @@
       },
       {
         "type": "image",
-        "src": "resources/vlfog/bilatupsample.png",
+        "src": "resources/vlfog/bilatupsample.jpg",
         "caption": "bilateral upsampling example."
       },
       {
@@ -703,22 +703,22 @@
       },
       {
         "type": "image",
-        "src": "resources/vlfog/gaussian_graph.png",
+        "src": "resources/vlfog/gaussian_graph.jpg",
         "caption": "gaussian blur visualized."
       },
       {
         "type": "image",
-        "src": "resources/vlfog/Henyey-Greenstein.png",
+        "src": "resources/vlfog/Henyey-Greenstein.jpg",
         "caption": "henyey-greenstein phase function."
       },
       {
         "type": "image",
-        "src": "resources/vlfog/noises.png",
+        "src": "resources/vlfog/noises.jpg",
         "caption": "interleaved gradient noise vs other noise."
       },
       {
         "type": "image",
-        "src": "resources/vlfog/fBm.webp",
+        "src": "resources/vlfog/fBm.jpg",
         "caption": "FBM noise examples."
       },
       {
@@ -729,7 +729,7 @@
       },
       {
         "type": "image",
-        "src": "resources/vlfog/Screenshot_10.png",
+        "src": "resources/vlfog/Screenshot_10.jpg",
         "caption": "in editor example."
       }
     ],
