@@ -373,10 +373,86 @@
     "ratio": "wide",
     "rotate": -0.5,
     "thumb": "resources/qrpe/Screenshot_466.jpg",
-    "desc": "",
+    "desc": "# Quick Notes\n\nOur QRPE (Quantized Render Pipeline Extension) is a URP Renderer Feature that gives any Unity URP 17+ project a quantized (or optionally pixel art) aesthetic. Palette-quantized colours, a crisp pixel grid, and hybrid geometry-normal-aware outlines. All under one checkbox in the renderer asset, with zero changes to any scene materials.\n(it also integrates directly with our Volumetric Fog system which is covered in its own article)\n\n# Method To The Madness\n\nAlthough it may sound a bit complicated, the methods we have chosen to use are quite simple.\n\nThe pipeline runs four passes in sequence:\nDownsample -> Quantize -> Outline -> Upscale\n\nThe scene is first point-sampled down to a target res (low or full depending on the look you want for your game, default 320x180).\n\nPoint filtering is very important: any interpolation would blur the pixel grid before we ever reach the quantization pass, and then everything would fall apart and become messy. All of the other steps happen at this target resolution, and in the case that you're using a low res setting, it keeps costs to a minimum.\n\nThen, to finish off, everything gets point sampled back up to the screen's resolution, which gives every texel a clean uniform block (or corresponding) pixel. No blending, or smoothing: by design.\n\nQuantization and outlines both run at the target res on purpose: Outlines drawn at 320x180 and then upscaled look proper, outlines drawn at 1080p and then downscaled are an antialiasing mess.\n\n\n\n\n\n\n# CIE Lab Colour Matching\n\nThis is the part that most quantization systems miss, but it's well worth talking about.\n\nShort-sighted palette quantization finds the nearest colour by Euclidean distance in RGB space. However, RGB distance is a terrible proxy for visual similarity: it treats red to blue, and dark to light as equivalent distances, which they clearly aren't to a human eye. The result is incorrect palette snapping on saturated colours and muddy gradients.\n\n\n\n\n\n\n\n\n\n\n\nQRPE converts every pixel to CIE Lab space before searching the palette. Lab is a perceptual colour space: distance in Lab correlates directly with how different two colours look to a human. The L channel is lightness, a is green to red, b is blue to yellow. A distance of 1 Lab unit is roughly the smallest difference a trained observer can detect. The palette search finds the nearest entry by Lab distance, then converts back to RGB for output. Colours snap to visually correct palette entries rather than mathematically convenient ones.\n\n\n\n\n\n\n\n\n\n\n\nOrdered Bayer dithering runs before the palette snap, nudging each pixel's Lab value by a small offset from a 4x4 matrix. Because the dither is applied in Lab space, it adds subtle surface variation that looks like texture instead of a colour error.\n\n# Outlines\n\nThe outline pass runs a 4-neighbor depth comparison at each pixel. Where the depth delta between a pixel and its neighboring ones exceeds a threshold in the config, an outline is drawn. Depth-only outlines miss surface details on flat geometry (eg: a sphere reads as a single silhouette with no interior edges), so normal-based detection runs alongside the main outline system. The center pixel's normal is compared against the average of its neighbors; where they diverge significantly: is considered a surface difference worth outlining.\n\n\n# The Palette System\n\nI don't have too much to say regarding this, it's simple for a reason.\nPalettes are just a Color[] array on a ScriptableObject, which means you can hotswap the game's colour mood at runtime by swapping the asset (with zero shader recompilation). The default palette has 64 colours across 4 brightness levels, and 16 hues.\n\nWe also developed a \"palette designer\" tool in Unity, that generates palettes from parameters like hue count, brightness range, saturation range, and per-level hue shifts.\n\n\n\n# Final Notes\n\nHonestly, this is one of my top 5 shader effects I've ever developed, I had tons of fun learning the science behind it, and the inspiration for it was from a YouTube video I got recommended, so I'll leave it as a link below this article in case you're interested.",
     "breakdown": [],
-    "media": [],
-    "links": []
+    "media": [
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/qrpe/capy5.jpg",
+        "caption": "a fishing capybara from the project that first used the pipeline."
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/qrpe/pointfilter.png",
+        "caption": ""
+      },
+      {
+        "type": "image",
+        "src": "resources/qrpe/pointupscale.png",
+        "caption": "no idea why this example is so misaligned lol"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/qrpe/WiGaRGB.png",
+        "caption": "wide gamut RGB visualized."
+      },
+      {
+        "type": "image",
+        "src": "resources/qrpe/Labspace.png",
+        "caption": "Lab space visualize."
+      },
+      {
+        "type": "image",
+        "src": "resources/qrpe/4x4bayer.png",
+        "caption": "4x4 ord. bayer dithering."
+      },
+      {
+        "type": "image",
+        "src": "resources/qrpe/image.jpg",
+        "caption": "example in the editor."
+      },
+      {
+        "type": "image",
+        "src": "resources/qrpe/palette.png",
+        "caption": "example palette I found online to fill the empty space lol."
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/qrpe/Screenshot_466.png",
+        "caption": "an apple for your eye."
+      }
+    ],
+    "links": [
+      {
+        "label": "Red Giraffe Quantization Video",
+        "href": "https://www.youtube.com/watch?v=Mp7eQsiZ_wA",
+        "primary": true
+      }
+    ]
   },
   {
     "id": "fft-ocean",
@@ -499,10 +575,100 @@
     "ratio": "square",
     "rotate": 0.4,
     "thumb": "resources/vlfog/Screenshot_4.jpg",
-    "desc": "",
+    "desc": "# Quick Notes\n\nVolumetric fog is one of those things you take for granted, but a performant volumetric fog system (or lack thereof) can make or break a games atmosphere.\nUnity's HDRP pipeline has full volumetric fog support, but URP, the multi-platform, and lower end - middle end hardware supporting pipeline, lacks any useful fog.\nThis had plagued our studio ever since its creation, and implementing a system such as this has never been easy. It was only recently that I finally felt confident enough to write one, and I will briefly detail it here (design choices, basic math behind it, optimizations, etc.)\n\n# Why is fog so hard?\n\nThe naive answer to the fog problem is just \"render a coloured overlay with some distance consideration and call it a day,\" that's more or less what Unity's built-in URP fog does. It's cheap, and it's fast. But it looks flat and unconvincing, because real fog isn't a filter applied to a screen. It's the physical process of light scattering through a medium, bouncing off particles, and attenuating as it travels. The colour of fog at any given point is entirely dependent on where the light came from, how far it travelled, and what's actually in the way.\n\nReproducing all of that properly means sampling density at many points along many rays from the camera out through the scene: a raymarcher. The problem is that running a raymarcher at full res, with enough steps to look smooth, is painfully expensive. Simply: it slaughters your framerate. So every design decision in a system like this is fundamentally about getting the visual quality of an expensive technique at a price you can actually afford.\n\n\n\n\n\n# On Our Volumetric Fog Implementation\n\nThe raymarcher runs at half resolution by default, and then gets composited back over the full-resolution scene. Halving the resolution cuts the fragment cost to a quarter, which is the single biggest performance improvement across the whole system. The catch is that half-res fog produces horrible edge halos where geometry meets fog (a thin sliver of blurred fog bleeds onto nearby surfaces). The fix is a bilateral upsample: when reconstructing the full resolution image, each of the four neighboring fog samples are depth-weighted, so samples from behind a geometry edge are discarded instead of being blended in.\n\nThe same depth weighting is applied to the blur passes:\nA 9-tap Gaussian blur runs over the fog buffer before compositing, and any tap whose depth differs significantly from the center pixel is thrown out. Which keeps the blur from spreading over/across silhouettes.\n\n\n\n\n\n\n\n\n\n\n\n\nFor scattering, our shader uses the Henyey-Greenstein phase function, which is the standard approximation used in film and game VFX for how particles scatter light. A single parameter 'g' controls whether the fog is forward-scattering (bright halos around light sources) or back-scattering (brighter when looking away from the light). Sure, it's not physically exact, but it's cheap and controllable.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTemporal jitter using Interleaved Gradient Noise breaks up the banding that low step counts produce. The noise offset advances by the Golden Ratio each frame, cycling through 64 uncorrelated offsets: so no visible pattern ever settles, even at 16 steps.\n\nFor density, the system supports global base fog, an exponential height layer, up to 8 local volumes, and a 3-octave FBM noise field for wisps. The local volumes are just world-space boxes, and they operate additively at no extra performance hit (aside from their individual cost). The volume edges fade smoothly via smoothstep, with a per-volume fade fraction so some boxes can be hard, and others can be more akin to clouds.\n\nLights scatter into the fog automatically. Up to 8 point/spot lights are picked each frame, sorted by luminance-range-distance priority score, so the most visually important ones always win their slots. When the camera moves inside a light's range, the blur radius grows cubically: the closer to the center, the softer the fog buffer (which approximates the look of being inside a visible light volume without any extra passes).\n\nThe whole system runs as a URP Renderer Feature, which means it's one checkbox in the renderer asset, and zero changes to any scene materials. We designed it to work optionally alongside our QRPE system, which allows the quantize pass to run before the fog. (Smooth fog, but a quantized world)\n\n\n\n# Final Notes\n\nThis was a crazy topic to dive down, and this doesn't even do the complexity of a system like this justice. Visual bugs, working with Render Graph, and more.\n\nNext time you play a game with volumetrics, take some time to appreciate the math, and techniques behind getting some light to bounce differently on your screen.\n\nIf you'd like to dive deeper, I've included some good starting resources at the bottom. I'd also highly recommend reading the QRP Extension article on here, it's pretty interesting as well.",
     "breakdown": [],
-    "media": [],
-    "links": []
+    "media": [
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/vlfog/Screenshot_4.png",
+        "caption": "the sun peeking through leaves and volumetric fog (QRPE enabled)"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/vlfog/badfog.jpeg",
+        "caption": "simple distance fog."
+      },
+      {
+        "type": "image",
+        "src": "resources/vlfog/ray-march-diagram.webp",
+        "caption": "ray marching simplified."
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/vlfog/bilatupsample.png",
+        "caption": "bilateral upsampling example."
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/vlfog/gaussian_graph.png",
+        "caption": "gaussian blur visualized."
+      },
+      {
+        "type": "image",
+        "src": "resources/vlfog/Henyey-Greenstein.png",
+        "caption": "henyey-greenstein phase function."
+      },
+      {
+        "type": "image",
+        "src": "resources/vlfog/noises.png",
+        "caption": "interleaved gradient noise vs other noise."
+      },
+      {
+        "type": "image",
+        "src": "resources/vlfog/fBm.webp",
+        "caption": "FBM noise examples."
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/vlfog/Screenshot_10.png",
+        "caption": "in editor example."
+      }
+    ],
+    "links": [
+      {
+        "label": "Sebastien Hillaire \"Physically Based Shading..\"",
+        "href": "https://www.ea.com/news/physically-based-sky-atmosphere-and-cloud-rendering",
+        "primary": true
+      },
+      {
+        "label": "Decima Engine: Advances in Lighting and AA",
+        "href": "https://www.guerrilla-games.com/read/decima-engine-advances-in-lighting-and-aa",
+        "primary": true
+      }
+    ]
   },
   {
     "id": "ford-probe",
