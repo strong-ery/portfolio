@@ -40,7 +40,7 @@
       },
       {
         "type": "image",
-        "src": "resources/bp/lol.jpg",
+        "src": "resources/bp/Lol.jpg",
         "caption": "1000 yard stare"
       },
       {
@@ -209,13 +209,100 @@
     "ratio": "tall",
     "rotate": 1.1,
     "thumb": "resources/mb/Screenshot_345.jpg",
-    "desc": "",
+    "desc": "# Quick Notes\n\nThis mountain biking game is still one of my best projects. Following the recent success of PEAK from Aggro Crab and Landfall, we as a studio decided to hop on the \"friend slop\" train, and make a multiplayer game about descending a giant mountain.\n\nYou'd think that a mountain bike is pretty simple, but going about implementing one takes a lot of design choice, and applied physics.\nTLDR: It's not.\n\n# The Mountain Bike\n\nFor example, design choices we faced include:\n\nShould the bike balance itself or should that be a player controlled thing? Perhaps a hybrid approach?\nShould we use the in-built Unity wheel collider, or design our own? Perhaps a hybrid approach?\nShould the player be able to get on/off the bike? (What if they lose it?)\n\nUltimately, we were able to make the right decisions to make a fun player experience, while maintaining a realistic feel while riding the bike, and I will go into those choices now.\n\n\n# Applied Physics\n\nThe mountain bike automatically balances itself, and leans as an emergent behaviour rather than something directly programmed. \n\nDealing with Unity's wheel colliders was hellish to say the least. For flat ground, they work just fine, but the second you hit a steep hill, the 1D raycast approach they use just didn't cut it. They would clip, and then freak out and gimbal lock the bike (since it was being artificially balanced), and this led to many more issues.\n\nThe problem is, Unity does not expose their code publicly, so we couldn't just modify the component. Instead, we opted to make a ring of 1D raycasts, that apply forces to keep the wheel from clipping. They scale cubically the closer they are to clipping, ensuring it acts like a tire instead of a wall. (as a side product, the bike also gets an extra damping/suspension force for free.)\n\nThe bike uses gimbal torque in the roll axis to stay upright. It was the cleanest non-interference solution. To allow for air-control, it only balances when it's grounded (using the wheel colliders to check).\n\nA real rider is constantly shifting their center of mass, and we programmed that directly into the controller. This results in a much more realistic feel to the controller, and without it, you will wheelie, or flip over the handlebars, etc.\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Emergent Behaviour\n\nWe wanted to maximize the laughter while playing our game, and so we programmed ragdoll and death behaviour. This also prevents the player from sending it straight off the mountain. \n\n\n\n\n\n\n\n\n\n\nA fear I had was that the forces wouldn't vary enough to allow for risky but smooth landings, however, when both tires contacted the surface on landing, the suspension naturally softened the landing and allowed the player to continue as a consequence of physics.\nAnother emergent behaviour I love is that wheelies happen on steep inclines, requiring you to feather the throttle to prevent tipping. \n\nNeither of these things were designed, and are just the result of getting the physics right.\n\n\n# Brief Notes on The Player\n\nSomething I love in video games is when each system feels integrated in one another, and because of this, I opted to implement an active ragdoll system for our player.\n\nImplementing something like this is quite easy (but networking is hell).\nAt the base level, an active ragdoll is a stationary rig that plays regular animations. Then, you have your physical rig, and drive the joints with forces to try and match the rotations of the \"ghost rig\". \nYou tune the animations to get the results you want (kind of like an iterative evolutionary network done by hand), until you get it right.\n\n# Final Notes on Mountain Biking Friend Slop\n\nI had a ton of fun on this project, and it was probably one of my longest lasting ones.\n\nThe project files are available on GitHub below if you're curious to check it out, and I plan on releasing a build there soon.\n\n\n\n\n\n\nP.S. Our musician/sound design guy did an amazing job on this project as usual, so please enjoy this bonus track in honour of the bike he destroyed recording the SFX for it:",
     "breakdown": [],
-    "media": [],
+    "media": [
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/mb/Cover.gif",
+        "caption": "this game is so satisfying. (2x speed)"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/mb/Screenshot_229.jpg",
+        "caption": "that bike seat certainly looks comfortable.."
+      },
+      {
+        "type": "image",
+        "src": "resources/mb/Screenshot_283.jpg",
+        "caption": "ah yes, stuck again."
+      },
+      {
+        "type": "image",
+        "src": "resources/mb/Screenshot_1.png",
+        "caption": "radial 1D raycasts keep the wheels from clipping."
+      },
+      {
+        "type": "image",
+        "src": "resources/mb/Screenshot_3.png",
+        "caption": "holy gizmos.."
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/mb/Biff.gif",
+        "caption": ""
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/mb/Landing.gif",
+        "caption": ""
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/mb/ActiveRagdoll.gif",
+        "caption": ""
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "image",
+        "src": "resources/mb/Screenshot_345.png",
+        "caption": "how I felt every other feature in developing this game..."
+      },
+      {
+        "type": "break"
+      },
+      {
+        "type": "audio",
+        "src": "resources/mb/Floating Among The Clouds (1st run).mp3",
+        "caption": "floating among the clouds - Quinn DeBoer"
+      }
+    ],
     "links": [
       {
-        "label": "itch.io",
-        "href": "https://milklesscerealstudios.itch.io",
+        "label": "public github",
+        "href": "https://github.com/strong-ery/mountain-biking-public",
         "primary": true
       }
     ]
