@@ -1,5 +1,5 @@
 Get-ChildItem -Recurse -File | Where-Object {
-    $_.Extension -match '\.(png|webp|bmp|tiff|gif|jpeg|jpg)$'
+    $_.Extension -match '\.(png|webp|bmp|tiff|jpeg|jpg)$'
 } | ForEach-Object {
 
     $input = $_.FullName

@@ -244,12 +244,12 @@
       },
       {
         "type": "image",
-        "src": "resources/mb/Screenshot_1.png",
+        "src": "resources/mb/Screenshot_1.jpg",
         "caption": "radial 1D raycasts keep the wheels from clipping."
       },
       {
         "type": "image",
-        "src": "resources/mb/Screenshot_3.png",
+        "src": "resources/mb/Screenshot_3.jpg",
         "caption": "holy gizmos.."
       },
       {
@@ -308,7 +308,7 @@
       },
       {
         "type": "image",
-        "src": "resources/mb/Screenshot_345.png",
+        "src": "resources/mb/Screenshot_345.jpg",
         "caption": "how I felt every other feature in developing this game..."
       },
       {
@@ -859,7 +859,8 @@
     "title": "Ford Probe GT",
     "date": "n/a",
     "year": "last updated: 2026",
-    "category": "Restoration",
+    "category": "Mechanical / Automotive",
+    "gallery": true,
     "tags": [
       "irl"
     ],
@@ -867,9 +868,11 @@
     "ratio": "wide",
     "rotate": 1,
     "thumb": "resources/fpgt/ford probe2.jpg",
-    "desc": "",
+    "desc": "My 1993 Ford Probe GT.",
     "breakdown": [],
-    "media": [],
+    "media": [
+
+    ],
     "links": []
   },
   {
@@ -878,6 +881,7 @@
     "date": "n/a",
     "year": "last updated: 2026",
     "category": "Art Studies",
+    "gallery": true,
     "tags": [
       "art",
       "irl",
@@ -894,10 +898,11 @@
   },
   {
     "id": "honourable-models-renders",
-    "title": "3D Models/Renders",
-    "date": "n/a",
-    "year": "last updated: 2026",
-    "category": "Pencil Studies",
+    "title": "3D/Renders",
+    "date": "05-24-2026",
+    "year": "2026",
+    "category": "3D Work",
+    "gallery": true,
     "tags": [
       "art",
       "3d",
@@ -909,7 +914,148 @@
     "thumb": "resources/honmodels/HOC_Complete2-min.jpg",
     "desc": "",
     "breakdown": [],
-    "media": [],
+    "media": [
+      {
+        "type": "group",
+        "label": "'Harbinger Of Chaos' TotK CM model/render (50 hour project)",
+        "images": [
+          {
+            "src": "resources/honmodels/HOC_Complete2-min.jpg",
+            "caption": "Full render + emission."
+          },
+          {
+            "src": "resources/honmodels/HOC_Complete3-min.jpg",
+            "caption": "Full render, no emission."
+          },
+          {
+            "src": "resources/honmodels/Screenshot_359.jpg",
+            "caption": "Unshaded."
+          },
+          {
+            "src": "resources/honmodels/Screenshot_358.jpg",
+            "caption": "Wireframe."
+          }
+        ]
+      },
+      {
+        "type": "image",
+        "src": "resources/honmodels/Screenshot_428.jpg",
+        "caption": "Inspired by the chainsaw man graveyard, I created it for a segment in a video essay I was working on." 
+      },
+      {
+        "type": "image",
+        "src": "resources/honmodels/Screenshot_466.jpg",
+        "caption": "All seeing eye (Unity Engine)." 
+      },
+      {
+        "type": "group",
+        "label": "'Elevated' Assets and Renders",
+        "images": [
+          {
+            "src": "resources/honmodels/Screenshot_826.jpg",
+            "caption": "Human + Raptor hybrid full rig and model."
+          },
+          {
+            "src": "resources/honmodels/Screenshot_802.jpg",
+            "caption": "Wendigo model."
+          },
+          {
+            "src": "resources/honmodels/Screenshot_25.jpg",
+            "caption": "Human + Raptor model and rig, unshaded."
+          },
+          {
+            "src": "resources/honmodels/WendigoRender1.jpg",
+            "caption": "Wendigo render."
+          },
+          {
+            "src": "resources/honmodels/Screenshot_849.jpg",
+            "caption": "Human + Raptor hybrid in-engine."
+          },
+          {
+            "src": "resources/honmodels/Screenshot_801.jpg",
+            "caption": "Wendigo shaded."
+          },
+          {
+            "src": "resources/honmodels/Screenshot_796.jpg",
+            "caption": "Wendigo skull."
+          },
+          {
+            "src": "resources/honmodels/Screenshot_845.jpg",
+            "caption": "Microscope asset."
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "label": "Celestial Collection",
+        "images": [
+          {
+            "src": "resources/honmodels/Celestial Hourglass.jpg",
+            "caption": "Celestial Hourglass (Blender + Compositing)"
+          },
+          {
+            "src": "resources/honmodels/Celestial hourglass 1.jpg",
+            "caption": "Celestial Hourglass (Blender)"
+          },
+          {
+            "src": "resources/honmodels/123.jpg",
+            "caption": "Galaxy sim screenshot 1 (Unity Engine)."
+          },
+          {
+            "src": "resources/honmodels/125.jpg",
+            "caption": "Galaxy sim screenshot 2 (Unity Engine)."
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "label": "'GEEKED' Assets and Renders",
+        "images": [
+          {
+            "src": "resources/honmodels/WendigoPromo2.jpg",
+            "caption": "Wendigo promo render 1."
+          },
+          {
+            "src": "resources/honmodels/Geeked2.jpg",
+            "caption": "Wendigo promo render 2."
+          },
+          {
+            "src": "resources/honmodels/Screenshot_216.jpg",
+            "caption": "Various decorative assets."
+          },
+          {
+            "src": "resources/honmodels/Screenshot_142.jpg",
+            "caption": "In engine shot of the player model."
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "label": "'Mountain Biking Friend Slop' Assets and Renders",
+        "images": [
+          {
+            "src": "resources/honmodels/Screenshot_2.jpg",
+            "caption": "Floating islands (Unity Engine)."
+          },
+          {
+            "src": "resources/honmodels/Screenshot_279.jpg",
+            "caption": "Trees (Unity Engine)."
+          },
+          {
+            "src": "resources/honmodels/Screenshot_258.jpg",
+            "caption": "Vertex Colour Shader Demo 1/2 (Unity Engine)."
+          },
+          {
+            "src": "resources/honmodels/Screenshot_257.jpg",
+            "caption": "Vertex Colour Shader Demo 2/2 (Unity Engine)."
+          },
+          {
+            "src": "resources/honmodels/Screenshot_225.jpg",
+            "caption": "Player and their bike (Blender)."
+          }
+        ]
+      }
+    ],
     "links": []
   }
 ]
