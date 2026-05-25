@@ -212,7 +212,7 @@ function openGallery(id) {
   document.body.classList.add("gallery-open");
 
   requestAnimationFrame(() => overlay.classList.add("visible"));
-  setTimeout(() => assignMasonryColumns(), 50);
+  waitForImagesAndLayout();
 
   overlay.querySelectorAll(".gallery-item:not(.gallery-group)").forEach(item => {
     item.addEventListener("click", () => openLightbox(lbFlat, parseInt(item.dataset.lbIndex)));
@@ -300,6 +300,40 @@ function assignMasonryColumns() {
   });
 
   grid.style.height = Math.max(...colH) + "px";
+}
+
+// Wait for all visible (non-hidden) images in the gallery grid to load,
+// then run masonry. Re-runs whenever a late image finishes loading so
+// uncached images on GitHub Pages don't collapse the layout.
+function waitForImagesAndLayout() {
+  const grid = document.getElementById("gallery-grid");
+  if (!grid) return;
+
+  let _debounceTimer = null;
+  function scheduleLayout() {
+    clearTimeout(_debounceTimer);
+    _debounceTimer = setTimeout(assignMasonryColumns, 60);
+  }
+
+  // Collect all images that aren't hidden (skip the hidden group-img clones)
+  const imgs = Array.from(grid.querySelectorAll("img")).filter(
+    img => img.style.display !== "none"
+  );
+
+  const pending = imgs.filter(img => !img.complete || img.naturalHeight === 0);
+
+  if (pending.length === 0) {
+    // All already loaded (cached) — layout immediately
+    scheduleLayout();
+  } else {
+    // Do an early layout now with whatever heights are available,
+    // then redo it each time an image finishes loading.
+    scheduleLayout();
+    pending.forEach(img => {
+      img.addEventListener("load",  scheduleLayout, { once: true });
+      img.addEventListener("error", scheduleLayout, { once: true });
+    });
+  }
 }
 
 let _masonryTimer = null;
