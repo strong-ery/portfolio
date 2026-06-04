@@ -920,6 +920,10 @@
         "label": "1993 Ford Probe GT Model and Renders (2 Day Project)",
         "images": [
           {
+            "src": "resources/honmodels/Sort of photoreal.png",
+            "caption": "Proper render (sorta photoreal)"
+          },
+                    {
             "src": "resources/honmodels/TestRender1.png",
             "caption": "1."
           },
