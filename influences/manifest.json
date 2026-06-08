@@ -21,6 +21,11 @@
   },
   {
     "type": "Film",
+    "name": "Eat Drink Man Woman",
+    "note": "A really beautiful film about growing old, family, and food. 10/10."
+  },
+  {
+    "type": "Film",
     "name": "La La Land",
     "note": "The cost of ambition, and romantic melancholy. When we did this movie in class, my classmates criticized the ending, but I think it teaches the hard lesson that not everything works out. Be happy it happened. 10/10."
   },
@@ -28,10 +33,5 @@
     "type": "Film",
     "name": "Fight Club",
     "note": "Nihilism, consumerism, and an endless search for meaning. While it may have been criticized upon release, for any young man I believe it's a must watch. 10/10."
-  },
-  {
-    "type": "Game",
-    "name": "DDLC",
-    "note": "A psychological horror masterpiece disguised as a dating sim. Written by a single person, this game defies its own genre in ways you can only understand by playing it. 10/10."
   }
 ]
