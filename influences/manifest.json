@@ -20,7 +20,9 @@
       "from": "#58b6c9",
       "to": "#1f5f86",
       "ink": "#ffffff",
-      "width": "66%"
+      "width": "66%",
+      "dx": "3rem",
+      "dy": "1.75rem"
     }
   },
   {

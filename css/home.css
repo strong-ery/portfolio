@@ -249,8 +249,8 @@
 
 .inf-art {
   position: absolute;
-  right: -2.5rem;
-  bottom: -0.5rem;
+  right: calc(-2.5rem - var(--hero-dx, 0rem));
+  bottom: calc(-0.5rem - var(--hero-dy, 0rem));
   width: calc(var(--hero-w) + 3rem);
   height: auto;
   filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
@@ -259,7 +259,7 @@
   user-select: none;
 }
 
-.influence-card:last-child .inf-art { right: 0.5rem; }
+.influence-card:last-child .inf-art { right: calc(0.5rem - var(--hero-dx, 0rem)); }
 
 .influence-card:hover .inf-hero,
 .influence-card:focus-visible .inf-hero { opacity: 1; }
