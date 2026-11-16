@@ -55,10 +55,10 @@ export function renderGallery(p, container) {
           <div class="group-img-wrap">${imgWrapInner}</div>
           <div class="group-footer">
             ${label}
-            <div class="group-dots">${dots}</div>
-            <span class="group-counter">1 / ${m.images.length}</span>
+            ${useGrid ? "" : `<div class="group-dots">${dots}</div>`}
+            <span class="group-counter">${useGrid ? `${m.images.length} images` : `1 / ${m.images.length}`}</span>
           </div>
-          <p class="gallery-item-caption group-caption">${escapeHtml(m.images[0].caption || "")}</p>
+          ${useGrid ? "" : `<p class="gallery-item-caption group-caption">${escapeHtml(m.images[0].caption || "")}</p>`}
         </div>`);
     }
   });
