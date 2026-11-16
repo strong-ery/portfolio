@@ -9,8 +9,6 @@
 // Each play gets a random file, slight speed change, stereo position from where the firework is on screen,
 // a bit of echo, and a delay that grows with distance (light is faster than sound).
 
-import { getSoundPref } from "./sound-pref.js";
-
 const FOLDER = "resources/footer/sfx/";
 const MASTER = 0.62;
 const OCEAN_LEVEL = 0.2;
@@ -91,9 +89,8 @@ function buildContext() {
 function arm() {
   if (armed) return;
   armed = true;
-  if (getSoundPref() === "off") allowed = false;
   if (!ctx) buildContext();   // starts suspended; building it now means the sounds are loaded by the first click
-  // If the browser already trusts the page (it sometimes does for sites you visit a lot), no click is needed.
+  // Some browsers let a page they trust start sound without a click; if so this just works.
   if (ctx) {
     ctx.onstatechange = () => { if (ctx.state === "running") unlocked = true; };
     ctx.resume().catch(() => {});
