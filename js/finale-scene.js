@@ -406,8 +406,8 @@ export function createScene(canvas, assets, events = {}) {
         state: 0,
         rot: (rand() - 0.5) * 0.9,
         trot: (rand() - 0.5) * 0.03,
-        glintEvery: 5 + rand() * 8,   // seconds between this tile's glints
-        glintAt: rand() * 13,
+        glintEvery: 9 * (0.94 + rand() * 0.12),   // seconds for one round of dim, then lit
+        glintAt: (list.length * 0.6180339887) % 1,  // spread evenly, so the same share is always dim
         delay: rand(),
         arc: 0.4 + rand() * 0.9,
         spin: (rand() - 0.5) * 1.4,
@@ -514,7 +514,7 @@ export function createScene(canvas, assets, events = {}) {
 
   // Draws every scrap for the given moment. t is how far the figures have turned into tiles (0..1),
   // from/to are shape numbers and m is how far through changing from one to the other.
-  function drawTiles(c, t, from, to, m, count) {
+  function drawTiles(c, t, from, to, m, count, dimAll = false) {
     scraps.forEach(s => {
       const ti = clamp((t - s.delay * 0.55) / (1 - s.delay * 0.55));
       const q = poses[s.fig];
@@ -578,7 +578,7 @@ export function createScene(canvas, assets, events = {}) {
 
       // Once it's a tile it goes dark (brighter while it's moving). Settled tiles catch the light now and
       // then; see glint().
-      const night = smooth((ti - 0.6) / 0.4) * 0.5 * (1 - lift * 0.7);
+      const night = smooth((ti - 0.6) / 0.4) * 0.5 * (1 - lift * 0.7) * (dimAll ? 1 : 1 - litLevel(s));
       if (night > 0.01) {
         c.globalAlpha = night;
         drawScrap(c, s, s.dim, x, y, rot, scale);
@@ -596,26 +596,40 @@ export function createScene(canvas, assets, events = {}) {
       c.setTransform(1, 0, 0, 1, 0, 0);
       c.clearRect(0, 0, cache.canvas.width, cache.canvas.height);
       c.setTransform(dpr, 0, 0, dpr, -box.x * dpr, -box.y * dpr);
-      drawTiles(c, 1, shape, shape, 0, false);
+      drawTiles(c, 1, shape, shape, 0, false, true);
       cache.shape = shape;
     }
     ctx.drawImage(cache.canvas, box.x, box.y, box.w, box.h);
   }
 
-  // Tiles at rest are dim, but each one catches the light now and then: it brightens for a moment and a little
-  // four-point star flashes on its corner. Every tile keeps its own rhythm, so it twinkles across the shape.
+  // Tiles at rest are lit 70% of the time and dim 30%. Each one runs its own cycle (a spell dim, then lit again),
+  // and the cycles are spread evenly so at any moment about 30% of them are dim. A tile that comes back on gives
+  // a small four-point glint, and the lit ones shimmer a little.
+  const DIM_SHARE = 0.3;
+  // How lit a tile is right now: 0 dim, 1 lit, with short fades either side and a slight shimmer while lit.
+  function litLevel(s) {
+    const u = (clock / s.glintEvery + s.glintAt) % 1;
+    let level = 1;
+    if (u < 0.04) level = 1 - smooth(u / 0.04);
+    else if (u < DIM_SHARE) level = 0;
+    else level = smooth((u - DIM_SHARE) / 0.04);
+    return level * (0.86 + 0.14 * Math.sin(clock * 2.3 + s.glintAt * 40));
+  }
   function glint(shape) {
     scraps.forEach(s => {
-      const u = ((clock + s.glintAt) / s.glintEvery) % 1;
-      if (u > 0.14) return;
-      const g = Math.pow(Math.sin((Math.PI * u) / 0.14), 2);
-      if (g < 0.03) return;
+      const u = (clock / s.glintEvery + s.glintAt) % 1;
+      const level = litLevel(s);
       const a = s.slots[shape];
-      ctx.globalAlpha = g * 0.95;
-      drawScrap(ctx, s, s.bmp, a.x, a.y, s.trot, a.scale);
-      if (g > 0.35) {
+      if (level > 0.02) {
+        ctx.globalAlpha = level;
+        drawScrap(ctx, s, s.bmp, a.x, a.y, s.trot, a.scale);
+      }
+      // The flash as it comes back on.
+      const since = (u - DIM_SHARE) / 0.09;
+      if (since > 0 && since < 1) {
+        const g = Math.sin(Math.PI * since);
         const half = (a.scale * Math.max(s.bodyW, s.bodyH)) / 2;
-        const r = half * 0.55 * g;
+        const r = half * 0.6 * g;
         const cx = a.x + half * 0.7;
         const cy = a.y - half * 0.7;
         const w = r * 0.16;
