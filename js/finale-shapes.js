@@ -82,7 +82,7 @@ const SHAPE_LIST = [
       g.arc(50, 50, 3, 0, Math.PI * 2);
       g.fill();
     },
-    // Five rings of tiles laid round the circles themselves, so they stay round whatever the tile size.
+    // Five rings of tiles (no pupil) laid round the circles themselves, so they stay round whatever the tile size.
     layout(count, region) {
       const R = (Math.min(region.w / this.w, region.h / this.h) * 0.96 * this.w) / 2;
       const u = R / 50;
@@ -90,14 +90,14 @@ const SHAPE_LIST = [
       const cy = region.gy - R;
       const radii = [46, 38, 30, 22, 8];
       const per = p => radii.map(r => Math.max(1, Math.round((2 * Math.PI * r) / p)));
-      // The biggest tiles that still make at most the number needed (one tile is the pupil)...
+      // The biggest tiles that still make at most the number needed ...
       let p = 2;
-      while (per(p).reduce((a, b) => a + b, 0) + 1 > count && p < 20) p *= 1.003;
+      while (per(p).reduce((a, b) => a + b, 0) > count && p < 20) p *= 1.003;
       const n = per(p);
-      let total = n.reduce((a, b) => a + b, 0) + 1;
+      let total = n.reduce((a, b) => a + b, 0);
       // ...then one more tile here and there on the longest rings until it's exact.
       for (let i = 0; total < count; i++, total++) n[i % radii.length]++;
-      const cells = [{ x: cx, y: cy, size: Math.min(p * 0.9, 8) * u }];
+      const cells = [];
       radii.forEach((r, ri) => {
         for (let i = 0; i < n[ri]; i++) {
           const a = (i / n[ri]) * Math.PI * 2 + ri * 0.4;
