@@ -1,4 +1,4 @@
-import { getProjects, allTags, projectUrl } from "./data.js";
+import { getProjects, allTags, projectUrl, newestFirst } from "./data.js";
 import { escapeHtml } from "./dom-utils.js";
 import { showPreview } from "./preview.js";
 import { isEmpty } from "./article.js";
@@ -6,11 +6,7 @@ import { isEmpty } from "./article.js";
 function sortedProjects(filter) {
   const projects = getProjects();
   const list = filter === "all" ? projects : projects.filter(p => p.tags.includes(filter));
-  return [...list].sort((a, b) => {
-    const da = a.date ? new Date(a.date) : new Date(a.year || 0);
-    const db = b.date ? new Date(b.date) : new Date(b.year || 0);
-    return db - da;
-  });
+  return newestFirst(list);
 }
 
 function buildFilters() {

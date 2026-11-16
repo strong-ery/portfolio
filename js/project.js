@@ -1,4 +1,4 @@
-import { loadProjects, findProject } from "./data.js";
+import { loadProjects, findProject, newestFirst, projectUrl } from "./data.js";
 import { escapeHtml } from "./dom-utils.js";
 import { articleHtml, isEmpty } from "./article.js";
 import { renderBody } from "./markup.js";
@@ -38,6 +38,14 @@ function wireBack() {
   });
 }
 
+// Newer / older entry, in the same order as the board, so the site reads like a blog.
+function neighboursHtml(p) {
+  const list = newestFirst();
+  const i = list.findIndex(x => x.id === p.id);
+  const link = (q, label, cls) => q ? `<a class="project-next ${cls}" href="${projectUrl(q.id)}"><span>${label}</span>${escapeHtml(q.title)}</a>` : "<span></span>";
+  return `<nav class="project-neighbours">${link(list[i + 1], "← older", "older")}${link(list[i - 1], "newer →", "newer")}</nav>`;
+}
+
 async function start() {
   initCursor();
   sfx.init();
@@ -59,10 +67,10 @@ async function start() {
 
   if (p.gallery && !isEmpty(p)) {
     const intro = p.body ? `<div class="project-intro article-flow">${renderBody(p.body)}</div>` : "";
-    root.innerHTML = `${headerHtml(p)}${intro}<section class="project-gallery" id="project-gallery"></section>`;
+    root.innerHTML = `${headerHtml(p)}${intro}<section class="project-gallery" id="project-gallery"></section>${neighboursHtml(p)}`;
     renderGallery(p, document.getElementById("project-gallery"));
   } else {
-    root.innerHTML = `${headerHtml(p)}${articleHtml(p)}`;
+    root.innerHTML = `${headerHtml(p)}${articleHtml(p)}${neighboursHtml(p)}`;
   }
   wireBack();
 }
