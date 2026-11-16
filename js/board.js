@@ -1,6 +1,7 @@
 import { getProjects, allTags, projectUrl } from "./data.js";
 import { escapeHtml } from "./dom-utils.js";
 import { showPreview } from "./preview.js";
+import { isEmpty } from "./article.js";
 
 function sortedProjects(filter) {
   const projects = getProjects();
@@ -38,7 +39,7 @@ function renderBoard(filter) {
     row.className = "project-row";
     row.href = projectUrl(p.id);
     if (p.gallery) row.classList.add("project-row--gallery");
-    else if (!p.desc) row.classList.add("project-row--wip");
+    if (isEmpty(p)) row.classList.add("project-row--wip");
 
     row.innerHTML = `
       <span class="project-row-year">${escapeHtml(p.year)}</span>

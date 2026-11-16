@@ -1,5 +1,10 @@
 import { escapeHtml } from "./dom-utils.js";
 
+// An entry that has been opened up on the board but not filled in yet: no pictures or video, and at most a line of text.
+export function isEmpty(p) {
+  return !(p.media && p.media.length) && !(p.breakdown && p.breakdown.length) && (p.desc || "").trim().length < 60;
+}
+
 export function formatDesc(desc) {
   return desc.split("\n").map(line => {
     if (line.startsWith("# ")) return `<h2 class="article-heading">${escapeHtml(line.slice(2))}</h2>`;
@@ -35,10 +40,11 @@ export function articleHtml(p) {
   const breakdown = p.breakdown?.length
     ? `<div class="article-breakdown"><div class="article-breakdown-label">Process</div><ul>${p.breakdown.map(b => `<li>${escapeHtml(b)}</li>`).join("")}</ul></div>`
     : "";
+  if (isEmpty(p)) return `<div class="project-split"><article class="project-article"><p class="article-empty">Nothing to see here yet! :P</p></article></div>`;
   const media = buildMedia(p.media);
   const text = p.desc
     ? `<div class="article-body">${formatDesc(p.desc)}</div>${breakdown}`
-    : `<p class="article-empty">Still in progress. Check back soon.</p>`;
+    : `<p class="article-empty">Nothing to see here yet! :P</p>`;
 
   return `
     <div class="project-split">
