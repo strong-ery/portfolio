@@ -196,6 +196,3 @@
 .welcome-no { color: var(--dim); }
 .welcome-no:hover { color: var(--muted); }
 
-/* The cursor is dark ink by default; over the night sky it has to be light. */
-body.on-night .cursor { background: #f2b57d; }
-body.on-night .cursor-ring { border-color: rgba(236, 230, 216, 0.55); }

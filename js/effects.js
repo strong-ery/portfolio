@@ -14,23 +14,83 @@ export function initTopbarScroll() {
   });
 }
 
+// The cursor is a small fairy: a glowing orb with flapping wings and a faint trail of light.
+// It says "Hey!" whenever something dispatches a "navi:say" event.
+const TRAIL = 6;
+const INTERACTIVE = "a, button, .project-row, .p-card, .filter-row *, [data-hover]";
+
 export function initCursor() {
-  const cursor = document.getElementById("cursor");
-  const ring   = document.getElementById("cursor-ring");
-  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.getElementById("cursor")?.remove();
+  document.getElementById("cursor-ring")?.remove();
+
+  const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const trail = Array.from({ length: TRAIL }, (_, i) => {
+    const dot = document.createElement("div");
+    dot.className = "navi-trail";
+    dot.style.setProperty("--k", i);
+    document.body.appendChild(dot);
+    return dot;
+  });
+
+  const navi = document.createElement("div");
+  navi.className = "navi";
+  navi.innerHTML = `
+    <svg viewBox="-20 -20 40 40" width="38" height="38" aria-hidden="true">
+      <defs>
+        <radialGradient id="navi-core"><stop offset="0" stop-color="#fff"/><stop offset="0.45" stop-color="#e8f6ff"/><stop offset="1" stop-color="#9fd3ff"/></radialGradient>
+        <linearGradient id="navi-wing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.95"/><stop offset="1" stop-color="#b9e0ff" stop-opacity="0.55"/></linearGradient>
+      </defs>
+      <g class="navi-wing navi-wing--l"><path d="M-2 0 C-6 -9 -15 -14 -17 -10 C-18 -5 -10 1 -2 1 Z" fill="url(#navi-wing)" stroke="#8cc4f2" stroke-width="0.5"/></g>
+      <g class="navi-wing navi-wing--r"><path d="M2 0 C6 -9 15 -14 17 -10 C18 -5 10 1 2 1 Z" fill="url(#navi-wing)" stroke="#8cc4f2" stroke-width="0.5"/></g>
+      <circle r="4.2" fill="url(#navi-core)"/>
+    </svg>
+    <span class="navi-say" hidden></span>`;
+  document.body.appendChild(navi);
+  const say = navi.querySelector(".navi-say");
+
+  let mx = -100, my = -100, x = -100, y = -100, seen = false;
+  const history = [];
 
   document.addEventListener("mousemove", e => {
     mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx + "px";
-    cursor.style.top  = my + "px";
+    if (!seen) { seen = true; x = mx; y = my; navi.classList.add("is-here"); flushSay(); }
+    navi.classList.toggle("alert", !!(e.target instanceof Element && e.target.closest(INTERACTIVE)));
+  });
+  document.addEventListener("mouseleave", () => navi.classList.remove("is-here"));
+  document.addEventListener("mouseenter", () => seen && navi.classList.add("is-here"));
+  document.addEventListener("pointerdown", () => {
+    navi.classList.remove("pop");
+    void navi.offsetWidth;
+    navi.classList.add("pop");
   });
 
-  (function animRing() {
-    rx += (mx - rx) * 0.88;
-    ry += (my - ry) * 0.88;
-    ring.style.left = rx + "px";
-    ring.style.top  = ry + "px";
-    requestAnimationFrame(animRing);
+  let pending = null;
+  let sayTimer = 0;
+  function flushSay() {
+    if (!pending) return;
+    say.textContent = pending;
+    say.hidden = false;
+    pending = null;
+    clearTimeout(sayTimer);
+    sayTimer = setTimeout(() => { say.hidden = true; }, 2600);
+  }
+  window.addEventListener("navi:say", e => { pending = e.detail; if (seen) flushSay(); });
+
+  let t = 0;
+  (function tick() {
+    t += 1;
+    // Drift after the pointer with a little float, so it feels like it's hovering rather than pinned.
+    x += (mx - x) * 0.35;
+    y += (my - y) * 0.35;
+    const bob = calm ? 0 : Math.sin(t / 14) * 1.6;
+    navi.style.transform = `translate(${x}px, ${y + bob}px)`;
+    history.unshift([x, y + bob]);
+    if (history.length > TRAIL * 3 + 1) history.pop();
+    trail.forEach((dot, i) => {
+      const h = history[(i + 1) * 3] || history[history.length - 1] || [x, y];
+      dot.style.transform = `translate(${h[0]}px, ${h[1]}px)`;
+    });
+    requestAnimationFrame(tick);
   })();
 }
 

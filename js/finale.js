@@ -69,7 +69,10 @@ function initWelcome() {
   card.querySelector(".welcome-yes").addEventListener("click", leave);
   card.querySelector(".welcome-no").addEventListener("click", () => { declineFinaleAudio(); sfx.setAllowed(false); leave(); });
 
-  setTimeout(() => { card.hidden = false; }, 1500);
+  setTimeout(() => {
+    card.hidden = false;
+    window.dispatchEvent(new CustomEvent("navi:say", { detail: "Hey!" }));
+  }, 1500);
 }
 
 // Timeline in milliseconds -> scene progress. It plays by itself once the footer is on screen.
