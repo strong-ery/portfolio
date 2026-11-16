@@ -3,6 +3,7 @@ import { createSky } from "./finale-sky.js";
 import { loadAssets, createScene } from "./finale-scene.js";
 import { initFinaleAudio, prepareFinaleAudio, setFinaleAudioWanted, declineFinaleAudio } from "./finale-audio.js";
 import { sfx } from "./finale-sfx.js";
+import { getSoundPref, setSoundPref } from "./sound-pref.js";
 
 const MAX_FRAGMENTS = 300;   // hand-picked images (album covers etc.); the city grows to hold them
 const MAX_PROJECT_IMAGES = 40;
@@ -67,9 +68,19 @@ function initWelcome() {
   veil.hidden = true;
   document.body.appendChild(veil);
 
-  // Start at the top, and stay there until they've answered.
+  // Always start at the top.
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
   window.scrollTo(0, 0);
+
+  // Already answered on an earlier visit: no note, no lock. A yes starts on their first click or key press.
+  const saved = getSoundPref();
+  if (saved) {
+    if (saved === "off") { declineFinaleAudio(); sfx.setAllowed(false); }
+    card.remove();
+    return;
+  }
+
+  // Stay put until they've answered.
   document.documentElement.classList.add("is-locked");
 
   const leave = () => {
@@ -78,8 +89,8 @@ function initWelcome() {
     document.documentElement.classList.remove("is-locked");
     setTimeout(() => { card.hidden = true; veil.remove(); }, 350);
   };
-  card.querySelector(".welcome-yes").addEventListener("click", leave);
-  card.querySelector(".welcome-no").addEventListener("click", () => { declineFinaleAudio(); sfx.setAllowed(false); leave(); });
+  card.querySelector(".welcome-yes").addEventListener("click", () => { setSoundPref("on"); leave(); });
+  card.querySelector(".welcome-no").addEventListener("click", () => { setSoundPref("off"); declineFinaleAudio(); sfx.setAllowed(false); leave(); });
 
   setTimeout(() => {
     card.hidden = false;
