@@ -602,6 +602,7 @@ export function createScene(canvas, assets, events = {}) {
     clock = performance.now() / 1000;
     shiver = smooth(t / 0.25) * (1 - smooth((t - 0.6) / 0.4));
     updatePoses(clock);
+    if (events.shake && shiver > 0) events.shake(shiver);
     const stickerAlpha = 1 - smooth((p - 0.5) / 0.16);
     const pairAlpha = smooth((p - 0.6) / 0.18);
 

@@ -219,7 +219,7 @@ export function initFinale(projects) {
     const assets = await loadAssets(sources, fragments.ground);
     if (!assets || !assets.scraps.length) return;
     sky.useSea(!assets.ground);
-    scene = createScene(canvas, assets, { paper: (moved, landed) => sfx.paper(moved, landed) });
+    scene = createScene(canvas, assets, { paper: (moved, landed) => sfx.paper(moved, landed), shake: level => sfx.shake(level) });
     fit();
   }
 

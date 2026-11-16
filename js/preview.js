@@ -1,4 +1,5 @@
 import { escapeHtml } from "./dom-utils.js";
+import { sfx } from "./finale-sfx.js";
 import { seededRandom } from "./rng.js";
 import { heroPlacement, placeItems, overlapFractions } from "./collage-layout.js";
 import { arrowPath, underlinePaths, starPath } from "./doodles.js";
@@ -286,5 +287,7 @@ export function showPreview(p) {
     if (token !== currentToken) return;
     shown = { p, scraps };
     paintCollage(p, scraps, true);
+    // A rustle for each scrap as it lands, in step with the animation's stagger.
+    for (let i = 0; i <= scraps.length; i++) setTimeout(() => token === currentToken && sfx.rustle(0.8), i * 45);
   });
 }

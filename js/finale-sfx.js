@@ -279,7 +279,32 @@ function uiSounds() {
   document.addEventListener("pointerdown", () => tick("click", 0.7));
 }
 
+let nextShake = 0;
+
 export const sfx = {
+  // One paper rustle, used when a stack of scraps is laid out.
+  rustle(strength = 1) {
+    if (!allowed || !ctx || ctx.state !== "running") return;
+    noiseBurst(ctx.currentTime, {
+      type: "bandpass", freq: range(2400, 5600), q: range(0.6, 1.1),
+      peak: 0.05 * strength, attack: range(0.01, 0.02), decay: range(0.1, 0.22),
+      pan: range(-0.6, 0.6), rate: range(0.8, 1.2),
+    });
+  },
+
+  // The cut-outs trembling before they tear apart: level is 0..1.
+  shake(level) {
+    if (!allowed || !ctx || ctx.state !== "running" || level < 0.15) return;
+    const now = ctx.currentTime;
+    if (now < nextShake) return;
+    nextShake = now + range(0.06, 0.13);
+    noiseBurst(now, {
+      type: "bandpass", freq: range(3000, 6200), q: range(0.7, 1.2),
+      peak: 0.04 + level * 0.07, attack: range(0.008, 0.016), decay: range(0.06, 0.15),
+      pan: range(-0.8, 0.8), rate: range(0.8, 1.3),
+    });
+  },
+
   // moved: scraps that began moving this frame; landed: scraps that came to rest.
   paper(moved, landed) {
     if (!allowed || !ctx || ctx.state !== "running") return;
