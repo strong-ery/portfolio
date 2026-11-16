@@ -18,7 +18,7 @@ let master = null;
 let reverb = null;
 let allowed = true;
 let armed = false;
-let library = { launch: [], burst: [], crackle: [] };
+let library = { launch: [], burst: [], crackle: [], hover: [], click: [] };
 let ocean = null;
 let wantOcean = false;
 
@@ -254,6 +254,31 @@ function noiseBurst(at, { type, freq, q, peak, attack, decay, pan, rate = 1 }) {
   src.start(at, Math.random() * 1.5, attack + decay + 0.05);
 }
 
+// Small sounds for hovering things you can use and for clicking. They share the footer's audio, so they
+// begin after the first click (browsers keep pages silent until then) and "no thanks" mutes them too.
+const HOVERABLE = "a, button, .project-row, .p-card, .influence-card, .filter-row *, [data-hover]";
+let uiBound = false;
+let lastHover = 0;
+
+function uiSounds() {
+  if (uiBound) return;
+  uiBound = true;
+  const tick = (kind, gain) => {
+    if (!ready(kind)) return;
+    play(pick(library[kind]), { at: ctx.currentTime, gain, rate: range(0.97, 1.03) });
+  };
+  document.addEventListener("pointerover", e => {
+    if (e.pointerType === "touch" || !(e.target instanceof Element)) return;
+    const el = e.target.closest(HOVERABLE);
+    if (!el || (e.relatedTarget instanceof Node && el.contains(e.relatedTarget))) return;
+    const now = performance.now();
+    if (now - lastHover < 70) return;
+    lastHover = now;
+    tick("hover", 0.5);
+  });
+  document.addEventListener("pointerdown", () => tick("click", 0.7));
+}
+
 export const sfx = {
   // moved: scraps that began moving this frame; landed: scraps that came to rest.
   paper(moved, landed) {
@@ -287,7 +312,7 @@ export const sfx = {
     applyOcean();
   },
 
-  init() { arm(); },
+  init() { arm(); uiSounds(); },
 
   setAllowed(on) {
     allowed = on;

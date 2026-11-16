@@ -19,5 +19,11 @@
     "crackle2.mp3",
     "crackle3.mp3",
     "crackle4.mp3"
+  ],
+  "hover": [
+    "hover.mp3"
+  ],
+  "click": [
+    "click.mp3"
   ]
 }
