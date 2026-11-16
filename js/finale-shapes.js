@@ -69,7 +69,7 @@ const SHAPE_LIST = [
     name: "eye",
     w: 100,
     h: 100,
-    // Makima's eyes: rings inside rings.
+    // Makima's eyes: three thick rings and a dot. Tiled with the original square-grid method (see legacySample).
     bands: [[41, 50], [24, 33], [9, 16]],
     draw(g) {
       this.bands.forEach(([inner, outer]) => {
@@ -82,31 +82,7 @@ const SHAPE_LIST = [
       g.arc(50, 50, 3, 0, Math.PI * 2);
       g.fill();
     },
-    // Five rings of tiles (no pupil) laid round the circles themselves, so they stay round whatever the tile size.
-    layout(count, region) {
-      const R = (Math.min(region.w / this.w, region.h / this.h) * 0.96 * this.w) / 2;
-      const u = R / 50;
-      const cx = region.x0 + region.w / 2;
-      const cy = region.gy - R;
-      const radii = [46, 38, 30, 22, 8];
-      const per = p => radii.map(r => Math.max(1, Math.round((2 * Math.PI * r) / p)));
-      // The biggest tiles that still make at most the number needed ...
-      let p = 2;
-      while (per(p).reduce((a, b) => a + b, 0) > count && p < 20) p *= 1.003;
-      const n = per(p);
-      let total = n.reduce((a, b) => a + b, 0);
-      // ...then one more tile here and there on the longest rings until it's exact.
-      for (let i = 0; total < count; i++, total++) n[i % radii.length]++;
-      const cells = [];
-      radii.forEach((r, ri) => {
-        for (let i = 0; i < n[ri]; i++) {
-          const a = (i / n[ri]) * Math.PI * 2 + ri * 0.4;
-          const spacing = (2 * Math.PI * r) / n[ri];
-          cells.push({ x: cx + Math.cos(a) * r * u, y: cy + Math.sin(a) * r * u, size: Math.min(p, spacing, 8) * 0.88 * u });
-        }
-      });
-      return { cells, tile: p * u };
-    },
+    legacy: true,
   },
   {
     name: "sawblade",
@@ -228,6 +204,51 @@ function scanLayout(shape, region, count) {
   return { cells, tile: p * 0.9 };
 }
 
+// The very first way tiles were laid out: a plain square grid, keeping the cells that sit well inside the shape.
+// Only the eye still uses it.
+function legacySample(shape, region, count, rand) {
+  const k = Math.min(region.w / shape.w, region.h / shape.h) * 0.96;
+  const sw = Math.ceil(shape.w * k);
+  const sh = Math.ceil(shape.h * k);
+  const mask = document.createElement("canvas");
+  mask.width = sw;
+  mask.height = sh;
+  const g = mask.getContext("2d");
+  g.scale(k, k);
+  g.fillStyle = "#fff";
+  shape.draw(g);
+  const data = g.getImageData(0, 0, sw, sh).data;
+  const covered = (x, y) => {
+    const ix = Math.floor(x);
+    const iy = Math.floor(y);
+    return ix >= 0 && iy >= 0 && ix < sw && iy < sh && data[(iy * sw + ix) * 4 + 3] > 128;
+  };
+  let area = 0;
+  for (let i = 3; i < data.length; i += 4) if (data[i] > 128) area++;
+  const ox = region.x0 + (region.w - sw) / 2;
+  const oy = region.gy - sh;
+  const gridAt = pitch => {
+    const cells = [];
+    const r = pitch * 0.32;
+    for (let y = pitch / 2; y < sh; y += pitch) {
+      for (let x = pitch / 2; x < sw; x += pitch) {
+        if (covered(x, y) && covered(x - r, y) && covered(x + r, y) && covered(x, y - r) && covered(x, y + r)) cells.push({ x: ox + x, y: oy + y });
+      }
+    }
+    return cells;
+  };
+  let pitch = Math.sqrt(area / count) * 1.2;
+  let cells = gridAt(pitch);
+  for (let i = 0; i < 200 && cells.length < count && pitch > 5; i++) {
+    pitch *= 0.985;
+    cells = gridAt(pitch);
+  }
+  if (cells.length > count) cells = shuffle(cells, rand).slice(0, count);
+  const gap = Math.min(3, Math.max(1.5, pitch * 0.1));
+  const size = Math.min(pitch - gap, 46);
+  return { cells: cells.map(c => ({ ...c, size })), tile: size };
+}
+
 const MAPS = {
   mirror: [(i, j) => [i, j], (i, j) => [-i, j]],
   rot2: [(i, j) => [i, j], (i, j) => [-i, -j]],
@@ -242,6 +263,7 @@ const MAPS = {
 export function sampleShape(shape, region, count, rand) {
   if (shape.layout) return shape.layout(count, region, rand);
   if (shape.scan) return scanLayout(shape, region, count);
+  if (shape.legacy) return legacySample(shape, region, count, rand);
   const k = Math.min(region.w / shape.w, region.h / shape.h) * 0.96;
   const sw = Math.ceil(shape.w * k);
   const sh = Math.ceil(shape.h * k);
