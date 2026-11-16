@@ -9,6 +9,8 @@ export function initReveal() {
 export function initTopbarScroll() {
   window.addEventListener("scroll", () => {
     document.getElementById("topbar").classList.toggle("scrolled", window.scrollY > 60);
+    const cue = document.getElementById("scroll-cue");
+    if (cue) cue.classList.toggle("gone", window.scrollY > 40);
   });
 }
 

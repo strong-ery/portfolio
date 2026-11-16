@@ -50,8 +50,8 @@
   min-height: 52vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 7rem 2.5rem 3.5rem;
+  justify-content: flex-start;
+  padding: clamp(6rem, 17vh, 9rem) 2.5rem 3rem;
 }
 
 .hero-eyebrow {
@@ -94,7 +94,33 @@
 
 .about-section {
   max-width: 640px;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
+
+/* A small hint that there is more below. It fades once you scroll. */
+.scroll-cue {
+  position: fixed;
+  left: 25%;
+  bottom: 1.4rem;
+  width: 22px;
+  height: 22px;
+  margin-left: -11px;
+  color: var(--dim);
+  pointer-events: none;
+  transition: opacity 0.4s;
+  animation: cue-bob 2.4s ease-in-out infinite;
+}
+
+.scroll-cue.gone { opacity: 0; }
+
+@keyframes cue-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+@media (max-width: 700px) { .scroll-cue { left: 50%; } }
+@media (prefers-reduced-motion: reduce) { .scroll-cue { animation: none; } }
 
 .about-body {
   color: var(--muted);
@@ -111,7 +137,7 @@
   line-height: 1.75;
   border-left: 1px solid var(--line2);
   padding-left: 1.25rem;
-  margin-top: 2rem;
+  margin-top: 0;
 }
 
 .about-quote cite {
