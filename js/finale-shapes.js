@@ -29,19 +29,51 @@ const SHAPE_LIST = [
     },
   },
   {
-    name: "buildings",
+    name: "eye",
     w: 100,
     h: 100,
+    // Makima's eyes: rings inside rings.
     draw(g) {
-      g.fillRect(0, 58, 14, 42);
-      g.fillRect(16, 30, 16, 70);
-      g.fillRect(34, 46, 12, 54);
-      g.fillRect(48, 12, 18, 88);
-      g.fillRect(53, 4, 8, 9);
-      g.fillRect(56.5, 0, 1.5, 5);
-      g.fillRect(68, 38, 14, 62);
-      g.fillRect(84, 54, 16, 46);
-      g.fillRect(20, 24, 8, 7);
+      [[50, 41], [33, 24], [16, 9]].forEach(([outer, inner]) => {
+        g.beginPath();
+        g.arc(50, 50, outer, 0, Math.PI * 2);
+        g.arc(50, 50, inner, 0, Math.PI * 2, true);
+        g.fill("evenodd");
+      });
+      g.beginPath();
+      g.arc(50, 50, 3, 0, Math.PI * 2);
+      g.fill();
+    },
+  },
+  {
+    name: "bladesaw",
+    w: 100,
+    h: 100,
+    // Denji's chainsaw, held on a slant: a long rounded bar with teeth down both edges, the engine
+    // block at the bottom with its handle, and the groove the chain runs in.
+    draw(g) {
+      g.save();
+      g.translate(50, 50);
+      g.rotate(0.66);
+      g.beginPath();
+      g.moveTo(-12, 20);
+      g.lineTo(-12, -38);
+      g.arc(0, -38, 12, Math.PI, 0);
+      g.lineTo(12, 20);
+      g.closePath();
+      g.fill();
+      for (let y = -36; y < 14; y += 8) {
+        poly(g, [[-12, y], [-20, y + 4], [-12, y + 8]]);
+        poly(g, [[12, y], [20, y + 4], [12, y + 8]]);
+      }
+      g.fillRect(-17, 18, 34, 32);
+      punch(g, () => {
+        g.fillRect(-2.5, -42, 5, 56);
+        g.beginPath();
+        g.ellipse(0, 35, 8, 5.5, 0, 0, Math.PI * 2);
+        g.fill();
+      });
+      g.restore();
     },
   },
   {
@@ -59,7 +91,7 @@ const SHAPE_LIST = [
 ];
 
 // The order they appear in.
-const ORDER = ["triforce", "buildings", "heart"];
+const ORDER = ["triforce", "heart", "eye", "bladesaw"];
 export const SHAPES = ORDER.map(name => SHAPE_LIST.find(shape => shape.name === name));
 
 const shuffle = (list, rand) => list.map(v => [rand(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
