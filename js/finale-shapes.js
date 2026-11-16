@@ -88,7 +88,7 @@ const SHAPE_LIST = [
       const u = R / 50;
       const cx = region.x0 + region.w / 2;
       const cy = region.gy - R;
-      const radii = [46, 37, 28, 19, 10];
+      const radii = [46, 38, 30, 22, 8];
       const per = p => radii.map(r => Math.max(1, Math.round((2 * Math.PI * r) / p)));
       // The biggest tiles that still make at most the number needed (one tile is the pupil)...
       let p = 2;
