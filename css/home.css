@@ -39,9 +39,12 @@
   height: auto;
   display: block;
   opacity: 0.88;
+  /* The picture has an empty strip along the bottom (about a fifth of its width); pull the section up past it. */
+  margin-bottom: -21%;
 }
 
 @media (max-width: 700px) {
+  .denji-img { margin-bottom: 0; }
   .intro-wrap { flex-direction: column; }
   .intro-right { width: 100%; height: 280px; border-left: none; border-top: 1px solid var(--line); }
 }
