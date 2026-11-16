@@ -1,4 +1,5 @@
 import { escapeHtml } from "./dom-utils.js";
+import { plainText, allMedia } from "./markup.js";
 import { sfx } from "./finale-sfx.js";
 import { seededRandom } from "./rng.js";
 import { heroPlacement, placeItems, overlapFractions } from "./collage-layout.js";
@@ -38,19 +39,16 @@ function aspectOf(src) {
 
 const f = n => n.toFixed(1);
 
-function excerpt(desc) {
-  if (!desc) return "";
-  const text = desc
-    .split("\n")
-    .filter(line => line.trim() && !line.startsWith("# "))
-    .join(" ");
+function excerpt(body) {
+  const text = plainText(body);
+  if (!text) return "";
   return text.length > EXCERPT_LENGTH ? text.slice(0, EXCERPT_LENGTH).trimEnd() + "…" : text;
 }
 
 function collectScraps(p) {
   const photos = [];
   const extras = [];
-  (p.media || []).forEach(m => {
+  allMedia(p).forEach(m => {
     if (m.type === "image" && m.src) photos.push({ kind: "photo", src: m.src, caption: m.caption || "" });
     else if (m.type === "group") (m.images || []).forEach(img => img.src && photos.push({ kind: "photo", src: img.src, caption: img.caption || "" }));
     else if (m.type === "audio" && m.src) extras.push({ kind: "audio", label: m.caption || "audio" });
@@ -269,7 +267,7 @@ export function showPreview(p) {
     return;
   }
 
-  const body = excerpt(p.desc);
+  const body = excerpt(p.body);
   panel.innerHTML = `
     <div class="work-preview-inner">
       <div class="collage"></div>

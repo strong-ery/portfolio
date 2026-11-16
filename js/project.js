@@ -1,6 +1,7 @@
 import { loadProjects, findProject } from "./data.js";
 import { escapeHtml } from "./dom-utils.js";
-import { articleHtml, formatDesc, isEmpty } from "./article.js";
+import { articleHtml, isEmpty } from "./article.js";
+import { renderBody } from "./markup.js";
 import { renderGallery } from "./gallery.js";
 import { initAudioPlayers } from "./audio-player.js";
 import { initCursor, initPaperTexture } from "./effects.js";
@@ -57,7 +58,7 @@ async function start() {
   document.title = `${p.title} · Dylan Strong`;
 
   if (p.gallery && !isEmpty(p)) {
-    const intro = p.desc ? `<div class="project-intro article-body">${formatDesc(p.desc)}</div>` : "";
+    const intro = p.body ? `<div class="project-intro article-flow">${renderBody(p.body)}</div>` : "";
     root.innerHTML = `${headerHtml(p)}${intro}<section class="project-gallery" id="project-gallery"></section>`;
     renderGallery(p, document.getElementById("project-gallery"));
   } else {
