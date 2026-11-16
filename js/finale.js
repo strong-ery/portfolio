@@ -67,9 +67,15 @@ function initWelcome() {
   veil.hidden = true;
   document.body.appendChild(veil);
 
+  // Start at the top, and stay there until they've answered.
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  window.scrollTo(0, 0);
+  document.documentElement.classList.add("is-locked");
+
   const leave = () => {
     card.classList.add("is-leaving");
     veil.classList.add("is-leaving");
+    document.documentElement.classList.remove("is-locked");
     setTimeout(() => { card.hidden = true; veil.remove(); }, 350);
   };
   card.querySelector(".welcome-yes").addEventListener("click", leave);

@@ -141,6 +141,9 @@
 .welcome[hidden] { display: none; }
 
 /* While the note is up, everything else softens so the note is what you see. */
+.is-locked,
+.is-locked body { overflow: hidden; }
+
 .welcome-veil[hidden] { display: none; }
 
 .welcome-veil {
