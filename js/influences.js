@@ -14,9 +14,10 @@ export function renderInfluences(influences) {
       card.style.setProperty("--hero-from", h.from);
       card.style.setProperty("--hero-to", h.to);
       card.style.setProperty("--hero-ink", h.ink);
-      hero = `<div class="hero" aria-hidden="true">
-        <div class="hero-face"><div class="hero-type">${escapeHtml(inf.type)}</div><div class="hero-name">${escapeHtml(inf.name)}</div></div>
-        <img class="hero-art" src="${escapeHtml(h.src)}" alt="" loading="lazy" draggable="false">
+      card.style.setProperty("--hero-w", h.width || "70%");
+      hero = `<div class="inf-hero" aria-hidden="true">
+        <div class="inf-face"><div class="inf-type">${escapeHtml(inf.type)}</div><div class="inf-title">${escapeHtml(inf.name)}</div></div>
+        <img class="inf-art" src="${escapeHtml(h.src)}" alt="" loading="lazy" draggable="false">
       </div>`;
     }
     card.innerHTML = `<div class="influence-type">${escapeHtml(inf.type)}</div><div class="influence-name">${escapeHtml(inf.name)}</div><div class="influence-note">${escapeHtml(inf.note)}</div>${hero}`;

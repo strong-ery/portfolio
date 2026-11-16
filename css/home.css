@@ -154,7 +154,7 @@
   padding-bottom: 5rem;
 }
 
-.influences-section { padding-top: 3.5rem; }
+.influences-section { padding-top: 3.5rem; padding-bottom: 4.5rem; }
 .influences-section .influences-grid { padding-top: 2.5rem; }
 
 .influences-grid {
@@ -173,8 +173,11 @@
   flex: 1 1 320px;
   min-width: 320px;
   position: relative;
-  min-height: 15rem;
+  min-height: 16rem;
 }
+
+.influence-card:hover,
+.influence-card:focus-visible { z-index: 5; }
 
 .influence-card:hover {
   background: var(--bg3);
@@ -204,8 +207,8 @@
   line-height: 1.7;
 }
 
-/* ── Hero cards ─────────────────────────────────────────────────────────── */
-.hero {
+/* ── Influence hero cards ─────────────────────────────────────────────────────────── */
+.inf-hero {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -213,7 +216,7 @@
   transition: opacity 0.25s ease;
 }
 
-.hero-face {
+.inf-face {
   position: absolute;
   inset: -1px;
   border-radius: var(--radius);
@@ -228,7 +231,7 @@
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.3, 1.2);
 }
 
-.hero-type {
+.inf-type {
   font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -236,7 +239,7 @@
   margin-bottom: 0.5rem;
 }
 
-.hero-name {
+.inf-title {
   font-family: var(--font-display);
   font-style: italic;
   font-size: 1.9rem;
@@ -244,32 +247,32 @@
   max-width: 11ch;
 }
 
-.hero-art {
+.inf-art {
   position: absolute;
-  right: -1.5rem;
+  right: -2.5rem;
   bottom: -0.5rem;
-  width: 112%;
-  max-height: 150%;
-  object-fit: contain;
-  object-position: right bottom;
+  width: calc(var(--hero-w) + 3rem);
+  height: auto;
   filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
   transform: translate(8%, 14%) rotate(2deg) scale(0.92);
   transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.3, 1.15);
   user-select: none;
 }
 
-.influence-card:hover .hero,
-.influence-card:focus-visible .hero { opacity: 1; }
+.influence-card:last-child .inf-art { right: 0.5rem; }
 
-.influence-card:hover .hero-face,
-.influence-card:focus-visible .hero-face { transform: rotate(-0.8deg) scale(1); }
+.influence-card:hover .inf-hero,
+.influence-card:focus-visible .inf-hero { opacity: 1; }
 
-.influence-card:hover .hero-art,
-.influence-card:focus-visible .hero-art { transform: translate(0, 0) rotate(0) scale(1); }
+.influence-card:hover .inf-face,
+.influence-card:focus-visible .inf-face { transform: rotate(-0.8deg) scale(1); }
+
+.influence-card:hover .inf-art,
+.influence-card:focus-visible .inf-art { transform: translate(0, 0) rotate(0) scale(1); }
 
 .influence-card:focus-visible { outline: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero, .hero-face, .hero-art { transition: opacity 0.2s; }
-  .hero-art { transform: none; }
+  .inf-hero, .inf-face, .inf-art { transition: opacity 0.2s; }
+  .inf-art { transform: none; }
 }

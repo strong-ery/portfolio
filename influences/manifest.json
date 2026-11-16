@@ -7,7 +7,8 @@
       "src": "resources/influences/chainsaw-man.webp",
       "from": "#d2472a",
       "to": "#6e1a12",
-      "ink": "#fff6ec"
+      "ink": "#fff6ec",
+      "width": "82%"
     }
   },
   {
@@ -18,7 +19,8 @@
       "src": "resources/influences/zelda.webp",
       "from": "#58b6c9",
       "to": "#1f5f86",
-      "ink": "#ffffff"
+      "ink": "#ffffff",
+      "width": "66%"
     }
   },
   {
@@ -29,7 +31,8 @@
       "src": "resources/influences/lookback.webp",
       "from": "#f6c7bd",
       "to": "#e08f9c",
-      "ink": "#4a2230"
+      "ink": "#4a2230",
+      "width": "76%"
     }
   }
 ]
