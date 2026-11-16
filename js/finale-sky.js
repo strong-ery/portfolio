@@ -106,6 +106,7 @@ export function createSky(skyCanvas, events = {}) {
   let running = false;
   let launching = false;
   let nextLaunch = 0;
+  let nextVolley = 0;   // when the next big volley is due (0 = none scheduled); they come back every so often
   let recentX = [];
   let sea = true;       // water behind the beach; off when a custom ground image is used
   let queued = [];      // rockets scheduled for later, as [time, launch function]
@@ -324,6 +325,7 @@ export function createSky(skyCanvas, events = {}) {
 
   function volley() {
     if (reduceMotion) return;
+    nextVolley = clock + range(15, 20);
     const kinds = ["chrysanthemum", "peony", "willow", "double", "ring", "crackle", "chrysanthemum"];
     kinds.forEach((kind, i) => queued.push([clock + 0.15 + i * 0.28 + Math.random() * 0.1, () => launch(kind)]));
   }
@@ -337,6 +339,7 @@ export function createSky(skyCanvas, events = {}) {
       launch();
       nextLaunch = clock + range(1, 2.1);
     }
+    if (launching && nextVolley && clock >= nextVolley) volley();
     queued = queued.filter(([time, fn]) => {
       if (clock < time) return true;
       fn();
@@ -487,6 +490,7 @@ export function createSky(skyCanvas, events = {}) {
   function setLaunching(on) {
     if (on === launching) return;
     launching = on;
+    nextVolley = 0;
     if (on) nextLaunch = clock + 0.5;
   }
 
@@ -495,6 +499,7 @@ export function createSky(skyCanvas, events = {}) {
     rockets = [];
     flashes = [];
     queued = [];
+    nextVolley = 0;
     recentX = [];
     if (!running) paintStill();
   }
