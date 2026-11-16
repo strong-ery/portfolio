@@ -20,7 +20,7 @@ let reverb = null;
 let allowed = true;
 let armed = false;
 let unlocked = false;
-let library = { launch: [], burst: [], crackle: [], hover: [], click: [] };
+let library = { launch: [], burst: [], crackle: [], hover: [], click: [], pageflip: [] };
 let ocean = null;
 let wantOcean = false;
 
@@ -285,37 +285,10 @@ function uiSounds() {
 
 let nextShake = 0;
 
-// A page being turned: a soft lift, a long dry swish that sweeps from low to high as the sheet
-// passes through the air, then the small flap as it settles.
+// A page being turned, from a real recording (trimmed from temp/page-flip-needs-a-trim.mp3).
 function pageTurn() {
-  if (!allowed || !ctx || ctx.state !== "running") return;
-  const at = ctx.currentTime + 0.02;
-  const src = ctx.createBufferSource();
-  src.buffer = noiseBuffer();
-  src.playbackRate.value = range(0.9, 1.1);
-  const band = ctx.createBiquadFilter();
-  band.type = "bandpass";
-  band.Q.value = 0.9;
-  band.frequency.setValueAtTime(1100, at);
-  band.frequency.exponentialRampToValueAtTime(4200, at + 0.3);
-  band.frequency.exponentialRampToValueAtTime(2200, at + 0.55);
-  const amp = ctx.createGain();
-  amp.gain.setValueAtTime(0.0001, at);
-  amp.gain.linearRampToValueAtTime(0.16 * PAPER, at + 0.12);
-  amp.gain.linearRampToValueAtTime(0.1 * PAPER, at + 0.32);
-  amp.gain.exponentialRampToValueAtTime(0.0001, at + 0.6);
-  const pan = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
-  src.connect(band);
-  band.connect(amp);
-  if (pan) {
-    pan.pan.setValueAtTime(-0.35, at);
-    pan.pan.linearRampToValueAtTime(0.35, at + 0.5);
-    amp.connect(pan);
-    pan.connect(master);
-  } else amp.connect(master);
-  src.start(at, Math.random(), 0.7);
-  // The soft thump of the page landing.
-  noiseBurst(at + 0.42, { type: "lowpass", freq: 650, q: 0.7, peak: 0.1, attack: 0.006, decay: 0.07, pan: 0.3 });
+  if (!allowed || !ctx || ctx.state !== "running" || !library.pageflip.length) return;
+  play(pick(library.pageflip), { at: ctx.currentTime, gain: 0.6, pan: range(-0.2, 0.2), rate: range(0.96, 1.04) });
 }
 
 export const sfx = {
