@@ -286,9 +286,16 @@ function uiSounds() {
 let nextShake = 0;
 
 // A page being turned, from a real recording (trimmed from temp/page-flip-needs-a-trim.mp3).
+let lastFlip = 0;
+
 function pageTurn() {
   if (!allowed || !ctx || ctx.state !== "running" || !library.pageflip.length) return;
-  play(pick(library.pageflip), { at: ctx.currentTime, gain: 0.6, pan: range(-0.2, 0.2), rate: range(0.96, 1.04) });
+  // Sweeping the cursor down a list asks for a flip per row. One at a time: ignore requests while the
+  // last one is still going, so they never stack up.
+  const now = ctx.currentTime;
+  if (now - lastFlip < 0.9) return;
+  lastFlip = now;
+  play(pick(library.pageflip), { at: now, gain: 0.4, pan: range(-0.2, 0.2), rate: range(0.96, 1.04) });
 }
 
 export const sfx = {
