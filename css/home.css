@@ -38,10 +38,21 @@
   width: 100%;
   height: auto;
   display: block;
-  opacity: 0.88;
+  /* The cutout's edge is soft; the filter tightens it, and multiply lets the ink sit in the paper. */
+  filter: url(#denji-edge);
+  mix-blend-mode: multiply;
+  transform-origin: 50% 100%;
+  animation: denji-sway 9s ease-in-out infinite;
   /* The picture has an empty strip along the bottom (about a fifth of its width); pull the section up past it. */
   margin-bottom: -21%;
 }
+
+@keyframes denji-sway {
+  0%, 100% { transform: rotate(-0.45deg) translateY(0); }
+  50% { transform: rotate(0.45deg) translateY(-2px); }
+}
+
+@media (prefers-reduced-motion: reduce) { .denji-img { animation: none; } }
 
 @media (max-width: 700px) {
   .denji-img { margin-bottom: 0; }
