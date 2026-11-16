@@ -4,7 +4,6 @@ import { loadAssets, createScene } from "./finale-scene.js";
 import { initFinaleAudio, prepareFinaleAudio, setFinaleAudioWanted, declineFinaleAudio } from "./finale-audio.js";
 import { sfx } from "./finale-sfx.js";
 
-const MAX_FRAGMENTS = 300;   // hand-picked images (album covers etc.); the city grows to hold them
 const MAX_PROJECT_IMAGES = 40;
 const FRAGMENTS_URL = "resources/footer/fragments.json";
 const THUMBS_URL = "resources/footer/thumbs.json";
@@ -41,18 +40,29 @@ async function loadThumbs() {
   }
 }
 
-// Hand-picked images (album covers and so on) listed in resources/footer/fragments.json.
-async function loadFragments() {
+// The hand-picked album covers come packed into one atlas image (made by a script that lives in temp/),
+// so the page makes a single request for all of them. Each tile is cut back out into its own small canvas.
+async function loadCovers() {
   try {
     const res = await fetch(FRAGMENTS_URL);
-    if (!res.ok) return { images: [], ground: null };
+    if (!res.ok) return { covers: [], ground: null };
     const data = await res.json();
-    return {
-      images: (data.images || []).map(name => `resources/footer/${name}`),
-      ground: data.ground ? `resources/footer/${data.ground}` : null,
-    };
+    const ground = data.ground ? `resources/footer/${data.ground}` : null;
+    if (!data.atlas) return { covers: [], ground };
+    const atlas = new Image();
+    atlas.src = `resources/footer/${data.atlas}`;
+    await atlas.decode();
+    const covers = [];
+    for (let i = 0; i < data.count; i++) {
+      const tile = document.createElement("canvas");
+      tile.width = tile.height = data.size;
+      tile.getContext("2d").drawImage(atlas, (i % data.cols) * data.size, Math.floor(i / data.cols) * data.size, data.size, data.size, 0, 0, data.size, data.size);
+      tile.naturalWidth = tile.naturalHeight = data.size;
+      covers.push(tile);
+    }
+    return { covers, ground };
   } catch {
-    return { images: [], ground: null };
+    return { covers: [], ground: null };
   }
 }
 
@@ -232,10 +242,12 @@ export function initFinale(projects) {
     if (loading) return;
     loading = true;
     prepareFinaleAudio();
-    const [fragments, thumbs] = await Promise.all([loadFragments(), loadThumbs()]);
-    const sources = [...fragments.images.slice(0, MAX_FRAGMENTS), ...pickScrapSources(projects)].map(src => thumbs[src] || src);
+    const [fragments, thumbs] = await Promise.all([loadCovers(), loadThumbs()]);
+    const sources = pickScrapSources(projects).map(src => thumbs[src] || src);
     const assets = await loadAssets(sources, fragments.ground);
-    if (!assets || !assets.scraps.length) return;
+    if (!assets) return;
+    assets.scraps.unshift(...fragments.covers);
+    if (!assets.scraps.length) return;
     sky.useSea(!assets.ground);
     scene = createScene(canvas, assets, { paper: (moved, landed) => sfx.paper(moved, landed), shake: level => sfx.shake(level) });
     fit();
