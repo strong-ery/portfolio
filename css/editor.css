@@ -137,3 +137,12 @@ input[type=file]{display:none}
 .article-empty{color:var(--dim);font-style:italic}
 .article-meta{font-size:11px;color:var(--dim);margin-top:0.4rem}
 .p-card-thumb-preview.r43{aspect-ratio:4/3}.p-card-ph.r43{aspect-ratio:4/3}
+
+.article-tools{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:6px 1.5rem;border-bottom:1px solid var(--line);background:var(--bg2);flex-shrink:0}
+.article-tools .btn{padding:3px 9px;font-size:10px}
+.article-tools select.btn{appearance:auto;background:var(--bg)}
+.tool-gap{width:1px;height:18px;background:var(--line2);margin:0 4px}
+.article-preview{padding:0}
+.article-preview .article-flow{margin:0 auto}
+.audio-btn,.audio-progress-wrap{cursor:pointer}
+.drawer-preview-wrap{background:var(--bg)}

@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Covered+By+Your+Grace&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/editor.css">
+<link rel="stylesheet" href="css/article.css">
 </head>
 <body>
 
@@ -53,17 +54,41 @@
     <button class="btn" onclick="closeArticle()">← Back</button>
     <span class="article-title" id="article-title"></span>
     <span class="article-count" id="article-count"></span>
-    <button class="btn" onclick="insertHeading()">Heading</button>
     <button class="btn primary" onclick="saveFile()">Save</button>
   </div>
+  <div class="article-tools">
+    <button class="btn" onclick="linePrefix('# ')" title="Big heading">H1</button>
+    <button class="btn" onclick="linePrefix('## ')" title="Small heading">H2</button>
+    <button class="btn" onclick="wrapSel('**','**','bold')" title="Ctrl+B"><b>B</b></button>
+    <button class="btn" onclick="wrapSel('*','*','italic')" title="Ctrl+I"><i>I</i></button>
+    <button class="btn" onclick="addLinkSyntax()">Link</button>
+    <select class="btn" onchange="applyColour(this)" title="Colour the selected text">
+      <option value="">Colour…</option>
+      <option>red</option><option>orange</option><option>yellow</option><option>green</option><option>teal</option><option>blue</option><option>purple</option><option>pink</option>
+      <option value="rainbow">rainbow</option><option value="hand">handwritten</option>
+    </select>
+    <span class="tool-gap"></span>
+    <button class="btn" onclick="linePrefix('- ')">List</button>
+    <button class="btn" onclick="linePrefix('> ')">Quote</button>
+    <button class="btn" onclick="insertDivider()">Divider</button>
+    <span class="tool-gap"></span>
+    <button class="btn" onclick="pickInline('image')">Image…</button>
+    <button class="btn" onclick="setImageFlag('left')" title="Float the image on this line to the left">left</button>
+    <button class="btn" onclick="setImageFlag('right')" title="Float the image on this line to the right">right</button>
+    <button class="btn" onclick="setImageFlag('wide')">wide</button>
+    <button class="btn" onclick="setImageFlag('')">inline</button>
+    <button class="btn" onclick="pickInline('audio')">Audio…</button>
+    <button class="btn" onclick="addVideo()">Video…</button>
+  </div>
   <div class="article-panes">
-    <textarea id="article-input" spellcheck="true" placeholder="Start writing. A line beginning with “# ” becomes a heading."></textarea>
-    <div class="article-preview"><div class="drawer-desc" id="article-preview"></div></div>
+    <textarea id="article-input" spellcheck="true" placeholder="Start writing. Drop images in to place them right here. Image lines with no blank line between them sit side by side."></textarea>
+    <div class="article-preview"><div class="article-flow" id="article-preview"></div></div>
   </div>
 </div>
 
 <div class="toast" id="toast">Saved</div>
 <input type="file" id="fp-thumb" accept="image/*">
+<input type="file" id="fp-inline">
 <input type="file" id="fp-media" accept="image/*,audio/*" multiple>
 <input type="file" id="fp-media-single" accept="image/*,audio/*">
 

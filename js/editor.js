@@ -1,4 +1,7 @@
 let manifest=[], activeIdx=null, dragSrc=null;
+let markup=null;
+import('./markup.js').then(m=>{markup=m;if(activeIdx!==null){renderPreview();updateArticle()}});
+import('./audio-player.js').then(m=>m.initAudioPlayers());
 let _fileHandle=null, _saveTimer=null, _saving=false;
 
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')}
@@ -108,12 +111,12 @@ function renderSidebar(){
   list.innerHTML='';
   manifest.forEach((p,i)=>{
     const el=document.createElement('div');
-    el.className='entry-item'+(i===activeIdx?' active':'')+(!p.desc?' wip':'');
+    el.className='entry-item'+(i===activeIdx?' active':'')+(!articleStarted(p)?' wip':'');
     el.onclick=()=>selectEntry(i);
     const thumb=p.thumb
       ?`<img class="entry-thumb-s" src="${esc(p.thumb)}" onerror="this.style.display='none'">`
       :`<div class="entry-ph">${esc((p.title||'?').slice(0,3))}</div>`;
-    el.innerHTML=`${thumb}<div class="entry-info"><div class="entry-name">${esc(p.title||'(untitled)')}</div><div class="entry-year">${esc(p.year||'')}</div></div>${!p.desc?'<div class="wip-dot"></div>':''}`;
+    el.innerHTML=`${thumb}<div class="entry-info"><div class="entry-name">${esc(p.title||'(untitled)')}</div><div class="entry-year">${esc(p.year||'')}</div></div>${!articleStarted(p)?'<div class="wip-dot"></div>':''}`;
     list.appendChild(el);
   });
   document.getElementById('entry-count').textContent=manifest.length+' entries';
@@ -122,7 +125,7 @@ function renderSidebar(){
 function selectEntry(i){activeIdx=i;renderSidebar();renderForm();renderPreview()}
 
 function addEntry(){
-  manifest.push({id:'new-entry',title:'New Entry',date:'',year:'',category:'',tags:[],thumb:'',desc:'',breakdown:[],media:[],links:[]});
+  manifest.push({id:'new-entry',title:'New Entry',date:'',year:'',category:'',tags:[],thumb:'',body:'',links:[]});
   selectEntry(manifest.length-1);
 }
 
@@ -160,11 +163,8 @@ function renderForm(){
     <div class="tag-add"><input id="tag-input" placeholder="add tag…" onkeydown="if(event.key==='Enter'){addTag();event.preventDefault()}"><button class="btn" onclick="addTag()">+</button></div>
     <div class="sec">Article</div>
     <button class="btn primary" onclick="openArticle()">Write article…</button>
-    <div class="article-meta" id="article-meta">${wordCount(p.desc)} words</div>
-    <div class="sec">Breakdown</div>
-    <div id="breakdown-list"></div>
-    <button class="btn" style="font-size:10px;margin-top:5px" onclick="addBreakdown()">+ Add item</button>
-    <div class="sec">Media</div>
+    <div class="article-meta" id="article-meta">${wordCount(plain(p.body))} words</div>
+    ${p.gallery?`<div class="sec">Gallery media</div>
     <div class="media-list" id="media-list"></div>
     <div class="media-add-row">
       <button class="btn" onclick="addMedia('image')">+ Image</button>
@@ -173,12 +173,12 @@ function renderForm(){
       <button class="btn" onclick="addMedia('vimeo')">+ Vimeo</button>
       <button class="btn" onclick="addMedia('break')">+ Break</button>
       <button class="btn" onclick="pickMediaBatch()">Browse files…</button>
-    </div>
+    </div>`:''}
     <div class="sec">Links</div>
     <div class="links-list" id="links-list"></div>
     <button class="btn" style="font-size:10px;margin-top:5px" onclick="addLink()">+ Add link</button>
   `;
-  renderTags();renderBreakdown();renderMediaList();renderLinks();bindFields();
+  renderTags();renderMediaList();renderLinks();bindFields();
 }
 
 function bindFields(){
@@ -198,12 +198,6 @@ function renderTags(){
 }
 function addTag(){const inp=document.getElementById('tag-input');const v=inp.value.trim().toLowerCase();if(!v)return;(manifest[activeIdx].tags=manifest[activeIdx].tags||[]).push(v);inp.value='';renderTags();renderPreview()}
 function removeTag(i){manifest[activeIdx].tags.splice(i,1);renderTags();renderPreview()}
-
-function renderBreakdown(){
-  const p=manifest[activeIdx],el=document.getElementById('breakdown-list');if(!el)return;
-  el.innerHTML=(p.breakdown||[]).map((b,i)=>`<div style="display:flex;gap:5px;margin-bottom:4px"><input value="${esc(b)}" style="flex:1;font-size:11px;background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:4px 7px;font-family:var(--font-body);color:var(--text)" oninput="manifest[activeIdx].breakdown[${i}]=this.value;renderPreview()"><button class="btn danger" style="font-size:10px;padding:2px 7px" onclick="manifest[activeIdx].breakdown.splice(${i},1);renderBreakdown();renderPreview()">×</button></div>`).join('');
-}
-function addBreakdown(){(manifest[activeIdx].breakdown=manifest[activeIdx].breakdown||[]).push('');renderBreakdown()}
 
 function renderMediaList(){
   const p=manifest[activeIdx],el=document.getElementById('media-list');if(!el)return;
@@ -242,43 +236,15 @@ function renderLinks(){
 }
 function addLink(){(manifest[activeIdx].links=manifest[activeIdx].links||[]).push({label:'',href:'',primary:false});renderLinks()}
 
-function formatDesc(desc){
-  if(!desc)return'';
-  return desc.split('\n').map(line=>{
-    if(line.startsWith('# '))return`<div class="drawer-desc-heading">${esc(line.slice(2))}</div>`;
-    if(line==='')return`<br>`;
-    return`<p>${esc(line)}</p>`;
-  }).join('');
-}
-
-function buildMediaPreview(media){
-  return(media||[]).map(m=>{
-    if(m.type==='youtube')return`<div><div class="embed-ratio-p"><iframe src="https://www.youtube.com/embed/${esc(m.id||'')}" allowfullscreen loading="lazy"></iframe></div>${m.caption?`<div class="embed-caption-p">${esc(m.caption)}</div>`:''}</div>`;
-    if(m.type==='vimeo')return`<div><div class="embed-ratio-p"><iframe src="https://player.vimeo.com/video/${esc(m.id||'')}" allowfullscreen loading="lazy"></iframe></div>${m.caption?`<div class="embed-caption-p">${esc(m.caption)}</div>`:''}</div>`;
-    if(m.type==='image'&&m.src)return`<div><img class="embed-img-p" src="${esc(m.src)}" alt="${esc(m.caption||'')}" loading="lazy" onerror="this.style.opacity=0.25">${m.caption?`<div class="embed-caption-p">${esc(m.caption)}</div>`:''}</div>`;
-    if(m.type==='image')return`<div style="background:var(--bg3);border:1px solid var(--line);border-radius:calc(var(--radius) - 2px);aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--dim);font-style:italic">no src set</div>`;
-    if(m.type==='audio')return`
-      <div class="audio-card-p">
-        <div class="audio-label-p">${esc(m.caption||m.src||'audio')}</div>
-        ${m.src?`<audio class="audio-player-p" src="${esc(m.src)}" preload="none"></audio>`:''}
-        <div class="audio-controls-p">
-          <button class="audio-btn-p" onclick="(function(btn){const card=btn.closest('.audio-card-p');const a=card.querySelector('audio');if(!a)return;a.paused?(a.play(),btn.textContent='▐▐'):(a.pause(),btn.textContent='▶')})(this)">▶</button>
-          <div class="audio-progress-wrap-p" onclick="(function(el,ev){const a=el.closest('.audio-card-p').querySelector('audio');if(!a||!a.duration)return;const r=el.getBoundingClientRect();a.currentTime=((ev.clientX-r.left)/r.width)*a.duration})(this,event)">
-            <div class="audio-progress-bar-p"></div>
-          </div>
-          <span class="audio-time-p">0:00</span>
-        </div>
-      </div>`;
-    if(m.type==='break')return`<div class="media-break-p"></div>`;
-    return'';
-  }).join('');
-}
+function plain(t){return markup?markup.plainText(t):(t||'')}
+function articleStarted(p){return plain(p.body).trim().length>0||/^(!\[|::)/m.test(p.body||'')}
+function bodyHtml(t){return markup?markup.renderBody(t):''}
 
 function renderPreview(){
   scheduleAutoSave();
   if(activeIdx===null)return;
   const p=manifest[activeIdx];
-  const isWip=!p.desc;
+  const isWip=!articleStarted(p);
   const ratioClass='r43';
 
   let thumbHtml='';
@@ -287,12 +253,8 @@ function renderPreview(){
   }else{
     thumbHtml=`<div class="p-card-ph ${ratioClass}">${esc((p.title||'').slice(0,4))}</div>`;
   }
-
   const tags=(p.tags||[]).map(t=>`<span class="p-card-tag-p">${esc(t)}</span>`).join('');
-  const dtags=(p.tags||[]).map(t=>`<span class="drawer-tag">${esc(t)}</span>`).join('');
-  const links=(p.links||[]).map(l=>`<a class="drawer-link-p${l.primary?' prim':''}">${esc(l.label||'link')}</a>`).join('');
-  const bd=p.breakdown&&p.breakdown.length?`<div class="drawer-breakdown"><div class="drawer-breakdown-label">Process</div><ul>${p.breakdown.map(b=>`<li>${esc(b)}</li>`).join('')}</ul></div>`:'';
-  const mediaSrc=buildMediaPreview(p.media);
+  const html=bodyHtml(p.body);
 
   document.getElementById('preview-col').innerHTML=`
     <div class="preview-section-label">Card</div>
@@ -306,22 +268,10 @@ function renderPreview(){
         </div>
       </div>
     </div>
-    <div class="preview-section-label" style="margin-top:1.25rem">Drawer</div>
+    <div class="preview-section-label" style="margin-top:1.25rem">Article</div>
     <div class="drawer-preview-wrap" id="drawer-preview-wrap">
       <div class="drawer-preview-scale" id="drawer-preview-scale">
-        <div class="drawer-preview">
-          <div class="drawer-inner">
-            <div>
-              <div class="drawer-eyebrow">${esc(p.year||'')} · ${esc(p.category||'')}</div>
-              <div class="drawer-title">${esc(p.title||'(untitled)')}</div>
-              <div class="drawer-tags">${dtags}</div>
-              ${p.desc?`<div class="drawer-desc">${formatDesc(p.desc)}</div>`:'<div style="color:var(--dim);font-size:12px;font-style:italic">No description yet.</div>'}
-              ${bd}
-              <div class="drawer-links">${links}<span class="drawer-link-p">close</span></div>
-            </div>
-            <div class="media-stack-p">${mediaSrc||'<div style="color:var(--dim);font-size:12px;font-style:italic">No media yet.</div>'}</div>
-          </div>
-        </div>
+        <div class="article-flow">${html||'<p class="article-empty">Nothing to see here yet! :P</p>'}</div>
       </div>
     </div>`;
   requestAnimationFrame(scaleDrawerPreview);
@@ -331,7 +281,7 @@ function scaleDrawerPreview(){
   const wrap=document.getElementById('drawer-preview-wrap');
   const inner=document.getElementById('drawer-preview-scale');
   if(!wrap||!inner)return;
-  const REAL_WIDTH=1100;
+  const REAL_WIDTH=860;
   const available=wrap.clientWidth;
   if(!available)return;
   inner.style.zoom=available/REAL_WIDTH;
@@ -348,7 +298,7 @@ function openArticle(){
   const p=manifest[activeIdx];
   const input=document.getElementById('article-input');
   document.getElementById('article-title').textContent=p.title||'(untitled)';
-  input.value=p.desc||'';
+  input.value=p.body||'';
   document.getElementById('article-view').hidden=false;
   updateArticle();
   input.focus();
@@ -363,28 +313,104 @@ function closeArticle(){
 
 function updateArticle(){
   const input=document.getElementById('article-input');
-  if(activeIdx!==null)manifest[activeIdx].desc=input.value;
-  document.getElementById('article-preview').innerHTML=formatDesc(input.value)||'<p class="article-empty">Nothing yet.</p>';
-  document.getElementById('article-count').textContent=wordCount(input.value)+' words';
+  if(activeIdx!==null)manifest[activeIdx].body=input.value;
+  const html=bodyHtml(input.value);
+  document.getElementById('article-preview').innerHTML=html||'<p class="article-empty">Nothing yet.</p>';
+  document.getElementById('article-count').textContent=wordCount(plain(input.value))+' words';
   scheduleAutoSave();
 }
 
-function insertHeading(){
-  const input=document.getElementById('article-input');
-  const pos=input.selectionStart;
-  const lineStart=input.value.lastIndexOf('\n',pos-1)+1;
-  if(input.value.startsWith('# ',lineStart)){input.focus();return}
-  input.value=input.value.slice(0,lineStart)+'# '+input.value.slice(lineStart);
-  input.setSelectionRange(pos+2,pos+2);
-  input.focus();
-  updateArticle();
+// ---- writing toolbar ----
+function ta(){return document.getElementById('article-input')}
+function edit(fn){
+  const t=ta();const s=t.selectionStart,e=t.selectionEnd;
+  const r=fn(t.value,s,e);
+  t.value=r.text;t.setSelectionRange(r.start,r.end);t.focus();updateArticle();
 }
+function wrapSel(before,after,ph){
+  edit((v,s,e)=>{
+    const mid=v.slice(s,e)||ph||'';
+    return{text:v.slice(0,s)+before+mid+after+v.slice(e),start:s+before.length,end:s+before.length+mid.length};
+  });
+}
+function linePrefix(prefix){
+  edit((v,s,e)=>{
+    const ls=v.lastIndexOf('\n',s-1)+1;
+    const rest=v.slice(ls);
+    const had=['## ','# ','- ','> '].find(x=>rest.startsWith(x));
+    const cut=had?had.length:0;
+    const add=had===prefix?'':prefix;
+    return{text:v.slice(0,ls)+add+v.slice(ls+cut),start:s+add.length-cut,end:e+add.length-cut};
+  });
+}
+function insertBlock(text){
+  edit((v,s,e)=>{
+    const before=v.slice(0,e),after=v.slice(e);
+    const lead=before===''?'':before.endsWith('\n\n')?'':before.endsWith('\n')?'\n':'\n\n';
+    const trail=after.startsWith('\n\n')?'':after.startsWith('\n')?'\n':'\n\n';
+    const out=before+lead+text+trail+after;
+    const pos=(before+lead+text).length;
+    return{text:out,start:pos,end:pos};
+  });
+}
+function insertHeading(){linePrefix('# ')}
+function applyColour(sel){
+  const v=sel.value;sel.value='';
+  if(!v)return;
+  wrapSel('{'+v+'|','}','text');
+}
+function addLinkSyntax(){
+  const url=prompt('Link to (URL):','https://');
+  if(!url)return;
+  wrapSel('[','](' +url+ ')','link text');
+}
+function setImageFlag(flag){
+  edit((v,s,e)=>{
+    const ls=v.lastIndexOf('\n',s-1)+1;let le=v.indexOf('\n',s);if(le<0)le=v.length;
+    const line=v.slice(ls,le);
+    const m=line.match(/^(!\[.*?\]\(.+?\))(\{\w+\})?\s*$/);
+    if(!m){showToast('Put the cursor on an image line');return{text:v,start:s,end:e}}
+    const nl=m[1]+(flag?'{'+flag+'}':'');
+    return{text:v.slice(0,ls)+nl+v.slice(le),start:ls+nl.length,end:ls+nl.length};
+  });
+}
+function mediaDir(){const p=manifest[activeIdx];return((p&&p.thumb)||'').replace(/[^\/]*$/,'')}
+function pickInline(kind){
+  const fp=document.getElementById('fp-inline');
+  fp.accept=kind==='audio'?'audio/*':'image/*';
+  fp.multiple=kind!=='audio';
+  fp.onchange=e=>{
+    const files=Array.from(e.target.files);fp.value='';
+    insertFiles(files);
+  };fp.click();
+}
+function insertFiles(files){
+  const dir=mediaDir();
+  const lines=files.map(f=>f.type.startsWith('audio')?`::audio ${dir}${f.name} | `:`![](${dir}${f.name})`);
+  if(lines.length)insertBlock(lines.join('\n'));
+}
+function addVideo(){
+  const v=prompt('YouTube or Vimeo link (or YouTube ID):');
+  if(!v)return;
+  let m;
+  if((m=v.match(/vimeo\.com\/(\d+)/)))return insertBlock('::vimeo '+m[1]+' | ');
+  m=v.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{6,})/);
+  insertBlock('::youtube '+(m?m[1]:v.trim())+' | ');
+}
+function insertDivider(){insertBlock('---')}
 
 document.getElementById('article-input').addEventListener('input',updateArticle);
+document.getElementById('article-input').addEventListener('dragover',e=>e.preventDefault());
+document.getElementById('article-input').addEventListener('drop',e=>{
+  if(!e.dataTransfer.files.length)return;
+  e.preventDefault();insertFiles(Array.from(e.dataTransfer.files));
+});
 document.addEventListener('keydown',e=>{
   if(document.getElementById('article-view').hidden)return;
   if(e.key==='Escape')closeArticle();
   if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();saveFile()}
+  if((e.ctrlKey||e.metaKey)&&e.key==='b'){e.preventDefault();wrapSel('**','**','bold')}
+  if((e.ctrlKey||e.metaKey)&&e.key==='i'){e.preventDefault();wrapSel('*','*','italic')}
 });
 
 function pickThumb(){
