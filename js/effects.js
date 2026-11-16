@@ -23,6 +23,7 @@ export function initCursor() {
   document.getElementById("cursor")?.remove();
   document.getElementById("cursor-ring")?.remove();
 
+  document.documentElement.classList.add("has-navi");
   const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const trail = Array.from({ length: TRAIL }, (_, i) => {
     const dot = document.createElement("div");
@@ -35,14 +36,14 @@ export function initCursor() {
   const navi = document.createElement("div");
   navi.className = "navi";
   navi.innerHTML = `
-    <svg viewBox="-20 -20 40 40" width="38" height="38" aria-hidden="true">
+    <svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true">
       <defs>
-        <radialGradient id="navi-core"><stop offset="0" stop-color="#fff"/><stop offset="0.45" stop-color="#e8f6ff"/><stop offset="1" stop-color="#9fd3ff"/></radialGradient>
-        <linearGradient id="navi-wing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.95"/><stop offset="1" stop-color="#b9e0ff" stop-opacity="0.55"/></linearGradient>
+        <radialGradient id="navi-core"><stop offset="0" stop-color="#fff"/><stop offset="0.5" style="stop-color: var(--navi-mid)"/><stop offset="1" style="stop-color: var(--navi-edge)"/></radialGradient>
+        <linearGradient id="navi-wing" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0.9"/><stop offset="1" style="stop-color: var(--navi-edge)" stop-opacity="0.45"/></linearGradient>
       </defs>
-      <g class="navi-wing navi-wing--l"><path d="M-2 0 C-6 -9 -15 -14 -17 -10 C-18 -5 -10 1 -2 1 Z" fill="url(#navi-wing)" stroke="#8cc4f2" stroke-width="0.5"/></g>
-      <g class="navi-wing navi-wing--r"><path d="M2 0 C6 -9 15 -14 17 -10 C18 -5 10 1 2 1 Z" fill="url(#navi-wing)" stroke="#8cc4f2" stroke-width="0.5"/></g>
-      <circle r="4.2" fill="url(#navi-core)"/>
+      <g class="navi-wing navi-wing--l"><path d="M20 20 C13 17 8 9 11 4 C16 5 21 12 20 20 Z" fill="url(#navi-wing)"/></g>
+      <g class="navi-wing navi-wing--r"><path d="M20 20 C27 17 32 9 29 4 C24 5 19 12 20 20 Z" fill="url(#navi-wing)"/></g>
+      <circle cx="20" cy="21" r="4.2" fill="url(#navi-core)"/>
     </svg>
     <span class="navi-say" hidden></span>`;
   document.body.appendChild(navi);
