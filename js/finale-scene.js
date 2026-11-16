@@ -236,6 +236,7 @@ export function createScene(canvas, assets, events = {}) {
   let shiver = 0;
   let groundLayer = null;
   let pairArt = null;
+  let pairShadow = null;
   let scraps = [];
   let groundTop = 0;
   let clock = 0;
@@ -293,6 +294,26 @@ export function createScene(canvas, assets, events = {}) {
     // colour of whichever firework is glowing, so the whites take on that colour and the blacks stay black.
     const litBase = tinted("rgba(0, 0, 0, 0)", true);
     const litTmp = makeCanvas(litBase.width, litBase.height);
+    // Their shadow on the sand: the same outline pressed flat and blurred, plus a darker patch where
+    // they actually touch the ground.
+    const sp = 22;
+    const sh = pb.h * 0.2;
+    const flat = makeCanvas(pb.w * dpr, sh * dpr);
+    const fg = flat.getContext("2d");
+    fg.translate(0, flat.height);
+    fg.scale(1, -0.2);
+    fg.drawImage(assets.figures.pair, 0, 0, flat.width, pb.h * dpr);
+    fg.setTransform(1, 0, 0, 1, 0, 0);
+    fg.globalCompositeOperation = "source-in";
+    fg.fillStyle = "#000";
+    fg.fillRect(0, 0, flat.width, flat.height);
+    const soft = makeCanvas((pb.w + sp * 2) * dpr, (sh + sp * 2) * dpr);
+    const sg = soft.getContext("2d");
+    sg.shadowColor = "rgba(12, 8, 18, 0.55)";
+    sg.shadowBlur = 9 * dpr;
+    sg.shadowOffsetX = 10000;
+    sg.drawImage(flat, sp * dpr - 10000, sp * dpr);
+    pairShadow = { canvas: soft, pad: sp, h: sh };
     pairArt = { box: pb, dim: tinted(`rgba(8, 12, 24, ${PAIR_DIM})`, false), litBase, litTmp };
   }
 
@@ -644,6 +665,19 @@ export function createScene(canvas, assets, events = {}) {
     if (pairAlpha > 0) {
       const b = pairArt.box;
       ctx.globalAlpha = pairAlpha;
+      const feet = b.y + b.h - b.h * 0.035;
+      const sw = pairShadow;
+      ctx.drawImage(sw.canvas, b.x - sw.pad + b.w * 0.04, feet - sw.pad, b.w + sw.pad * 2, sw.h + sw.pad * 2);
+      const patch = ctx.createRadialGradient(b.x + b.w * 0.5, feet, 0, b.x + b.w * 0.5, feet, b.w * 0.5);
+      patch.addColorStop(0, "rgba(10, 6, 16, 0.4)");
+      patch.addColorStop(1, "rgba(10, 6, 16, 0)");
+      ctx.save();
+      ctx.translate(0, feet);
+      ctx.scale(1, 0.14);
+      ctx.translate(0, -feet);
+      ctx.fillStyle = patch;
+      ctx.fillRect(b.x - b.w * 0.1, feet - b.w * 0.6, b.w * 1.2, b.w * 1.2);
+      ctx.restore();
       ctx.drawImage(pairArt.dim, b.x, b.y, b.w, b.h);
       if (light.amount > 0.01) {
         const tg = pairArt.litTmp.getContext("2d");

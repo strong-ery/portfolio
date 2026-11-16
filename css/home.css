@@ -155,6 +155,7 @@
 }
 
 .influences-section { padding-top: 3.5rem; }
+.influences-section .influences-grid { padding-top: 2.5rem; }
 
 .influences-grid {
   display: flex;
@@ -171,6 +172,8 @@
   box-shadow: 1px 2px 6px rgba(0,0,0,0.06);
   flex: 1 1 320px;
   min-width: 320px;
+  position: relative;
+  min-height: 15rem;
 }
 
 .influence-card:hover {
@@ -199,4 +202,74 @@
   font-size: 12px;
   color: var(--muted);
   line-height: 1.7;
+}
+
+/* ── Hero cards ─────────────────────────────────────────────────────────── */
+.hero {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.hero-face {
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  color: var(--hero-ink);
+  background:
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.16) 1px, transparent 1.6px) 0 0 / 9px 9px,
+    linear-gradient(145deg, var(--hero-from), var(--hero-to));
+  box-shadow: 3px 6px 16px rgba(0, 0, 0, 0.22);
+  padding: 1.5rem 1.25rem;
+  transform: rotate(-0.8deg) scale(0.97);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.3, 1.2);
+}
+
+.hero-type {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+}
+
+.hero-name {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.9rem;
+  line-height: 1.05;
+  max-width: 11ch;
+}
+
+.hero-art {
+  position: absolute;
+  right: -1.5rem;
+  bottom: -0.5rem;
+  width: 112%;
+  max-height: 150%;
+  object-fit: contain;
+  object-position: right bottom;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
+  transform: translate(8%, 14%) rotate(2deg) scale(0.92);
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.3, 1.15);
+  user-select: none;
+}
+
+.influence-card:hover .hero,
+.influence-card:focus-visible .hero { opacity: 1; }
+
+.influence-card:hover .hero-face,
+.influence-card:focus-visible .hero-face { transform: rotate(-0.8deg) scale(1); }
+
+.influence-card:hover .hero-art,
+.influence-card:focus-visible .hero-art { transform: translate(0, 0) rotate(0) scale(1); }
+
+.influence-card:focus-visible { outline: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero, .hero-face, .hero-art { transition: opacity 0.2s; }
+  .hero-art { transform: none; }
 }

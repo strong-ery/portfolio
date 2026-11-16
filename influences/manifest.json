@@ -2,16 +2,34 @@
   {
     "type": "Series by Tatsuki Fujimoto",
     "name": "Chainsaw Man",
-    "note": "My all time favourite series. The characters, the grit. All of it is amazing. The Reze Arc film was an absolute 10/10. I'd honestly give all of part one a 10 as well. Listen to 'in the pool' or 'in the sea' and tell me you don't get chills."
+    "note": "My all time favourite series. The characters, the grit. All of it is amazing. The Reze Arc film was an absolute 10/10. I'd honestly give all of part one a 10 as well. Listen to 'in the pool' or 'in the sea' and tell me you don't get chills.",
+    "hero": {
+      "src": "resources/influences/chainsaw-man.webp",
+      "from": "#d2472a",
+      "to": "#6e1a12",
+      "ink": "#fff6ec"
+    }
   },
   {
     "type": "Game Series by Nintendo",
     "name": "The Legend of Zelda Series",
-    "note": "When I was around 6 years old my father introduced me to the Zelda Series with The Wind Waker. I spent countless hours playing these games as a kid, and they will always hold a special place in my heart. If you want a great story, gameplay, puzzles, and lessons. Play Twilight Princess, BotW, Wind Waker, etc. They're all fantastic."
+    "note": "When I was around 6 years old my father introduced me to the Zelda Series with The Wind Waker. I spent countless hours playing these games as a kid, and they will always hold a special place in my heart. If you want a great story, gameplay, puzzles, and lessons. Play Twilight Princess, BotW, Wind Waker, etc. They're all fantastic.",
+    "hero": {
+      "src": "resources/influences/zelda.webp",
+      "from": "#58b6c9",
+      "to": "#1f5f86",
+      "ink": "#ffffff"
+    }
   },
   {
     "type": "Manga by Tatsuki Fujimoto",
     "name": "Look Back",
-    "note": "Look Back reminds me of growing up. Growing up with my friends, and learning to love art. Of learning to forgive myself for the things I regret. My relationship with the creative process is a tug of war between love and hate. Some days I wish to never create again, but I always do; and I always will."
+    "note": "Look Back reminds me of growing up. Growing up with my friends, and learning to love art. Of learning to forgive myself for the things I regret. My relationship with the creative process is a tug of war between love and hate. Some days I wish to never create again, but I always do; and I always will.",
+    "hero": {
+      "src": "resources/influences/lookback.webp",
+      "from": "#f6c7bd",
+      "to": "#e08f9c",
+      "ink": "#4a2230"
+    }
   }
 ]
