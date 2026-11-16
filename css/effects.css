@@ -138,5 +138,5 @@
 }
 
 .hero-eyebrow { animation: up 0.7s 0.1s ease both; }
-.hero-name    { animation: up 0.7s 0.2s ease both; }
+.hero-name    { animation: up 0.7s 0.2s ease both, blade-sweep 7s ease-in-out 1.2s infinite; }
 .hero-facts   { animation: up 0.7s 0.35s ease both; }
