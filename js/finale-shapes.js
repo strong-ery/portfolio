@@ -17,6 +17,16 @@ const punch = (g, fn) => {
   g.restore();
 };
 
+const triangular = n => (n * (n + 1)) / 2;
+
+// How many tiles the shapes should be asked for. The triforce is only perfect with 3 x (1+2+3+...) tiles, so
+// round the number of pictures up to one of those (a few pictures appear twice) unless that is too many.
+export function fitCount(n, max) {
+  let m = 1;
+  while (3 * triangular(m) < n) m++;
+  return 3 * triangular(m) <= max ? 3 * triangular(m) : 3 * triangular(m - 1);
+}
+
 const SHAPE_LIST = [
   {
     name: "triforce",
@@ -24,48 +34,30 @@ const SHAPE_LIST = [
     symmetry: "mirror",
     w: 100,
     h: 87,
-    // Three triangles built row by row from the tip: one tile, then two, three... so each edge runs at a true
-    // 60 degrees and every point comes down to a single tile. Rows are centred on the triangle, so it is even.
+    // Three triangles stacked from the tip: one tile, then two, then three... Each row sits half a tile in from
+    // the one below, so the edges are dead straight lines at 60 degrees and every point is a single tile.
     layout(count, region) {
       const k = Math.min(region.w / this.w, region.h / this.h) * 0.96;
       const ox = region.x0 + (region.w - this.w * k) / 2;
       const oy = region.gy - this.h * k;
       const side = 50 * k;
-      const high = 43.3 * k;
+      let m = 1;
+      while (3 * triangular(m) < count) m++;
+      const p = side / m;
+      const row = p * Math.sqrt(3) / 2;
+      const size = Math.min(p * 0.84, 46);
       const tips = [[50, 0], [25, 43.3], [75, 43.3]];
-      const build = p => {
-        const rows = Math.max(1, Math.floor(high / p));
-        return Array.from({ length: rows }, (_, r) => Math.max(1, Math.round(((r + 0.5) * 2) / Math.sqrt(3))));
-      };
-      // Largest tiles that don't need more than `count` of them.
-      let p = 3;
-      let widths = build(p);
-      while (3 * widths.reduce((a, b) => a + b, 0) > count && p < side) {
-        p *= 1.004;
-        widths = build(p);
-      }
-      const all = [0, 1, 2].map(() => [...widths]);
-      let have = 3 * widths.reduce((a, b) => a + b, 0);
-      // A few short: widen the bottom rows by a tile, one triangle after another.
-      for (let n = 0; have < count; n++) {
-        const row = widths.length - 1 - Math.floor(n / 3);
-        all[n % 3][Math.max(0, row)]++;
-        have++;
-      }
       const cells = [];
-      all.forEach((rows, t) => {
-        const [ax, ay] = tips[t];
-        rows.forEach((w, r) => {
-          for (let c = 0; c < w; c++) {
-            cells.push({
-              x: ox + ax * k + (c - (w - 1) / 2) * p,
-              y: oy + ay * k + (r + 0.5) * p,
-              size: Math.min(p * 0.9, 46),
-            });
+      tips.forEach(([ax, ay]) => {
+        for (let r = 0; r < m; r++) {
+          for (let c = 0; c <= r; c++) {
+            cells.push({ x: ox + ax * k + (c - r / 2) * p, y: oy + ay * k + (r + 0.5) * row, size });
           }
-        });
+        }
       });
-      return { cells, tile: p * 0.9 };
+      // Only if there are fewer images than a full set of rows: take tiles off the bottom corners.
+      while (cells.length > count) cells.splice(cells.length - 1 - (cells.length % 2) * (m - 1), 1);
+      return { cells, tile: size };
     },
     draw(g) {
       poly(g, [[50, 0], [75, 43.3], [25, 43.3]]);
@@ -90,45 +82,30 @@ const SHAPE_LIST = [
       g.arc(50, 50, 3, 0, Math.PI * 2);
       g.fill();
     },
-    // Rings of tiles laid round the circles themselves, so they stay round whatever the tile size.
+    // Five rings of tiles laid round the circles themselves, so they stay round whatever the tile size.
     layout(count, region) {
       const R = (Math.min(region.w / this.w, region.h / this.h) * 0.96 * this.w) / 2;
       const u = R / 50;
       const cx = region.x0 + region.w / 2;
       const cy = region.gy - R;
-      const spacing = 1.14;
-      // Every way of putting one to three rows of tiles in each ring; keep the one that adds up closest to
-      // the number needed without the tile sizes being too far apart.
-      let best = null;
-      const rowsOf = ([inner, outer], n) => Array.from({ length: n }, (_, r) => {
-        const th = outer - inner;
-        const tile = (th / n) * 0.9;
-        const rad = inner + (th * (r + 0.5)) / n;
-        return { rad, size: tile, n: Math.max(1, Math.floor((2 * Math.PI * rad) / (tile * spacing))) };
-      });
-      for (let a = 1; a <= 3; a++) for (let b = 1; b <= 3; b++) for (let c = 1; c <= 3; c++) {
-        const rows = [...rowsOf(this.bands[0], a), ...rowsOf(this.bands[1], b), ...rowsOf(this.bands[2], c)];
-        const total = rows.reduce((sum, r) => sum + r.n, 0) + 1;
-        const sizes = rows.map(r => r.size);
-        const score = Math.abs(total - count) + 3 * (Math.max(...sizes) / Math.min(...sizes) - 1);
-        if (!best || score < best.score) best = { score, rows, total };
-      }
-      const rows = best.rows.map(r => ({ ...r }));
-      let total = best.total;
-      // Add or take away single tiles from the rows with the most, until the count is exact.
-      while (total !== count) {
-        rows.sort((p, q) => (total > count ? q.n - p.n : p.n - q.n));
-        rows[0].n += total > count ? -1 : 1;
-        total += total > count ? -1 : 1;
-      }
-      const cells = [{ x: cx, y: cy, size: 5 * u }];
-      rows.forEach((row, ri) => {
-        for (let i = 0; i < row.n; i++) {
-          const a = (i / row.n) * Math.PI * 2 + ri * 0.35;
-          cells.push({ x: cx + Math.cos(a) * row.rad * u, y: cy + Math.sin(a) * row.rad * u, size: row.size * u });
+      const radii = [46, 37, 28, 19, 10];
+      const per = p => radii.map(r => Math.max(1, Math.round((2 * Math.PI * r) / p)));
+      // The biggest tiles that still make at most the number needed (one tile is the pupil)...
+      let p = 2;
+      while (per(p).reduce((a, b) => a + b, 0) + 1 > count && p < 20) p *= 1.003;
+      const n = per(p);
+      let total = n.reduce((a, b) => a + b, 0) + 1;
+      // ...then one more tile here and there on the longest rings until it's exact.
+      for (let i = 0; total < count; i++, total++) n[i % radii.length]++;
+      const cells = [{ x: cx, y: cy, size: Math.min(p * 0.9, 8) * u }];
+      radii.forEach((r, ri) => {
+        for (let i = 0; i < n[ri]; i++) {
+          const a = (i / n[ri]) * Math.PI * 2 + ri * 0.4;
+          const spacing = (2 * Math.PI * r) / n[ri];
+          cells.push({ x: cx + Math.cos(a) * r * u, y: cy + Math.sin(a) * r * u, size: Math.min(p, spacing, 8) * 0.88 * u });
         }
       });
-      return { cells, tile: 5 * u };
+      return { cells, tile: p * u };
     },
   },
   {
@@ -172,6 +149,7 @@ const SHAPE_LIST = [
   {
     name: "heart",
     symmetry: "mirror",
+    scan: true,
     w: 100,
     h: 90,
     draw(g) {
@@ -190,6 +168,66 @@ export const SHAPES = ORDER.map(name => SHAPE_LIST.find(shape => shape.name === 
 
 const shuffle = (list, rand) => list.map(v => [rand(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
 
+// Lays tiles along the rows of the shape. Each row is cut to the shape's outline at that height and filled
+// edge to edge, so the sides come out smooth instead of stepped. Any tiles still owed are added to the longest rows.
+function scanLayout(shape, region, count) {
+  const k = Math.min(region.w / shape.w, region.h / shape.h) * 0.96;
+  const sw = Math.ceil(shape.w * k);
+  const sh = Math.ceil(shape.h * k);
+  const mask = document.createElement("canvas");
+  mask.width = sw;
+  mask.height = sh;
+  const g = mask.getContext("2d");
+  g.scale(k, k);
+  g.fillStyle = "#fff";
+  shape.draw(g);
+  const data = g.getImageData(0, 0, sw, sh).data;
+  const ox = region.x0 + (region.w - sw) / 2;
+  const oy = region.gy - sh;
+
+  const rowsFor = p => {
+    const runs = [];
+    const rows = Math.max(1, Math.floor(sh / p));
+    const top = (sh - rows * p) / 2;
+    for (let j = 0; j < rows; j++) {
+      const y = top + (j + 0.5) * p;
+      const line = Math.min(sh - 1, Math.max(0, Math.floor(y)));
+      let start = -1;
+      for (let x = 0; x <= sw; x++) {
+        const on = x < sw && data[(line * sw + x) * 4 + 3] > 128;
+        if (on && start < 0) start = x;
+        if (!on && start >= 0) {
+          if (x - start >= p * 0.6) runs.push({ y, x0: start, len: x - start, n: Math.max(1, Math.round((x - start) / p)) });
+          start = -1;
+        }
+      }
+    }
+    return runs;
+  };
+  const sum = runs => runs.reduce((a, r) => a + r.n, 0);
+
+  // The biggest tiles that still make at most the number needed.
+  let p = 3;
+  let runs = rowsFor(p);
+  while (sum(runs) > count && p < sh) {
+    p *= 1.004;
+    runs = rowsFor(p);
+  }
+  let have = sum(runs);
+  for (let i = 0; have < count; i++, have++) {
+    const longest = [...runs].sort((a, b) => b.len / b.n - a.len / a.n)[0];
+    longest.n++;
+  }
+  const cells = [];
+  runs.forEach(r => {
+    const step = r.len / r.n;
+    for (let i = 0; i < r.n; i++) {
+      cells.push({ x: ox + r.x0 + (i + 0.5) * step, y: oy + r.y, size: Math.min(step, p, 46) * 0.9 });
+    }
+  });
+  return { cells, tile: p * 0.9 };
+}
+
 const MAPS = {
   mirror: [(i, j) => [i, j], (i, j) => [-i, j]],
   rot2: [(i, j) => [i, j], (i, j) => [-i, -j]],
@@ -203,6 +241,7 @@ const MAPS = {
 // when about half of it lies inside the shape, which keeps sharp corners and curves from being shaved off.
 export function sampleShape(shape, region, count, rand) {
   if (shape.layout) return shape.layout(count, region, rand);
+  if (shape.scan) return scanLayout(shape, region, count);
   const k = Math.min(region.w / shape.w, region.h / shape.h) * 0.96;
   const sw = Math.ceil(shape.w * k);
   const sh = Math.ceil(shape.h * k);

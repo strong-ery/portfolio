@@ -3,7 +3,7 @@
 // that keeps changing, while a quieter pair sits on the ground.
 
 import { seededRandom } from "./rng.js";
-import { SHAPES, sampleShape } from "./finale-shapes.js";
+import { SHAPES, sampleShape, fitCount } from "./finale-shapes.js";
 
 const FOLDER = "resources/footer/";
 const FIGURES = ["denji", "tv", "me", "crest"];
@@ -353,7 +353,7 @@ export function createScene(canvas, assets, events = {}) {
 
   async function buildScraps(place, maskData, step) {
     const list = [];
-    const wanted = clamp(assets.scraps.length, MIN_SCRAPS, MAX_SCRAPS);
+    const wanted = fitCount(clamp(assets.scraps.length, MIN_SCRAPS, MAX_SCRAPS), MAX_SCRAPS);
     // More images means smaller fragments in the figures too.
     const longEdge = clamp(W * 0.055, 52, 104) * clamp(Math.sqrt(MIN_SCRAPS / wanted), 0.45, 1);
     const minDist = longEdge * 0.42;
