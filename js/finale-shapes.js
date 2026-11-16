@@ -46,34 +46,43 @@ const SHAPE_LIST = [
     },
   },
   {
-    name: "bladesaw",
+    name: "sawblade",
     w: 100,
     h: 100,
-    // Denji's chainsaw, held on a slant: a long rounded bar with teeth down both edges, the engine
-    // block at the bottom with its handle, and the groove the chain runs in.
+    // A spinning sawblade: six hooked teeth that sweep round the same way, with a hole in the middle.
     draw(g) {
-      g.save();
-      g.translate(50, 50);
-      g.rotate(0.66);
+      const teeth = 6;
+      const step = (Math.PI * 2) / teeth;
+      const inner = 25;
+      const outer = 49;
       g.beginPath();
-      g.moveTo(-12, 20);
-      g.lineTo(-12, -38);
-      g.arc(0, -38, 12, Math.PI, 0);
-      g.lineTo(12, 20);
+      for (let i = 0; i < teeth; i++) {
+        const a0 = i * step;
+        // The back of the tooth swells out to the tip, the front falls away in a hollow curve.
+        for (let s = 0; s <= 1.0001; s += 0.125) {
+          const r = inner + (outer - inner) * Math.pow(s, 0.5);
+          const a = a0 + step * 0.86 * s;
+          const x = 50 + Math.cos(a) * r;
+          const y = 50 + Math.sin(a) * r;
+          i === 0 && s === 0 ? g.moveTo(x, y) : g.lineTo(x, y);
+        }
+        for (let s = 0.125; s <= 1.0001; s += 0.125) {
+          const r = outer - (outer - inner) * Math.pow(s, 0.6);
+          const a = a0 + step * (0.86 + 0.14 * s);
+          g.lineTo(50 + Math.cos(a) * r, 50 + Math.sin(a) * r);
+        }
+      }
       g.closePath();
       g.fill();
-      for (let y = -36; y < 14; y += 8) {
-        poly(g, [[-12, y], [-20, y + 4], [-12, y + 8]]);
-        poly(g, [[12, y], [20, y + 4], [12, y + 8]]);
-      }
-      g.fillRect(-17, 18, 34, 32);
       punch(g, () => {
-        g.fillRect(-2.5, -42, 5, 56);
         g.beginPath();
-        g.ellipse(0, 35, 8, 5.5, 0, 0, Math.PI * 2);
+        for (let i = 0; i < 8; i++) {
+          const a = (i + 0.5) * (Math.PI / 4);
+          i ? g.lineTo(50 + Math.cos(a) * 14, 50 + Math.sin(a) * 14) : g.moveTo(50 + Math.cos(a) * 14, 50 + Math.sin(a) * 14);
+        }
+        g.closePath();
         g.fill();
       });
-      g.restore();
     },
   },
   {
@@ -91,7 +100,7 @@ const SHAPE_LIST = [
 ];
 
 // The order they appear in.
-const ORDER = ["triforce", "heart", "eye", "bladesaw"];
+const ORDER = ["triforce", "heart", "eye", "sawblade"];
 export const SHAPES = ORDER.map(name => SHAPE_LIST.find(shape => shape.name === name));
 
 const shuffle = (list, rand) => list.map(v => [rand(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
