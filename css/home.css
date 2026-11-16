@@ -86,7 +86,7 @@
   width: fit-content;
   /* A band of light slides across the letters like it is running down a blade, then flares at the top right corner. */
   background: linear-gradient(105deg,
-    #1a1814 0 41%, #3a362e 45%, #7a7466 48%, #e8e1ce 49.4%, #6f695b 50.6%, #3a362e 54%, #1a1814 58% 100%) 0 0 / 300% 100%;
+    #1a1814 0 41%, #2c3340 45%, #5f7aa3 48%, #d6e8ff 49.4%, #5a74a0 50.6%, #2c3340 54%, #1a1814 58% 100%) 0 0 / 300% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -107,7 +107,7 @@
   width: 0.9em;
   height: 0.9em;
   margin: -0.45em -0.45em 0 0;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0, rgba(190, 220, 255, 0.55) 30%, transparent 68%);
+  background: radial-gradient(circle, rgba(225, 240, 255, 0.95) 0, rgba(110, 165, 255, 0.6) 30%, transparent 68%);
   animation: blade-glow 7s ease-in-out 1.2s infinite;
 }
 
@@ -115,7 +115,7 @@
   width: 0.7em;
   height: 0.7em;
   margin: -0.35em -0.35em 0 0;
-  background: #fff;
+  background: #eaf4ff;
   clip-path: polygon(50% 0, 57% 43%, 100% 50%, 57% 57%, 50% 100%, 43% 57%, 0 50%, 43% 43%);
   animation: blade-star 7s ease-in-out 1.2s infinite;
 }
@@ -127,15 +127,15 @@
 }
 
 @keyframes blade-glow {
-  0%, 30% { opacity: 0; transform: scale(0.3); }
-  37% { opacity: 1; transform: scale(1); }
-  52%, 100% { opacity: 0; transform: scale(1.3); }
+  0%, 23% { opacity: 0; transform: scale(0.3); }
+  30% { opacity: 1; transform: scale(1); }
+  45%, 100% { opacity: 0; transform: scale(1.3); }
 }
 
 @keyframes blade-star {
-  0%, 30% { opacity: 0; transform: scale(0) rotate(0deg); }
-  37% { opacity: 1; transform: scale(1) rotate(45deg); }
-  50%, 100% { opacity: 0; transform: scale(0.2) rotate(90deg); }
+  0%, 23% { opacity: 0; transform: scale(0) rotate(0deg); }
+  30% { opacity: 1; transform: scale(1) rotate(45deg); }
+  43%, 100% { opacity: 0; transform: scale(0.2) rotate(90deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
