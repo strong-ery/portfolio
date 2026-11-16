@@ -140,6 +140,25 @@
 
 .welcome[hidden] { display: none; }
 
+/* While the note is up, everything else softens so the note is what you see. */
+.welcome-veil[hidden] { display: none; }
+
+.welcome-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: rgba(34, 26, 14, 0.2);
+  -webkit-backdrop-filter: blur(6px) saturate(0.85);
+  backdrop-filter: blur(6px) saturate(0.85);
+  pointer-events: none;
+  animation: veil-in 0.6s ease both;
+}
+
+.welcome-veil.is-leaving { animation: veil-out 0.35s ease both; }
+
+@keyframes veil-in { from { opacity: 0; } }
+@keyframes veil-out { to { opacity: 0; } }
+
 .welcome::before {
   content: "";
   position: absolute;

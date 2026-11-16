@@ -62,15 +62,22 @@ function initWelcome() {
   const card = document.getElementById("welcome");
   if (!card) return;
 
+  const veil = document.createElement("div");
+  veil.className = "welcome-veil";
+  veil.hidden = true;
+  document.body.appendChild(veil);
+
   const leave = () => {
     card.classList.add("is-leaving");
-    setTimeout(() => { card.hidden = true; }, 350);
+    veil.classList.add("is-leaving");
+    setTimeout(() => { card.hidden = true; veil.remove(); }, 350);
   };
   card.querySelector(".welcome-yes").addEventListener("click", leave);
   card.querySelector(".welcome-no").addEventListener("click", () => { declineFinaleAudio(); sfx.setAllowed(false); leave(); });
 
   setTimeout(() => {
     card.hidden = false;
+    veil.hidden = false;
     window.dispatchEvent(new CustomEvent("navi:say", { detail: "Hey!" }));
   }, 1500);
 }
