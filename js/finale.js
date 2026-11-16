@@ -4,44 +4,13 @@ import { loadAssets, createScene } from "./finale-scene.js";
 import { initFinaleAudio, prepareFinaleAudio, setFinaleAudioWanted, declineFinaleAudio } from "./finale-audio.js";
 import { sfx } from "./finale-sfx.js";
 
-const MAX_PROJECT_IMAGES = 40;
 const FRAGMENTS_URL = "resources/footer/fragments.json";
-const THUMBS_URL = "resources/footer/thumbs.json";
-const PER_PROJECT = 3;
 
 const clamp = (v, lo = 0, hi = 1) => Math.min(Math.max(v, lo), hi);
 const smooth = t => { const c = clamp(t); return c * c * (3 - 2 * c); };
 
-// A spread of images from every project, shuffled so no one project dominates.
-function pickScrapSources(projects) {
-  const rand = seededRandom("finale-sources");
-  const picks = [];
-  projects.forEach(p => {
-    const found = [];
-    if (p.thumb) found.push(p.thumb);
-    (p.media || []).forEach(m => {
-      if (m.type === "image" && m.src) found.push(m.src);
-      if (m.type === "group") (m.images || []).forEach(i => i.src && found.push(i.src));
-    });
-    const unique = [...new Set(found)];
-    picks.push(...unique.slice(0, 1), ...unique.slice(1).sort(() => rand() - 0.5).slice(0, PER_PROJECT - 1));
-  });
-  return picks.sort(() => rand() - 0.5).slice(0, MAX_PROJECT_IMAGES);
-}
-
-// Small copies of the images, made by tools/footer_thumbs.py. Without them the footer would
-// download the full-size originals just to show tiny tiles.
-async function loadThumbs() {
-  try {
-    const res = await fetch(THUMBS_URL);
-    return res.ok ? await res.json() : {};
-  } catch {
-    return {};
-  }
-}
-
-// The hand-picked album covers come packed into one atlas image (made by a script that lives in temp/),
-// so the page makes a single request for all of them. Each tile is cut back out into its own small canvas.
+// Every picture the footer breaks into tiles (album covers and project images) comes packed into one atlas
+// image, made by a script that lives in temp/, so the page makes a single request for all of them. Each tile is cut back out into its own small canvas.
 async function loadCovers() {
   try {
     const res = await fetch(FRAGMENTS_URL);
@@ -242,9 +211,8 @@ export function initFinale(projects) {
     if (loading) return;
     loading = true;
     prepareFinaleAudio();
-    const [fragments, thumbs] = await Promise.all([loadCovers(), loadThumbs()]);
-    const sources = pickScrapSources(projects).map(src => thumbs[src] || src);
-    const assets = await loadAssets(sources, fragments.ground);
+    const fragments = await loadCovers();
+    const assets = await loadAssets([], fragments.ground);
     if (!assets) return;
     assets.scraps.unshift(...fragments.covers);
     if (!assets.scraps.length) return;
