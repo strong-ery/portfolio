@@ -406,7 +406,7 @@ export function createScene(canvas, assets, events = {}) {
       const ordered = [...cells].sort((a, b) => key(a.x, a.y) - key(b.x, b.y));
       sorted.forEach((sc, i) => {
         const cell = ordered[i % ordered.length];
-        sc.slots[k] = { x: cell.x, y: cell.y, scale: tile / Math.max(sc.bodyW, sc.bodyH) };
+        sc.slots[k] = { x: cell.x, y: cell.y, scale: cell.size / Math.max(sc.bodyW, sc.bodyH) };
       });
       if (!(await step())) return null;
     }

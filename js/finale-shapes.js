@@ -137,7 +137,7 @@ export function sampleShape(shape, region, count, rand) {
     for (let y = pitch / 2; y < sh; y += pitch) {
       for (let x = pitch / 2; x < sw; x += pitch) {
         if (covered(x, y) && covered(x - r, y) && covered(x + r, y) && covered(x, y - r) && covered(x, y + r)) {
-          cells.push({ x: ox + x, y: oy + y });
+          cells.push({ x: ox + x, y: oy + y, ix: Math.round((x - pitch / 2) / pitch), iy: Math.round((y - pitch / 2) / pitch) });
         }
       }
     }
@@ -151,7 +151,33 @@ export function sampleShape(shape, region, count, rand) {
     pitch *= 0.96;
     cells = gridAt(pitch);
   }
-  if (cells.length > count) cells = shuffle(cells, rand).slice(0, count);
   const gap = Math.min(3, Math.max(1.5, pitch * 0.1));
-  return { cells, tile: Math.min(pitch - gap, 46) };
+  const base = Math.min(pitch - gap, 46);
+
+  // Usually the grid has a few more cells than there are images. Rather than leave holes, glue some
+  // neighbouring 2x2 blocks into one bigger tile (that saves three cells each time), so every image
+  // gets a place and the shape stays solid.
+  let excess = cells.length - count;
+  const at = new Map(cells.map(c => [`${c.ix},${c.iy}`, c]));
+  const used = new Set();
+  const out = [];
+  const big = [];
+  if (excess >= 3) {
+    for (const c of shuffle(cells, rand)) {
+      if (excess < 3) break;
+      const block = [c, at.get(`${c.ix + 1},${c.iy}`), at.get(`${c.ix},${c.iy + 1}`), at.get(`${c.ix + 1},${c.iy + 1}`)];
+      if (block.some(b => !b || used.has(b))) continue;
+      block.forEach(b => used.add(b));
+      big.push({ x: (block[0].x + block[3].x) / 2, y: (block[0].y + block[3].y) / 2, size: pitch + base });
+      excess -= 3;
+    }
+  }
+  let rest = cells.filter(c => !used.has(c));
+  // One or two cells too many: drop those with the fewest neighbours (the shape's outermost corners).
+  if (excess > 0) {
+    const free = c => [[1, 0], [-1, 0], [0, 1], [0, -1]].filter(([dx, dy]) => !at.has(`${c.ix + dx},${c.iy + dy}`)).length;
+    rest = rest.map(c => [free(c) + rand() * 0.1, c]).sort((a, b) => b[0] - a[0]).slice(excess).map(p => p[1]);
+  }
+  rest.forEach(c => out.push({ x: c.x, y: c.y, size: base }));
+  return { cells: [...out, ...big], tile: base };
 }
