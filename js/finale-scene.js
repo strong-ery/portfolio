@@ -15,7 +15,6 @@ const MAX_PIXELS = 4.2e6;
 const FIG_PAD = 24;
 const HOLD_MS = 6500;     // how long each shape stays put
 const MORPH_MS = 2400;    // how long the tiles take to move on to the next one    // how far the seated pair is darkened into the night
-const LIT_SHARE = 0.22;
 
 const clamp = (v, lo = 0, hi = 1) => Math.min(Math.max(v, lo), hi);
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -407,7 +406,8 @@ export function createScene(canvas, assets, events = {}) {
         state: 0,
         rot: (rand() - 0.5) * 0.9,
         trot: (rand() - 0.5) * 0.03,
-        lit: rand() < LIT_SHARE,
+        glintEvery: 5 + rand() * 8,   // seconds between this tile's glints
+        glintAt: rand() * 13,
         delay: rand(),
         arc: 0.4 + rand() * 0.9,
         spin: (rand() - 0.5) * 1.4,
@@ -576,8 +576,9 @@ export function createScene(canvas, assets, events = {}) {
       c.globalAlpha = loose;
       drawScrap(c, s, s.bmp, x, y, rot, scale);
 
-      // Once it's a tile, most go dark and a few stay lit (brighter while it's moving).
-      const night = smooth((ti - 0.6) / 0.4) * (s.lit ? 0.05 : 0.5) * (1 - lift * 0.7);
+      // Once it's a tile it goes dark (brighter while it's moving). Settled tiles catch the light now and
+      // then; see glint().
+      const night = smooth((ti - 0.6) / 0.4) * 0.5 * (1 - lift * 0.7);
       if (night > 0.01) {
         c.globalAlpha = night;
         drawScrap(c, s, s.dim, x, y, rot, scale);
@@ -599,6 +600,41 @@ export function createScene(canvas, assets, events = {}) {
       cache.shape = shape;
     }
     ctx.drawImage(cache.canvas, box.x, box.y, box.w, box.h);
+  }
+
+  // Tiles at rest are dim, but each one catches the light now and then: it brightens for a moment and a little
+  // four-point star flashes on its corner. Every tile keeps its own rhythm, so it twinkles across the shape.
+  function glint(shape) {
+    scraps.forEach(s => {
+      const u = ((clock + s.glintAt) / s.glintEvery) % 1;
+      if (u > 0.14) return;
+      const g = Math.pow(Math.sin((Math.PI * u) / 0.14), 2);
+      if (g < 0.03) return;
+      const a = s.slots[shape];
+      ctx.globalAlpha = g * 0.95;
+      drawScrap(ctx, s, s.bmp, a.x, a.y, s.trot, a.scale);
+      if (g > 0.35) {
+        const half = (a.scale * Math.max(s.bodyW, s.bodyH)) / 2;
+        const r = half * 0.55 * g;
+        const cx = a.x + half * 0.7;
+        const cy = a.y - half * 0.7;
+        const w = r * 0.16;
+        ctx.globalAlpha = Math.min(1, g * 1.3);
+        ctx.fillStyle = "#fffbe8";
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - r);
+        ctx.lineTo(cx + w, cy - w);
+        ctx.lineTo(cx + r, cy);
+        ctx.lineTo(cx + w, cy + w);
+        ctx.lineTo(cx, cy + r);
+        ctx.lineTo(cx - w, cy + w);
+        ctx.lineTo(cx - r, cy);
+        ctx.lineTo(cx - w, cy - w);
+        ctx.closePath();
+        ctx.fill();
+      }
+    });
+    ctx.globalAlpha = 1;
   }
 
   // p is progress through the footer animation, 0..1. holdMs is how long the first shape has been
@@ -662,6 +698,7 @@ export function createScene(canvas, assets, events = {}) {
     paperLanded = 0;
     if (t >= 1 && m === 0) {
       drawSettled(from);
+      glint(from);
       scraps.forEach(sc => { if (sc.state !== 2) { sc.state = 2; paperLanded++; } });
     } else drawTiles(ctx, t, from, to, m, true);
     if ((paperMoved || paperLanded) && events.paper) events.paper(paperMoved, paperLanded);
