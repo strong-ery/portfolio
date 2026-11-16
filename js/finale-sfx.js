@@ -295,7 +295,7 @@ function pageTurn() {
   const now = ctx.currentTime;
   if (now - lastFlip < 0.9) return;
   lastFlip = now;
-  play(pick(library.pageflip), { at: now, gain: 0.4, pan: range(-0.2, 0.2), rate: range(0.96, 1.04) });
+  play(pick(library.pageflip), { at: now, gain: 0.24, pan: range(-0.2, 0.2), rate: range(0.96, 1.04) });
 }
 
 export const sfx = {
