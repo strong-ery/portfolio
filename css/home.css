@@ -96,8 +96,8 @@
 .hero-name::after {
   content: "";
   position: absolute;
-  top: 0.12em;
-  right: 0.02em;
+  top: 0.26em;
+  right: -0.04em;
   pointer-events: none;
   opacity: 0;
   -webkit-text-fill-color: initial;
