@@ -16,14 +16,6 @@
 </head>
 <body>
 
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <filter id="denji-edge" color-interpolation-filters="sRGB" x="-5%" y="-5%" width="110%" height="110%">
-      <feComponentTransfer result="c"><feFuncA type="linear" slope="6" intercept="-1.9"/></feComponentTransfer>
-      <feMorphology in="c" operator="erode" radius="1" result="e"/>
-      <feComposite in="c" in2="e" operator="in"/>
-    </filter>
-  </svg>
-
   <div class="cursor" id="cursor"></div>
   <div class="cursor-ring" id="cursor-ring"></div>
   <canvas class="paper-overlay" id="paper-canvas"></canvas>

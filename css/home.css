@@ -38,8 +38,7 @@
   width: 100%;
   height: auto;
   display: block;
-  /* The cutout's edge is soft; this filter tightens it. */
-  filter: url(#denji-edge);
+  opacity: 0.88;
   transform-origin: 50% 100%;
   animation: denji-sway 9s ease-in-out infinite;
   /* The picture has an empty strip along the bottom (about a fifth of its width); pull the section up past it. */
