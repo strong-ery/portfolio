@@ -362,6 +362,10 @@ export function createScene(canvas, assets, events = {}) {
     // A shuffled order, so if there are ever more images than room, the ones left out vary.
     const order = assets.scraps.map((_, i) => i).sort(() => rand() - 0.5);
 
+    // If the figures run out of room, squeeze the scraps a little closer until every one has a place; the
+    // shapes (the triforce especially) need the full number to come out whole.
+    for (const squeeze of [1, 0.85, 0.7, 0.55, 0.4]) {
+    const gapMin = minDist * squeeze;
     for (let tries = 0; tries < wanted * 80 && list.length < wanted; tries++) {
       const bi = Math.floor(rand() * bounds.length);
       const b = bounds[bi];
@@ -371,7 +375,7 @@ export function createScene(canvas, assets, events = {}) {
       const iy = Math.round(y);
       if (ix < 0 || iy < 0 || ix >= W || iy >= H) continue;
       if (maskData[(iy * W + ix) * 4 + 3] < 128) continue;
-      if (list.some(s => Math.hypot(s.cx - x, s.cy - y) < minDist)) continue;
+      if (list.some(s => Math.hypot(s.cx - x, s.cy - y) < gapMin)) continue;
 
       const img = assets.scraps[order[list.length % order.length]];
       const size = longEdge * (0.8 + rand() * 0.5);
@@ -390,6 +394,8 @@ export function createScene(canvas, assets, events = {}) {
         spin: (rand() - 0.5) * 1.4,
       });
       if (!(await step())) return null;
+    }
+    if (list.length >= wanted) break;
     }
 
     // Every shape gets a cell for every scrap. Each scrap is matched to the cell in the same sweep
