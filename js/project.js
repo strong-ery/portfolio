@@ -29,9 +29,13 @@ function wireBack() {
   const link = document.getElementById("project-back");
   if (!link) return;
   link.addEventListener("click", e => {
-    let sameSite = false;
-    try { sameSite = document.referrer && new URL(document.referrer).origin === location.origin; } catch {}
-    if (sameSite && history.length > 1) {
+    // Only use the browser's back when the last page was the home page; coming from another article it should still go home.
+    let fromHome = false;
+    try {
+      const ref = new URL(document.referrer);
+      fromHome = ref.origin === location.origin && /(^|\/)(index\.html)?$/.test(ref.pathname);
+    } catch {}
+    if (fromHome && history.length > 1) {
       e.preventDefault();
       history.back();
     }

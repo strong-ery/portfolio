@@ -42,9 +42,9 @@ body.gallery-open { overflow: hidden; }
 
 .gallery-item-caption {
   padding: 0.35rem 0.4rem 0.2rem;
-  font-family: var(--font-hand);
-  font-size: 1.25rem;
-  line-height: 1.15;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.4;
   color: var(--muted);
 }
 
@@ -143,8 +143,8 @@ body.gallery-open { overflow: hidden; }
 .lb-close:hover { color: white; border-color: rgba(242, 234, 216, 0.6); }
 
 .lb-caption {
-  font-family: var(--font-hand);
-  font-size: 1.4rem;
+  font-family: var(--font-body);
+  font-size: 14px;
   color: rgba(242, 234, 216, 0.75);
   text-align: center;
   line-height: 1.2;
@@ -206,8 +206,9 @@ body.gallery-open { overflow: hidden; }
 }
 
 .group-label {
-  font-family: var(--font-hand);
-  font-size: 1.2rem;
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.04em;
   color: var(--muted);
   flex: 1;
   min-width: 0;

@@ -73,7 +73,7 @@
 .embed-photo { transform: rotate(-0.7deg); }
 .article-flow figure:nth-of-type(even) { transform: rotate(0.6deg); }
 
-.embed-photo.fig-left, .embed-photo.fig-right { width: 46%; margin-top: 0.4rem; }
+.embed-photo.fig-left, .embed-photo.fig-right { width: 44%; margin-top: 0.4rem; clear: both; }
 .embed-photo.fig-left { float: left; margin-right: 1.75rem; margin-left: -3.5rem; }
 .embed-photo.fig-right { float: right; margin-left: 1.75rem; margin-right: -3.5rem; }
 .embed-photo.fig-wide { margin-left: -4rem; margin-right: -4rem; width: auto; max-width: none; }

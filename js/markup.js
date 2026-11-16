@@ -120,8 +120,23 @@ function blockHtml(b) {
   return "";
 }
 
+// A picture only floats beside the text when there is enough text after it to wrap around; otherwise it would
+// squeeze a couple of words into a sliver and run into the next picture. Those just sit inline instead.
+const FLOAT_MIN_CHARS = 380;
+
+function settleFloats(blocks) {
+  return blocks.map((b, i) => {
+    if (b.type !== "row" || b.images.length !== 1) return b;
+    const flag = b.images[0].flag;
+    if (flag !== "left" && flag !== "right") return b;
+    const next = blocks[i + 1];
+    const room = next && next.type === "p" && next.lines.join(" ").length >= FLOAT_MIN_CHARS;
+    return room ? b : { ...b, images: [{ ...b.images[0], flag: "" }] };
+  });
+}
+
 export function renderBody(text) {
-  return parseBody(text).map(blockHtml).join("");
+  return settleFloats(parseBody(text)).map(blockHtml).join("");
 }
 
 // Every picture, video and sound in the text, in the shape the home page hover collage wants.
