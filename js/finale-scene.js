@@ -43,17 +43,36 @@ function loadImage(src, maxEdge) {
   });
 }
 
+// The figures all live in one picture (made by a script in temp/); each is cut back out into its own canvas.
+async function loadFigures() {
+  try {
+    const [res, sheet] = await Promise.all([fetch(`${FOLDER}figures.json`), loadImage(`${FOLDER}figures.webp`)]);
+    if (!res.ok || !sheet) return null;
+    const placed = await res.json();
+    const out = {};
+    for (const [name, r] of Object.entries(placed)) {
+      const c = makeCanvas(r.w, r.h);
+      c.getContext("2d").drawImage(sheet, r.x, r.y, r.w, r.h, 0, 0, r.w, r.h);
+      c.naturalWidth = r.w;
+      c.naturalHeight = r.h;
+      out[name] = c;
+    }
+    return out;
+  } catch {
+    return null;
+  }
+}
+
 // groundSrc is optional: a transparent strip along the bottom (a beach, a shoreline) the pair sits on.
 export async function loadAssets(scrapSources, groundSrc) {
   const names = [...FIGURES.flatMap(n => [n, `${n}-ink`]), "pair"];
-  const [named, scraps, ground] = await Promise.all([
-    Promise.all(names.map(n => loadImage(`${FOLDER}${n}.png`))),
+  const [figures, scraps, ground] = await Promise.all([
+    loadFigures(),
     Promise.all(scrapSources.map(src => loadImage(src, SCRAP_EDGE))),
     groundSrc ? loadImage(groundSrc) : null,
   ]);
-  const byName = Object.fromEntries(names.map((n, i) => [n, named[i]]));
-  if (names.some(n => !byName[n])) return null;
-  return { figures: byName, scraps: scraps.filter(Boolean), ground };
+  if (!figures || names.some(n => !figures[n])) return null;
+  return { figures, scraps: scraps.filter(Boolean), ground };
 }
 
 function aspect(img) {
