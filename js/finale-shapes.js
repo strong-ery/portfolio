@@ -24,6 +24,49 @@ const SHAPE_LIST = [
     symmetry: "mirror",
     w: 100,
     h: 87,
+    // Three triangles built row by row from the tip: one tile, then two, three... so each edge runs at a true
+    // 60 degrees and every point comes down to a single tile. Rows are centred on the triangle, so it is even.
+    layout(count, region) {
+      const k = Math.min(region.w / this.w, region.h / this.h) * 0.96;
+      const ox = region.x0 + (region.w - this.w * k) / 2;
+      const oy = region.gy - this.h * k;
+      const side = 50 * k;
+      const high = 43.3 * k;
+      const tips = [[50, 0], [25, 43.3], [75, 43.3]];
+      const build = p => {
+        const rows = Math.max(1, Math.floor(high / p));
+        return Array.from({ length: rows }, (_, r) => Math.max(1, Math.round(((r + 0.5) * 2) / Math.sqrt(3))));
+      };
+      // Largest tiles that don't need more than `count` of them.
+      let p = 3;
+      let widths = build(p);
+      while (3 * widths.reduce((a, b) => a + b, 0) > count && p < side) {
+        p *= 1.004;
+        widths = build(p);
+      }
+      const all = [0, 1, 2].map(() => [...widths]);
+      let have = 3 * widths.reduce((a, b) => a + b, 0);
+      // A few short: widen the bottom rows by a tile, one triangle after another.
+      for (let n = 0; have < count; n++) {
+        const row = widths.length - 1 - Math.floor(n / 3);
+        all[n % 3][Math.max(0, row)]++;
+        have++;
+      }
+      const cells = [];
+      all.forEach((rows, t) => {
+        const [ax, ay] = tips[t];
+        rows.forEach((w, r) => {
+          for (let c = 0; c < w; c++) {
+            cells.push({
+              x: ox + ax * k + (c - (w - 1) / 2) * p,
+              y: oy + ay * k + (r + 0.5) * p,
+              size: Math.min(p * 0.9, 46),
+            });
+          }
+        });
+      });
+      return { cells, tile: p * 0.9 };
+    },
     draw(g) {
       poly(g, [[50, 0], [75, 43.3], [25, 43.3]]);
       poly(g, [[25, 43.3], [50, 86.6], [0, 86.6]]);
@@ -32,13 +75,12 @@ const SHAPE_LIST = [
   },
   {
     name: "eye",
-    keep: 5,
-    symmetry: "rot4",
     w: 100,
     h: 100,
     // Makima's eyes: rings inside rings.
+    bands: [[41, 50], [24, 33], [9, 16]],
     draw(g) {
-      [[50, 41], [33, 24], [16, 9]].forEach(([outer, inner]) => {
+      this.bands.forEach(([inner, outer]) => {
         g.beginPath();
         g.arc(50, 50, outer, 0, Math.PI * 2);
         g.arc(50, 50, inner, 0, Math.PI * 2, true);
@@ -47,6 +89,46 @@ const SHAPE_LIST = [
       g.beginPath();
       g.arc(50, 50, 3, 0, Math.PI * 2);
       g.fill();
+    },
+    // Rings of tiles laid round the circles themselves, so they stay round whatever the tile size.
+    layout(count, region) {
+      const R = (Math.min(region.w / this.w, region.h / this.h) * 0.96 * this.w) / 2;
+      const u = R / 50;
+      const cx = region.x0 + region.w / 2;
+      const cy = region.gy - R;
+      const spacing = 1.14;
+      // Every way of putting one to three rows of tiles in each ring; keep the one that adds up closest to
+      // the number needed without the tile sizes being too far apart.
+      let best = null;
+      const rowsOf = ([inner, outer], n) => Array.from({ length: n }, (_, r) => {
+        const th = outer - inner;
+        const tile = (th / n) * 0.9;
+        const rad = inner + (th * (r + 0.5)) / n;
+        return { rad, size: tile, n: Math.max(1, Math.floor((2 * Math.PI * rad) / (tile * spacing))) };
+      });
+      for (let a = 1; a <= 3; a++) for (let b = 1; b <= 3; b++) for (let c = 1; c <= 3; c++) {
+        const rows = [...rowsOf(this.bands[0], a), ...rowsOf(this.bands[1], b), ...rowsOf(this.bands[2], c)];
+        const total = rows.reduce((sum, r) => sum + r.n, 0) + 1;
+        const sizes = rows.map(r => r.size);
+        const score = Math.abs(total - count) + 3 * (Math.max(...sizes) / Math.min(...sizes) - 1);
+        if (!best || score < best.score) best = { score, rows, total };
+      }
+      const rows = best.rows.map(r => ({ ...r }));
+      let total = best.total;
+      // Add or take away single tiles from the rows with the most, until the count is exact.
+      while (total !== count) {
+        rows.sort((p, q) => (total > count ? q.n - p.n : p.n - q.n));
+        rows[0].n += total > count ? -1 : 1;
+        total += total > count ? -1 : 1;
+      }
+      const cells = [{ x: cx, y: cy, size: 5 * u }];
+      rows.forEach((row, ri) => {
+        for (let i = 0; i < row.n; i++) {
+          const a = (i / row.n) * Math.PI * 2 + ri * 0.35;
+          cells.push({ x: cx + Math.cos(a) * row.rad * u, y: cy + Math.sin(a) * row.rad * u, size: row.size * u });
+        }
+      });
+      return { cells, tile: 5 * u };
     },
   },
   {
@@ -120,6 +202,7 @@ const MAPS = {
 // The grid is centred on the shape, so a symmetrical shape gets a symmetrical set of tiles. A cell is kept
 // when about half of it lies inside the shape, which keeps sharp corners and curves from being shaved off.
 export function sampleShape(shape, region, count, rand) {
+  if (shape.layout) return shape.layout(count, region, rand);
   const k = Math.min(region.w / shape.w, region.h / shape.h) * 0.96;
   const sw = Math.ceil(shape.w * k);
   const sh = Math.ceil(shape.h * k);
