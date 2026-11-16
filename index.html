@@ -5,9 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dylan Strong</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/x-icon" href="resources/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Covered+By+Your+Grace&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="css/work.css" />
+  <link rel="stylesheet" href="css/finale.css" />
+  <link rel="stylesheet" href="css/effects.css" />
+  <link rel="icon" type="image/jpeg" href="resources/favicon.jpg">
 </head>
 <body>
 
@@ -28,30 +33,12 @@
       <section class="hero">
         <p class="hero-eyebrow">Alberta, Canada.</p>
         <h1 class="hero-name">Dylan Strong</h1>
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <span class="hero-stat-val">4,000+</span>
-            <span class="hero-stat-label">hrs Blender</span>
-          </div>
-          <div class="hero-stat">
-            <span class="hero-stat-val">2,500+</span>
-            <span class="hero-stat-label">hrs Unity</span>
-          </div>
-          <div class="hero-stat">
-            <span class="hero-stat-val">2,000+</span>
-            <span class="hero-stat-label">hrs Adobe Creative Suite</span>
-          </div>
-        </div>
+        <p class="hero-about">
+          I love making things: games, shaders, 3D art, and music on piano and guitar. I used to run Milkless Cereal Studios until we disbanded this year; we started over 15 projects and finished 3. These days it's C#, Blender and Unity, a 1993 Ford Probe GT I'm slowly restoring, and Chainsaw Man living rent-free in my head.
+        </p>
       </section>
 
       <section class="section about-section">
-        <p class="about-body">
-          I love creating. I used to run Milkless Cereal Studios, until we disbanded this year. We created over 15 projects, and finished 3 of them.
-        </p>
-        <p class="about-body">
-          C#, Blender, Unity. Currently restoring a 1993 Ford Probe GT.
-          Piano, guitar: music is a big one for me.
-        </p>
         <blockquote class="about-quote">
           Hey Makima, in this awesome new world of yours would there still be bad movies?
           <cite>— Chainsaw Man, Chapter 93.</cite>
@@ -64,28 +51,39 @@
     </div>
   </div>
 
-  <section class="section work-section" id="work">
-    <div class="filter-row" id="filter-row"></div>
-    <div class="board" id="board"></div>
-  </section>
-
-  <div class="drawer-wrap" id="drawer-wrap">
-    <div class="drawer" id="drawer">
-      <div class="drawer-left" id="d-left"></div>
-      <div class="drawer-right" id="d-right"></div>
+  <section class="work-section" id="work">
+    <div class="work-list-col">
+      <div class="filter-row" id="filter-row"></div>
+      <div class="project-list" id="board"></div>
     </div>
-  </div>
+    <aside class="work-preview" id="work-preview" aria-live="polite"></aside>
+  </section>
 
   <section class="section influences-section" id="influences">
     <p class="section-label">shaped by</p>
     <div class="influences-grid" id="influences-grid"></div>
   </section>
 
-  <footer>
-    <span>Dylan Strong</span>
-    <span>Phone # Available Upon Request · <a href="mailto:dstrongbusiness@gmail.com">dstrongbusiness@gmail.com</a></span>
+  <footer class="finale" id="finale">
+    <div class="finale-stage">
+      <canvas class="finale-sky" aria-hidden="true"></canvas>
+      <canvas class="finale-canvas" aria-hidden="true"></canvas>
+      <div class="finale-text">
+        <p class="finale-name">Dylan Strong</p>
+        <p class="finale-line">All I want is your eyes.</p>
+        <a class="finale-mail" href="mailto:dstrongbusiness@gmail.com">dstrongbusiness@gmail.com</a>
+      </div>
+    </div>
   </footer>
 
-  <script src="script.js"></script>
+  <aside class="welcome" id="welcome" hidden>
+    <p class="welcome-text">hey, you made it. there's a song waiting at the bottom of the page. sound on?</p>
+    <div class="welcome-actions">
+      <button class="welcome-yes" type="button">sound on</button>
+      <button class="welcome-no" type="button">no thanks</button>
+    </div>
+  </aside>
+
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

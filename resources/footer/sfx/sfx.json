@@ -1,0 +1,23 @@
+{
+  "_about": "Real firework recordings from '25 CC0 bang / firework SFX' on OpenGameArt (https://opengameart.org/content/25-cc0-bang-firework-sfx), licensed CC0 (public domain), converted to mp3. launch = the mortar thump, burst = the bang, crackle = the crackling after. Add your own by listing them here; any group can be empty.",
+  "launch": [
+    "launch1.mp3",
+    "launch2.mp3",
+    "launch3.mp3"
+  ],
+  "burst": [
+    "burst1.mp3",
+    "burst2.mp3",
+    "burst3.mp3",
+    "burst4.mp3",
+    "burst5.mp3",
+    "burst6.mp3",
+    "burst7.mp3"
+  ],
+  "crackle": [
+    "crackle1.mp3",
+    "crackle2.mp3",
+    "crackle3.mp3",
+    "crackle4.mp3"
+  ]
+}

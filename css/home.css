@@ -1,0 +1,176 @@
+@font-face {
+  font-family: "Hylia Serif";
+  src: url("../fonts/HyliaSerifBeta-Regular.otf") format("opentype");
+  font-display: swap;
+}
+
+.intro-wrap {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--line);
+}
+
+.intro-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.intro-left .hero {
+  border-bottom: 1px solid var(--line);
+  flex: 1;
+}
+
+.intro-left .about-section {
+  border-bottom: none;
+}
+
+.intro-right {
+  flex: 1;
+  border-left: 1px solid var(--line);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.denji-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0.88;
+}
+
+@media (max-width: 700px) {
+  .intro-wrap { flex-direction: column; }
+  .intro-right { width: 100%; height: 280px; border-left: none; border-top: 1px solid var(--line); }
+}
+
+.hero {
+  min-height: 52vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 7rem 2.5rem 3.5rem;
+}
+
+.hero-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 1rem;
+}
+
+.hero-name {
+  font-family: "Hylia Serif", var(--font-display);
+  font-size: clamp(3rem, 7.5vw, 6.5rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  margin-bottom: 2rem;
+}
+
+.hero-about {
+  max-width: 34rem;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.section {
+  padding: 4rem 2.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.section-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 2rem;
+}
+
+.about-section {
+  max-width: 640px;
+}
+
+.about-body {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.9;
+  margin-bottom: 1.25rem;
+}
+
+.about-quote {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--dim);
+  line-height: 1.75;
+  border-left: 1px solid var(--line2);
+  padding-left: 1.25rem;
+  margin-top: 2rem;
+}
+
+.about-quote cite {
+  display: block;
+  font-size: 11px;
+  font-style: normal;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--line2);
+  margin-top: 0.5rem;
+}
+
+.work-section {
+  padding-bottom: 5rem;
+}
+
+.influences-section { padding-top: 3.5rem; }
+
+.influences-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.influence-card {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.25rem;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 1px 2px 6px rgba(0,0,0,0.06);
+  flex: 1 1 320px;
+  min-width: 320px;
+}
+
+.influence-card:hover {
+  background: var(--bg3);
+  box-shadow: 2px 4px 10px rgba(0,0,0,0.1);
+}
+
+.influence-type {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.5rem;
+}
+
+.influence-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.influence-note {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.7;
+}
