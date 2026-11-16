@@ -146,7 +146,7 @@ function makeScrap(img, longEdge, dpr, rand) {
 
 // A night beach, drawn in code until a real ground image is named in resources/footer/fragments.json:
 // lapping water and foam along the edge, wet then dry sand, pebbles, footprints and a few tufts of grass.
-function drawGround(g, W, H, top, rand, trail) {
+function drawGround(g, W, H, top, rand) {
   const gh = H - top;
   const edgeY = x => top + Math.sin(x * 0.009 + 0.6) * 3.2 + Math.sin(x * 0.031 + 1.3) * 1.6 + Math.sin(x * 0.083) * 0.7;
   const line = (offset, wobble, phase) => {
@@ -201,26 +201,6 @@ function drawGround(g, W, H, top, rand, trail) {
     g.fillRect(rand() * W, top + 4 + rand() * (gh - 4), 1 + rand() * 1.6, 1);
   }
 
-  // Footprints from the right that lead to the two of them.
-  if (trail) {
-    const steps = Math.max(0, Math.floor((trail.fromX - trail.toX) / 34));
-    for (let i = 0; i < steps; i++) {
-      const x = trail.fromX - i * 34;
-      const y = trail.y + (i % 2 ? 7 : -5) + Math.sin(i * 0.7) * 4;
-      g.save();
-      g.translate(x, y);
-      g.rotate(-0.15 + (i % 2 ? 0.1 : -0.05));
-      g.fillStyle = "rgba(4, 5, 8, 0.5)";
-      g.beginPath();
-      g.ellipse(0, 0, 9, 4.2, 0, 0, Math.PI * 2);
-      g.fill();
-      g.fillStyle = "rgba(170, 185, 215, 0.1)";
-      g.beginPath();
-      g.ellipse(0, 2.2, 8, 1.6, 0, 0, Math.PI);
-      g.fill();
-      g.restore();
-    }
-  }
 }
 
 export function createScene(canvas, assets, events = {}) {
@@ -251,8 +231,7 @@ export function createScene(canvas, assets, events = {}) {
     if (assets.ground) g.drawImage(assets.ground, 0, place.ground.top, W, place.ground.h);
     else {
       const pair = place.pair;
-      const trail = { fromX: place.city.x0 - 30, toX: pair.x + pair.w + 24, y: place.ground.y + place.ground.h * 0.28 };
-      drawGround(g, W, H, place.ground.top, seededRandom("finale-ground"), trail);
+      drawGround(g, W, H, place.ground.top, seededRandom("finale-ground"));
     }
   }
 
