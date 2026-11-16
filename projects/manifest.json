@@ -9,79 +9,15 @@
       "unity",
       "3d"
     ],
-    "w": 0.4,
-    "ratio": "wide",
-    "rotate": 1.2,
-    "thumb": "resources/bp/bp_ss.jpg",
-    "desc": "# Quick Notes\n\nBlackout Protocol was the result of my first gamejam.\nLudum Dare 57.\n\nThe game was developed in under 72 hours (rougly 48 hours), and was built around the theme \"Depths\".\n\nThe game relied heavily on its atmosphere, specifically its graphics, sound design, and monster design. Gameplay was lacking, but you can't ask for too much from 48 hours.\n\nI co-developed the game with Cooper Horne, and I covered all of the modeling, texturing, and the monsters many systems.\n(eg: AI, pathfinding, patrolling)\n\n# Monster Design\n\nMost game jam monsters are thrown together as fast as possible. NavMesh + a state machine. Not this one.\n\nI had never designed a proper, and well rounded monster before, so I wanted to make something special. Due to time constraints, research was short, and mostly fruitless. So I had to come up with my own method.\n\nAt a basic level, a good monster is a set of data, and rules, put together in a clever way to create good results.\n\nTo outline the monster from our game briefly:\n# Data:\nDistance to floor. (A)\nDirect raycast to player. (clamped to an FOV to prevent any unfairness, and to let the player sneak past it.) (B)\nAnother array of raycasts in a line of 6 raycasts (at an FOV of around 270.) (C)\n# Rules:\nMaintain a constant height.\nRotate towards the direction you're moving.\nCalculate a left/right ratio of what raycasts are touching cave walls, and adjust your direction accordingly.\nIf you see nothing, patrol between preset points (requires no pathfinding logic)\n\nWith this set of Data and Rules, out comes the monster from Blackout Protocol. It can pursue the player anywhere they run, even while being inside tight cave spaces. (hence why I was hesitant to try and use NavMesh)\n\nOverall, it was a good bit of fun figuring him out.\n\n# On Blackout Protocol\n\nBlackout Protocol was a great learning experience, from being my first game jam (teaching me to work with a team, under tight time constraints, and still to ship something I can be proud of), to just improving my understanding of the Unity ECS, and emergent behaviour from data and rules.\n\nThe game is available on Itch below, and as of now there are no planned updates.",
-    "breakdown": [],
-    "media": [
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/bp/dev.jpg",
-        "caption": "level 2 dev screenshot"
-      },
-      {
-        "type": "audio",
-        "src": "resources/bp/Blackout Protocol Theme.mp3",
-        "caption": "Blackout Protocol Theme - Quinn DeBoer"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/bp/Lol.jpg",
-        "caption": "1000 yard stare"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/bp/dev2.jpg",
-        "caption": "monster ai (data) overview"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/bp/bp_ss.jpg",
-        "caption": "the lift"
-      }
-    ],
+    "thumb": "resources/blackout-protocol/bp_ss.jpg",
     "links": [
       {
         "label": "itch.io",
         "href": "https://eggsscrambled.itch.io/blackout-protocol",
         "primary": true
       }
-    ]
+    ],
+    "body": "# Quick Notes\n\nBlackout Protocol was the result of my first gamejam.\nLudum Dare 57.\n\nThe game was developed in under 72 hours (rougly 48 hours), and was built around the theme \"Depths\".\n\n![level 2 dev screenshot](resources/blackout-protocol/dev.jpg){right}\n\nThe game relied heavily on its atmosphere, specifically its graphics, sound design, and monster design. Gameplay was lacking, but you can't ask for too much from 48 hours.\n\nI co-developed the game with Cooper Horne, and I covered all of the modeling, texturing, and the monsters many systems.\n(eg: AI, pathfinding, patrolling)\n\n::audio resources/blackout-protocol/Blackout Protocol Theme.mp3 | Blackout Protocol Theme - Quinn DeBoer\n\n# Monster Design\n\nMost game jam monsters are thrown together as fast as possible. NavMesh + a state machine. Not this one.\n\nI had never designed a proper, and well rounded monster before, so I wanted to make something special. Due to time constraints, research was short, and mostly fruitless. So I had to come up with my own method.\n\nAt a basic level, a good monster is a set of data, and rules, put together in a clever way to create good results.\n\n![1000 yard stare](resources/blackout-protocol/Lol.jpg){left}\n\nTo outline the monster from our game briefly:\n## Data:\nDistance to floor. (A)\nDirect raycast to player. (clamped to an FOV to prevent any unfairness, and to let the player sneak past it.) (B)\nAnother array of raycasts in a line of 6 raycasts (at an FOV of around 270.) (C)\n## Rules:\nMaintain a constant height.\nRotate towards the direction you're moving.\nCalculate a left/right ratio of what raycasts are touching cave walls, and adjust your direction accordingly.\nIf you see nothing, patrol between preset points (requires no pathfinding logic)\n\nWith this set of Data and Rules, out comes the monster from Blackout Protocol. It can pursue the player anywhere they run, even while being inside tight cave spaces. (hence why I was hesitant to try and use NavMesh)\n\n![monster ai (data) overview](resources/blackout-protocol/dev2.jpg){right}\n\nOverall, it was a good bit of fun figuring him out.\n\n# On Blackout Protocol\n\nBlackout Protocol was a great learning experience, from being my first game jam (teaching me to work with a team, under tight time constraints, and still to ship something I can be proud of), to just improving my understanding of the Unity ECS, and emergent behaviour from data and rules.\n\n![the lift](resources/blackout-protocol/bp_ss.jpg){left}\n\nThe game is available on Itch below, and as of now there are no planned updates."
   },
   {
     "id": "ono",
@@ -93,106 +29,15 @@
       "unity",
       "2d"
     ],
-    "w": 0.33,
-    "ratio": "square",
-    "rotate": -0.8,
-    "thumb": "resources/ono/ono_ss.jpg",
-    "desc": "# Quick Notes\n\nONO and its unreleased successor ONOSOUL were developed over around 6 months. ONO was made for the Alberta Game Jam 2025, and won by community vote.\n\nONOSOUL was meant to expand on the story and atmosphere the team felt was missing from the original: more world building, more feeling. It was never finished due to scope creep and burnout.\n\nONO is still available to play. I hope to return to ONOSOUL someday.\n\nMy favourite part has to be the soundtrack. Our sound guy really sold the feeling we were going for.\n\n# SNAP (Scriptable Node Action Pipeline)\n\nPuzzle logic in game jams gets hardcoded fast. One-off scripts, spaghetti conditions, nothing reusable. I built SNAP to fix that.\n\nSNAP is a node graph runtime for Unity. Each node is a self-contained behaviour. Flow ports for execution, data ports for values. Graphs are Unity ScriptableAssets, so puzzle logic lives entirely outside code. Was a word formed? Was electricity turned on? Each condition is just a node. Wire them together, done. Nodes can be single conditions, composite logic, whatever you can dream up.\n\nWhat made it different from standard behaviour trees is that graphs can be circular. Most systems enforce acyclic graphs by design. SNAP doesn't: if your puzzle needs a loop, you wire a loop.\n\nDesigners (just me lol) built graphs in an HTML editor rather than Unity's inspector since I hate writing C# GUI's, especially with Unity (at least it isn't Avalonia lol). It serialized directly to the ScriptableObject format. No code required to build a new puzzle.\n\nAll in all it was a good learning experience, and I found it had a lot of similarities to Nintendo's pracitices with their latest Zelda title: Tears of the Kingdom, and it's internal AINB (Artificial Intelligence Node Binary) system the game operates on.\n\n# Sort Mode Hell\n\nIt was our first 2D game and we fought sorting the whole way through. Our first approach was vertex-based Y displacement with a 0.001 multiplier, plus a per-shader offset value to fine-tune individual objects. It worked, but it killed batching, and flickered on non-static objects.\n\nWe went through three or four methods after that. Eventually we found the solution was already built into Unity. We'd been solving a problem that didn't need solving. That one hurt a little, but it's the kind of thing you only learn by doing it wrong first.\n\n# Notes from the Musician (Quinn DeBoer)\n\nWhat started off as just a simple game jam became one of my favourite projects that I have ever worked on. ONOSOUL was about a lot of things, but what I loved the most was that it was about growth. As a sound designer and music producer, I learned a lot trying to create a calming, yet slightly eerie, lofi atmosphere. I grew a ton throughout the process, the same way that Ono had on their journey. I find myself reminiscing on these days occasionally. Although ONOSOUL was just sounds, pixel art, and code, something about its tenderness made me feel alive. It’s kind of ironic in hindsight that working with dead ghosts was what made that feeling bloom.\n\n\n# On ONOSOUL\n\nWe planned many areas for the game, and one of my favourite ones is this area that completely lacked colour. It was meant to represent the lack of emotion the world of ONOSOUL had. ONOSOUL was a game about loss, but deeper than that: stagnation. As if the world had stopped moving forward.\n\nONOSOUL's ultimate lesson was and still is that:\n\nit's OK to say goodbye.\n\nDirectly quoting the game document, it would have ended with: 'No big music swell. Just credits with a subtle track.'",
-    "breakdown": [],
-    "media": [
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/ono/ono_indev.jpg",
-        "caption": "early ONOSOUL development screenshot"
-      },
-      {
-        "type": "audio",
-        "src": "resources/ono/Tuning out the hate.mp3",
-        "caption": "original ono soundtrack"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/ono/SNAPEditor.jpg",
-        "caption": "large graph in the HTML SNAP editor"
-      },
-      {
-        "type": "image",
-        "src": "resources/ono/SNAPEditor2.jpg",
-        "caption": "small graph in the HTML SNAP editor"
-      },
-      {
-        "type": "audio",
-        "src": "resources/ono/Forest.mp3",
-        "caption": "onosoul starting area track 'forest'"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/ono/onosoul_tias.jpg",
-        "caption": "I think it might have been a sign."
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "audio",
-        "src": "resources/ono/Acceptance.mp3",
-        "caption": "'acceptance'"
-      },
-      {
-        "type": "audio",
-        "src": "resources/ono/Snow Town.mp3",
-        "caption": "'snow town'"
-      },
-      {
-        "type": "audio",
-        "src": "resources/ono/Soul Searching.mp3",
-        "caption": "'soul searching'"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/ono/onosoul.jpg",
-        "caption": "quite the map I know (early screenshot)"
-      },
-      {
-        "type": "audio",
-        "src": "resources/ono/Colourless_4.mp3",
-        "caption": "onosoul track 'colourless variant 4'"
-      }
-    ],
+    "thumb": "resources/onosoul/ono_ss.jpg",
     "links": [
       {
         "label": "itch.io",
         "href": "https://milklesscerealstudios.itch.io",
         "primary": true
       }
-    ]
+    ],
+    "body": "# Quick Notes\n\nONO and its unreleased successor ONOSOUL were developed over around 6 months. ONO was made for the Alberta Game Jam 2025, and won by community vote.\n\n![early ONOSOUL development screenshot](resources/onosoul/ono_indev.jpg){right}\n\nONOSOUL was meant to expand on the story and atmosphere the team felt was missing from the original: more world building, more feeling. It was never finished due to scope creep and burnout.\n\nONO is still available to play. I hope to return to ONOSOUL someday.\n\n::audio resources/onosoul/Tuning out the hate.mp3 | original ono soundtrack\n\nMy favourite part has to be the soundtrack. Our sound guy really sold the feeling we were going for.\n\n![large graph in the HTML SNAP editor](resources/onosoul/SNAPEditor.jpg){left}\n\n# SNAP (Scriptable Node Action Pipeline)\n\nPuzzle logic in game jams gets hardcoded fast. One-off scripts, spaghetti conditions, nothing reusable. I built SNAP to fix that.\n\nSNAP is a node graph runtime for Unity. Each node is a self-contained behaviour. Flow ports for execution, data ports for values. Graphs are Unity ScriptableAssets, so puzzle logic lives entirely outside code. Was a word formed? Was electricity turned on? Each condition is just a node. Wire them together, done. Nodes can be single conditions, composite logic, whatever you can dream up.\n\n![small graph in the HTML SNAP editor](resources/onosoul/SNAPEditor2.jpg){right}\n\nWhat made it different from standard behaviour trees is that graphs can be circular. Most systems enforce acyclic graphs by design. SNAP doesn't: if your puzzle needs a loop, you wire a loop.\n\n::audio resources/onosoul/Forest.mp3 | onosoul starting area track 'forest'\n\nDesigners (just me lol) built graphs in an HTML editor rather than Unity's inspector since I hate writing C# GUI's, especially with Unity (at least it isn't Avalonia lol). It serialized directly to the ScriptableObject format. No code required to build a new puzzle.\n\nAll in all it was a good learning experience, and I found it had a lot of similarities to Nintendo's pracitices with their latest Zelda title: Tears of the Kingdom, and it's internal AINB (Artificial Intelligence Node Binary) system the game operates on.\n\n![I think it might have been a sign.](resources/onosoul/onosoul_tias.jpg){left}\n\n# Sort Mode Hell\n\nIt was our first 2D game and we fought sorting the whole way through. Our first approach was vertex-based Y displacement with a 0.001 multiplier, plus a per-shader offset value to fine-tune individual objects. It worked, but it killed batching, and flickered on non-static objects.\n\n::audio resources/onosoul/Acceptance.mp3 | 'acceptance'\n\nWe went through three or four methods after that. Eventually we found the solution was already built into Unity. We'd been solving a problem that didn't need solving. That one hurt a little, but it's the kind of thing you only learn by doing it wrong first.\n\n::audio resources/onosoul/Snow Town.mp3 | 'snow town'\n\n# Notes from the Musician (Quinn DeBoer)\n\nWhat started off as just a simple game jam became one of my favourite projects that I have ever worked on. ONOSOUL was about a lot of things, but what I loved the most was that it was about growth. As a sound designer and music producer, I learned a lot trying to create a calming, yet slightly eerie, lofi atmosphere. I grew a ton throughout the process, the same way that Ono had on their journey. I find myself reminiscing on these days occasionally. Although ONOSOUL was just sounds, pixel art, and code, something about its tenderness made me feel alive. It’s kind of ironic in hindsight that working with dead ghosts was what made that feeling bloom.\n\n# On ONOSOUL\n\nWe planned many areas for the game, and one of my favourite ones is this area that completely lacked colour. It was meant to represent the lack of emotion the world of ONOSOUL had. ONOSOUL was a game about loss, but deeper than that: stagnation. As if the world had stopped moving forward.\n\n::audio resources/onosoul/Soul Searching.mp3 | 'soul searching'\n\nONOSOUL's ultimate lesson was and still is that:\n\n![quite the map I know (early screenshot)](resources/onosoul/onosoul.jpg){right}\n\nit's OK to say goodbye.\n\nDirectly quoting the game document, it would have ended with: 'No big music swell. Just credits with a subtle track.'\n\n::audio resources/onosoul/Colourless_4.mp3 | onosoul track 'colourless variant 4'"
   },
   {
     "id": "mtb",
@@ -206,127 +51,15 @@
       "multiplayer",
       "shader"
     ],
-    "w": 0.25,
-    "ratio": "tall",
-    "rotate": 1.1,
-    "thumb": "resources/mb/Screenshot_345.jpg",
-    "desc": "# Quick Notes\n\nThis mountain biking game is still one of my best projects. Following the recent success of PEAK from Aggro Crab and Landfall, we as a studio decided to hop on the \"friend slop\" train, and make a multiplayer game about descending a giant mountain.\n\nYou'd think that a mountain bike is pretty simple, but going about implementing one takes a lot of design choice, and applied physics.\nTLDR: It's not.\n\n# The Mountain Bike\n\nFor example, design choices we faced include:\n\nShould the bike balance itself or should that be a player controlled thing? Perhaps a hybrid approach?\nShould we use the in-built Unity wheel collider, or design our own? Perhaps a hybrid approach?\nShould the player be able to get on/off the bike? (What if they lose it?)\n\nUltimately, we were able to make the right decisions to make a fun player experience, while maintaining a realistic feel while riding the bike, and I will go into those choices now.\n\n\n# Applied Physics\n\nThe mountain bike automatically balances itself, and leans as an emergent behaviour rather than something directly programmed. \n\nDealing with Unity's wheel colliders was hellish to say the least. For flat ground, they work just fine, but the second you hit a steep hill, the 1D raycast approach they use just didn't cut it. They would clip, and then freak out and gimbal lock the bike (since it was being artificially balanced), and this led to many more issues.\n\nThe problem is, Unity does not expose their code publicly, so we couldn't just modify the component. Instead, we opted to make a ring of 1D raycasts, that apply forces to keep the wheel from clipping. They scale cubically the closer they are to clipping, ensuring it acts like a tire instead of a wall. (as a side product, the bike also gets an extra damping/suspension force for free.)\n\nThe bike uses gimbal torque in the roll axis to stay upright. It was the cleanest non-interference solution. To allow for air-control, it only balances when it's grounded (using the wheel colliders to check).\n\nA real rider is constantly shifting their center of mass, and we programmed that directly into the controller. This results in a much more realistic feel to the controller, and without it, you will wheelie, or flip over the handlebars, etc.\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Emergent Behaviour\n\nWe wanted to maximize the laughter while playing our game, and so we programmed ragdoll and death behaviour. This also prevents the player from sending it straight off the mountain. \n\n\n\n\n\n\n\n\n\n\nA fear I had was that the forces wouldn't vary enough to allow for risky but smooth landings, however, when both tires contacted the surface on landing, the suspension naturally softened the landing and allowed the player to continue as a consequence of physics.\nAnother emergent behaviour I love is that wheelies happen on steep inclines, requiring you to feather the throttle to prevent tipping. \n\nNeither of these things were designed, and are just the result of getting the physics right.\n\n\n# Brief Notes on The Player\n\nSomething I love in video games is when each system feels integrated in one another, and because of this, I opted to implement an active ragdoll system for our player.\n\nImplementing something like this is quite easy (but networking is hell).\nAt the base level, an active ragdoll is a stationary rig that plays regular animations. Then, you have your physical rig, and drive the joints with forces to try and match the rotations of the \"ghost rig\". \nYou tune the animations to get the results you want (kind of like an iterative evolutionary network done by hand), until you get it right.\n\n# Terrain Hell\n\nCreating a game with tunnels, floating terrain, and irregular shapes is not an easy task. Unity's in-built terrain system just doesn't cut it here as it's a simple heightmap. Asset store options cost a fortune, so we designed our own, for the software that feels like home to me.\n\nOur island geometry was entirely sculpted and decimated in Blender, but that's the easy part.\n\nThen for texturing the terrain, we explored a few options before finding a great one.\n\nFirst, we tried UV unwrapping the terrain, but that was horrible. It took forever, and the visible seams did not match the floating rock aesthetic we were going for.\n\nThe solution we created is as follows:\nIn blender, we use vertex colours (R,G,B,W) and isolate those channels in our shader. We then blend between as needed, and use triplanar mapping to handle UV projection on arbitrary geometry. Completely bypassing Unity's terrain system.\n\nI'm super proud of the shader/solution we came up with, and will definitely be using it in future projects/expanding upon it.\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Final Notes on Mountain Biking Friend Slop\n\nI had a ton of fun on this project, and it was probably one of my longest lasting ones.\n\nThe project files are available on GitHub below if you're curious to check it out, and I plan on releasing a build there soon.\n\n\n\n\n\n\nP.S. Our musician/sound design guy did an amazing job on this project as usual, so please enjoy this bonus track in honour of the bike he destroyed recording the SFX for it:",
-    "breakdown": [
-      ""
-    ],
-    "media": [
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/mb/Cover.gif",
-        "caption": "this game is so satisfying. (2x speed)"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/mb/Screenshot_229.jpg",
-        "caption": "that bike seat certainly looks comfortable.."
-      },
-      {
-        "type": "image",
-        "src": "resources/mb/Screenshot_283.jpg",
-        "caption": "ah yes, stuck again."
-      },
-      {
-        "type": "image",
-        "src": "resources/mb/Screenshot_1.jpg",
-        "caption": "radial 1D raycasts keep the wheels from clipping."
-      },
-      {
-        "type": "image",
-        "src": "resources/mb/Screenshot_3.jpg",
-        "caption": "holy gizmos.."
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/mb/Biff.gif",
-        "caption": ""
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/mb/Landing.gif",
-        "caption": ""
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/mb/ActiveRagdoll.gif",
-        "caption": ""
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/mb/Screenshot_242.jpg",
-        "caption": ""
-      },
-      {
-        "type": "image",
-        "src": "resources/mb/Screenshot_258.jpg",
-        "caption": ""
-      },
-      {
-        "type": "image",
-        "src": "resources/mb/Screenshot_257.jpg",
-        "caption": ""
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/mb/Screenshot_345.jpg",
-        "caption": "how I felt every other feature in developing this game..."
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "audio",
-        "src": "resources/mb/Floating Among The Clouds (1st run).mp3",
-        "caption": "floating among the clouds - Quinn DeBoer"
-      }
-    ],
+    "thumb": "resources/mountain-biking/Screenshot_345.jpg",
     "links": [
       {
         "label": "public github",
         "href": "https://github.com/strong-ery/mountain-biking-public",
         "primary": true
       }
-    ]
+    ],
+    "body": "# Quick Notes\n\nThis mountain biking game is still one of my best projects. Following the recent success of PEAK from Aggro Crab and Landfall, we as a studio decided to hop on the \"friend slop\" train, and make a multiplayer game about descending a giant mountain.\n\n![this game is so satisfying. (2x speed)](resources/mountain-biking/Cover.webp){right}\n\nYou'd think that a mountain bike is pretty simple, but going about implementing one takes a lot of design choice, and applied physics.\nTLDR: It's not.\n\n# The Mountain Bike\n\nFor example, design choices we faced include:\n\n![that bike seat certainly looks comfortable..](resources/mountain-biking/Screenshot_229.jpg){left}\n\nShould the bike balance itself or should that be a player controlled thing? Perhaps a hybrid approach?\nShould we use the in-built Unity wheel collider, or design our own? Perhaps a hybrid approach?\nShould the player be able to get on/off the bike? (What if they lose it?)\n\nUltimately, we were able to make the right decisions to make a fun player experience, while maintaining a realistic feel while riding the bike, and I will go into those choices now.\n\n![ah yes, stuck again.](resources/mountain-biking/Screenshot_283.jpg){right}\n\n# Applied Physics\n\nThe mountain bike automatically balances itself, and leans as an emergent behaviour rather than something directly programmed. \n\nDealing with Unity's wheel colliders was hellish to say the least. For flat ground, they work just fine, but the second you hit a steep hill, the 1D raycast approach they use just didn't cut it. They would clip, and then freak out and gimbal lock the bike (since it was being artificially balanced), and this led to many more issues.\n\n![radial 1D raycasts keep the wheels from clipping.](resources/mountain-biking/Screenshot_1.jpg){left}\n\nThe problem is, Unity does not expose their code publicly, so we couldn't just modify the component. Instead, we opted to make a ring of 1D raycasts, that apply forces to keep the wheel from clipping. They scale cubically the closer they are to clipping, ensuring it acts like a tire instead of a wall. (as a side product, the bike also gets an extra damping/suspension force for free.)\n\nThe bike uses gimbal torque in the roll axis to stay upright. It was the cleanest non-interference solution. To allow for air-control, it only balances when it's grounded (using the wheel colliders to check).\n\n![holy gizmos..](resources/mountain-biking/Screenshot_3.jpg){right}\n\nA real rider is constantly shifting their center of mass, and we programmed that directly into the controller. This results in a much more realistic feel to the controller, and without it, you will wheelie, or flip over the handlebars, etc.\n\n# Emergent Behaviour\n\nWe wanted to maximize the laughter while playing our game, and so we programmed ragdoll and death behaviour. This also prevents the player from sending it straight off the mountain. \n\n![](resources/mountain-biking/Biff.webp){left}\n\nA fear I had was that the forces wouldn't vary enough to allow for risky but smooth landings, however, when both tires contacted the surface on landing, the suspension naturally softened the landing and allowed the player to continue as a consequence of physics.\nAnother emergent behaviour I love is that wheelies happen on steep inclines, requiring you to feather the throttle to prevent tipping. \n\nNeither of these things were designed, and are just the result of getting the physics right.\n\n![](resources/mountain-biking/Landing.webp){right}\n\n# Brief Notes on The Player\n\nSomething I love in video games is when each system feels integrated in one another, and because of this, I opted to implement an active ragdoll system for our player.\n\n![](resources/mountain-biking/ActiveRagdoll.webp){left}\n\nImplementing something like this is quite easy (but networking is hell).\nAt the base level, an active ragdoll is a stationary rig that plays regular animations. Then, you have your physical rig, and drive the joints with forces to try and match the rotations of the \"ghost rig\". \nYou tune the animations to get the results you want (kind of like an iterative evolutionary network done by hand), until you get it right.\n\n# Terrain Hell\n\nCreating a game with tunnels, floating terrain, and irregular shapes is not an easy task. Unity's in-built terrain system just doesn't cut it here as it's a simple heightmap. Asset store options cost a fortune, so we designed our own, for the software that feels like home to me.\n\n![](resources/mountain-biking/Screenshot_242.jpg){right}\n\nOur island geometry was entirely sculpted and decimated in Blender, but that's the easy part.\n\nThen for texturing the terrain, we explored a few options before finding a great one.\n\n![](resources/mountain-biking/Screenshot_258.jpg){left}\n\nFirst, we tried UV unwrapping the terrain, but that was horrible. It took forever, and the visible seams did not match the floating rock aesthetic we were going for.\n\nThe solution we created is as follows:\nIn blender, we use vertex colours (R,G,B,W) and isolate those channels in our shader. We then blend between as needed, and use triplanar mapping to handle UV projection on arbitrary geometry. Completely bypassing Unity's terrain system.\n\n![](resources/mountain-biking/Screenshot_257.jpg){right}\n\nI'm super proud of the shader/solution we came up with, and will definitely be using it in future projects/expanding upon it.\n\n# Final Notes on Mountain Biking Friend Slop\n\nI had a ton of fun on this project, and it was probably one of my longest lasting ones.\n\n![how I felt every other feature in developing this game...](resources/mountain-biking/Screenshot_345.jpg){left}\n\nThe project files are available on GitHub below if you're curious to check it out, and I plan on releasing a build there soon.\n\nP.S. Our musician/sound design guy did an amazing job on this project as usual, so please enjoy this bonus track in honour of the bike he destroyed recording the SFX for it:\n\n::audio resources/mountain-biking/Floating Among The Clouds (1st run).mp3 | floating among the clouds - Quinn DeBoer"
   },
   {
     "id": "elevated",
@@ -339,14 +72,9 @@
       "3d",
       "VR/XR"
     ],
-    "w": 0.25,
-    "ratio": "square",
-    "rotate": -0.7,
-    "thumb": "resources/elvtd/red.jpg",
-    "desc": "",
-    "breakdown": [],
-    "media": [],
-    "links": []
+    "thumb": "resources/elevated/red.jpg",
+    "links": [],
+    "body": ""
   },
   {
     "id": "savage-summit",
@@ -360,14 +88,9 @@
       "multiplayer",
       "VR/XR"
     ],
-    "w": 0.25,
-    "ratio": "square",
-    "rotate": 0.9,
-    "thumb": "resources/ss/Screenshot_6.jpg",
-    "desc": "",
-    "breakdown": [],
-    "media": [],
-    "links": []
+    "thumb": "resources/savage-summit/Screenshot_6.jpg",
+    "links": [],
+    "body": ""
   },
   {
     "id": "terminal-lucidity",
@@ -379,14 +102,9 @@
       "unity",
       "3d"
     ],
-    "w": 0.33,
-    "ratio": "wide",
-    "rotate": 2.3,
-    "thumb": "resources/tl/Screenshot_22.jpg",
-    "desc": "",
-    "breakdown": [],
-    "media": [],
-    "links": []
+    "thumb": "resources/terminal-lucidity/Screenshot_22.jpg",
+    "links": [],
+    "body": ""
   },
   {
     "id": "geeked",
@@ -399,14 +117,9 @@
       "3d",
       "multiplayer"
     ],
-    "w": 0.45,
-    "ratio": "wide",
-    "rotate": 1.1,
-    "thumb": "resources/gk/WendigoPromo2.jpg",
-    "desc": "",
-    "breakdown": [],
-    "media": [],
-    "links": []
+    "thumb": "resources/geeked/WendigoPromo2.jpg",
+    "links": [],
+    "body": ""
   },
   {
     "id": "sportbike-sim",
@@ -419,73 +132,7 @@
       "3d",
       "simulation"
     ],
-    "w": 0.33,
-    "ratio": "square",
-    "rotate": -1.1,
-    "thumb": "resources/sb/Screenshot_483.jpg",
-    "desc": "# Quick Notes\n\nI'm a gearhead. Cars and bikes are my thing, and I couldn't seem to find a free bike game that actually felt right, and covered all of my bases. \nDecent audio, decent visuals, and decent handling, all at once. I wasn't asking for the world, but the closest thing was a Roblox game that had passable audio and controls but no motion blur.\n\nNo motion blur. In a biking game.\n\nSo instead, I made my own.\n\nLuckily, I had experience building physics simulations in unity (PID controllers, balancing rigidbodies, and building a mountain bike physics simulation from my past mountain biking game.) Once those two things clicked together, the project wrote itself.\n\n\n\n\n\n# The Audio\n\nThis is the part I'm most proud of by far, and it's the part the makes or breaks a sportbiking game.\n\nMost engine audio in games is pre-recorded loops: a set of RPM samples that get pitch-shifted and crossfaded as you accelerate. It works, but it never quite sounds alive. The transitions are always slightly off, and at the wrong RPM you can hear the seams.\n\nThis sim generates engine sound entirely in real-time using a physical waveguide model of the exhaust system. No samples. No loops. The audio is completely synthesized from scratch, every frame, driven directly by the engine simulation.\n\nSpecifically: four header pipes are modeled as digital waveguides (delay lines where pressure waves travel forward and reflect back). Each pipe has slightly different length, matching the asymmetric header geometry of a real Kawasaki ZX6R. At the collector junction, pressure waves from all four pipes scatter into each other using proper junction scattering math. That interaction is what produces the characteristic uneven burble of an inline-4, rather than four identical pulses added together. The collector then feeds into a mid-pipe with a muffler on the end.\n\nOn top of that, the sim includes: intake roar driven by throttle position, gear whine that tracks RPM, mechanical tappet noise, exhaust pops on overrun and downshifts, and soft clipping on the final mix. All of it runs sample-to-sample on the audio thread, synchronized to the crank angle calculated from the drivetrain simulation.\n\nThe long term goal is a full 1D CFD solver (which happens to be my next project as of 05-24-2026), with a full simulation of each individual combustion chamber. Opposed to the current model of injecting pressure as input. That's the dream.\n\nTDLR: A simulated engine.\n\n\n\n\n\n# The Simulation\n\nGear ratios, torque curves, and redline are all taken directly from real ZX6R specs. RPM is calculated from gear, speed, and throttle input, and feeds directly into the audio synthesizer. (meaning the sound and physics are always in sync) Downshifts spike RPM, upshifts drop it, it acts like a real bike.\n\nPhysics are build around the Unity Wheel Collider 3D package, with custom forces layered on top. All acceleration energy runs straight through the rear tire. Steering gets heavier at speed, suspension reacts dynamically to load and terrain, and the bike resists directional changes due to gyroscopic forces. It's easy at low speeds, and increasingly unforgiving: just like a real bike.\n\nThe handling was the other thing I couldn't find done to my liking, so I'm glad I could make something that feels right to me.\n\n# Final Notes\n\nThis was and still is a passion project in the purest sense. I built the thing I wanted to play and couldn't find. It's a playable demo. There's a long list of things I want to add, but that's for another article.\n\nThanks for reading!",
-    "breakdown": [],
-    "media": [
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/fpgt/probe_3.jpg",
-        "caption": "my project car."
-      },
-      {
-        "type": "image",
-        "src": "resources/sb/Screenshot_425.jpg",
-        "caption": "in game screenshot redlining."
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/sb/headers.jpg",
-        "caption": "ZX6R headers."
-      },
-      {
-        "type": "image",
-        "src": "resources/sb/CFD.jpg",
-        "caption": "a CFD solver visualized (credit AngeTheGreat)"
-      },
-      {
-        "type": "image",
-        "src": "resources/sb/i4zx6r.jpg",
-        "caption": "ZX6R engine."
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/sb/Screenshot_482.jpg",
-        "caption": ""
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/sb/Screenshot_484.jpg",
-        "caption": ""
-      }
-    ],
+    "thumb": "resources/sportbike-sim/Screenshot_483.jpg",
     "links": [
       {
         "label": "PHYSICAL AUDIO SIGNAL PROCESSING - JULIUS O. SMITH III",
@@ -502,7 +149,8 @@
         "href": "https://www.youtube.com/watch?v=J11c8mMN1PA&t=951s",
         "primary": true
       }
-    ]
+    ],
+    "body": "# Quick Notes\n\nI'm a gearhead. Cars and bikes are my thing, and I couldn't seem to find a free bike game that actually felt right, and covered all of my bases. \nDecent audio, decent visuals, and decent handling, all at once. I wasn't asking for the world, but the closest thing was a Roblox game that had passable audio and controls but no motion blur.\n\nNo motion blur. In a biking game.\n\n![my project car.](resources/ford-probe-gt/probe_3.jpg){right}\n\nSo instead, I made my own.\n\nLuckily, I had experience building physics simulations in unity (PID controllers, balancing rigidbodies, and building a mountain bike physics simulation from my past mountain biking game.) Once those two things clicked together, the project wrote itself.\n\n![in game screenshot redlining.](resources/sportbike-sim/Screenshot_425.jpg){left}\n\n# The Audio\n\nThis is the part I'm most proud of by far, and it's the part the makes or breaks a sportbiking game.\n\nMost engine audio in games is pre-recorded loops: a set of RPM samples that get pitch-shifted and crossfaded as you accelerate. It works, but it never quite sounds alive. The transitions are always slightly off, and at the wrong RPM you can hear the seams.\n\n![ZX6R headers.](resources/sportbike-sim/headers.jpg){right}\n\nThis sim generates engine sound entirely in real-time using a physical waveguide model of the exhaust system. No samples. No loops. The audio is completely synthesized from scratch, every frame, driven directly by the engine simulation.\n\nSpecifically: four header pipes are modeled as digital waveguides (delay lines where pressure waves travel forward and reflect back). Each pipe has slightly different length, matching the asymmetric header geometry of a real Kawasaki ZX6R. At the collector junction, pressure waves from all four pipes scatter into each other using proper junction scattering math. That interaction is what produces the characteristic uneven burble of an inline-4, rather than four identical pulses added together. The collector then feeds into a mid-pipe with a muffler on the end.\n\nOn top of that, the sim includes: intake roar driven by throttle position, gear whine that tracks RPM, mechanical tappet noise, exhaust pops on overrun and downshifts, and soft clipping on the final mix. All of it runs sample-to-sample on the audio thread, synchronized to the crank angle calculated from the drivetrain simulation.\n\n![a CFD solver visualized (credit AngeTheGreat)](resources/sportbike-sim/CFD.jpg){left}\n\nThe long term goal is a full 1D CFD solver (which happens to be my next project as of 05-24-2026), with a full simulation of each individual combustion chamber. Opposed to the current model of injecting pressure as input. That's the dream.\n\nTDLR: A simulated engine.\n\n![ZX6R engine.](resources/sportbike-sim/i4zx6r.jpg){right}\n\n# The Simulation\n\nGear ratios, torque curves, and redline are all taken directly from real ZX6R specs. RPM is calculated from gear, speed, and throttle input, and feeds directly into the audio synthesizer. (meaning the sound and physics are always in sync) Downshifts spike RPM, upshifts drop it, it acts like a real bike.\n\nPhysics are build around the Unity Wheel Collider 3D package, with custom forces layered on top. All acceleration energy runs straight through the rear tire. Steering gets heavier at speed, suspension reacts dynamically to load and terrain, and the bike resists directional changes due to gyroscopic forces. It's easy at low speeds, and increasingly unforgiving: just like a real bike.\n\n![](resources/sportbike-sim/Screenshot_482.jpg){left}\n\nThe handling was the other thing I couldn't find done to my liking, so I'm glad I could make something that feels right to me.\n\n# Final Notes\n\nThis was and still is a passion project in the purest sense. I built the thing I wanted to play and couldn't find. It's a playable demo. There's a long list of things I want to add, but that's for another article.\n\n![](resources/sportbike-sim/Screenshot_484.jpg){right}\n\nThanks for reading!"
   },
   {
     "id": "zelda-cm",
@@ -514,14 +162,9 @@
       "modding",
       "blender"
     ],
-    "w": 0.33,
-    "ratio": "wide",
-    "rotate": -1.5,
-    "thumb": "resources/totkcm/goldlynel.jpg",
-    "desc": "",
-    "breakdown": [],
-    "media": [],
-    "links": []
+    "thumb": "resources/zelda-totk-challenge-mode/goldlynel.jpg",
+    "links": [],
+    "body": ""
   },
   {
     "id": "tkmm",
@@ -533,14 +176,9 @@
       "tool",
       "modding"
     ],
-    "w": 0.36,
-    "ratio": "wide",
-    "rotate": -1.5,
     "thumb": "resources/tkmm/tkmm.jpg",
-    "desc": "",
-    "breakdown": [],
-    "media": [],
-    "links": []
+    "links": [],
+    "body": ""
   },
   {
     "id": "qrpe",
@@ -553,90 +191,15 @@
       "tool",
       "shader"
     ],
-    "w": 0.39,
-    "ratio": "wide",
-    "rotate": -0.5,
-    "thumb": "resources/qrpe/Screenshot_466.jpg",
-    "desc": "# Quick Notes\n\nOur QRPE (Quantized Render Pipeline Extension) is a URP Renderer Feature that gives any Unity URP 17+ project a quantized (or optionally pixel art) aesthetic. Palette-quantized colours, a crisp pixel grid, and hybrid geometry-normal-aware outlines. All under one checkbox in the renderer asset, with zero changes to any scene materials.\n(it also integrates directly with our Volumetric Fog system which is covered in its own article)\n\n# Method To The Madness\n\nAlthough it may sound a bit complicated, the methods we have chosen to use are quite simple.\n\nThe pipeline runs four passes in sequence:\nDownsample -> Quantize -> Outline -> Upscale\n\nThe scene is first point-sampled down to a target res (low or full depending on the look you want for your game, default 320x180).\n\nPoint filtering is very important: any interpolation would blur the pixel grid before we ever reach the quantization pass, and then everything would fall apart and become messy. All of the other steps happen at this target resolution, and in the case that you're using a low res setting, it keeps costs to a minimum.\n\nThen, to finish off, everything gets point sampled back up to the screen's resolution, which gives every texel a clean uniform block (or corresponding) pixel. No blending, or smoothing: by design.\n\nQuantization and outlines both run at the target res on purpose: Outlines drawn at 320x180 and then upscaled look proper, outlines drawn at 1080p and then downscaled are an antialiasing mess.\n\n\n\n\n\n\n# CIE Lab Colour Matching\n\nThis is the part that most quantization systems miss, but it's well worth talking about.\n\nShort-sighted palette quantization finds the nearest colour by Euclidean distance in RGB space. However, RGB distance is a terrible proxy for visual similarity: it treats red to blue, and dark to light as equivalent distances, which they clearly aren't to a human eye. The result is incorrect palette snapping on saturated colours and muddy gradients.\n\n\n\n\n\n\n\n\n\n\n\nQRPE converts every pixel to CIE Lab space before searching the palette. Lab is a perceptual colour space: distance in Lab correlates directly with how different two colours look to a human. The L channel is lightness, a is green to red, b is blue to yellow. A distance of 1 Lab unit is roughly the smallest difference a trained observer can detect. The palette search finds the nearest entry by Lab distance, then converts back to RGB for output. Colours snap to visually correct palette entries rather than mathematically convenient ones.\n\n\n\n\n\n\n\n\n\n\n\nOrdered Bayer dithering runs before the palette snap, nudging each pixel's Lab value by a small offset from a 4x4 matrix. Because the dither is applied in Lab space, it adds subtle surface variation that looks like texture instead of a colour error.\n\n# Outlines\n\nThe outline pass runs a 4-neighbor depth comparison at each pixel. Where the depth delta between a pixel and its neighboring ones exceeds a threshold in the config, an outline is drawn. Depth-only outlines miss surface details on flat geometry (eg: a sphere reads as a single silhouette with no interior edges), so normal-based detection runs alongside the main outline system. The center pixel's normal is compared against the average of its neighbors; where they diverge significantly: is considered a surface difference worth outlining.\n\n\n# The Palette System\n\nI don't have too much to say regarding this, it's simple for a reason.\nPalettes are just a Color[] array on a ScriptableObject, which means you can hotswap the game's colour mood at runtime by swapping the asset (with zero shader recompilation). The default palette has 64 colours across 4 brightness levels, and 16 hues.\n\nWe also developed a \"palette designer\" tool in Unity, that generates palettes from parameters like hue count, brightness range, saturation range, and per-level hue shifts.\n\n\n\n# Final Notes\n\nHonestly, this is one of my top 5 shader effects I've ever developed, I had tons of fun learning the science behind it, and the inspiration for it was from a YouTube video I got recommended, so I'll leave it as a link below this article in case you're interested.",
-    "breakdown": [],
-    "media": [
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/qrpe/capy5.jpg",
-        "caption": "a fishing capybara from the project that first used the pipeline."
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/qrpe/pointfilter.jpg",
-        "caption": ""
-      },
-      {
-        "type": "image",
-        "src": "resources/qrpe/pointupscale.jpg",
-        "caption": "no idea why this example is so misaligned lol"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/qrpe/WiGaRGB.jpg",
-        "caption": "wide gamut RGB visualized."
-      },
-      {
-        "type": "image",
-        "src": "resources/qrpe/Labspace.jpg",
-        "caption": "Lab space visualize."
-      },
-      {
-        "type": "image",
-        "src": "resources/qrpe/4x4bayer.jpg",
-        "caption": "4x4 ord. bayer dithering."
-      },
-      {
-        "type": "image",
-        "src": "resources/qrpe/image.jpg",
-        "caption": "example in the editor."
-      },
-      {
-        "type": "image",
-        "src": "resources/qrpe/palette.jpg",
-        "caption": "example palette I found online to fill the empty space lol."
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/qrpe/Screenshot_466.jpg",
-        "caption": "an apple for your eye."
-      }
-    ],
+    "thumb": "resources/quantized-render-pipeline/Screenshot_466.jpg",
     "links": [
       {
         "label": "Red Giraffe Quantization Video",
         "href": "https://www.youtube.com/watch?v=Mp7eQsiZ_wA",
         "primary": true
       }
-    ]
+    ],
+    "body": "# Quick Notes\n\nOur QRPE (Quantized Render Pipeline Extension) is a URP Renderer Feature that gives any Unity URP 17+ project a quantized (or optionally pixel art) aesthetic. Palette-quantized colours, a crisp pixel grid, and hybrid geometry-normal-aware outlines. All under one checkbox in the renderer asset, with zero changes to any scene materials.\n(it also integrates directly with our Volumetric Fog system which is covered in its own article)\n\n![a fishing capybara from the project that first used the pipeline.](resources/quantized-render-pipeline/capy5.jpg){right}\n\n# Method To The Madness\n\nAlthough it may sound a bit complicated, the methods we have chosen to use are quite simple.\n\nThe pipeline runs four passes in sequence:\nDownsample -> Quantize -> Outline -> Upscale\n\n![](resources/quantized-render-pipeline/pointfilter.jpg){left}\n\nThe scene is first point-sampled down to a target res (low or full depending on the look you want for your game, default 320x180).\n\nPoint filtering is very important: any interpolation would blur the pixel grid before we ever reach the quantization pass, and then everything would fall apart and become messy. All of the other steps happen at this target resolution, and in the case that you're using a low res setting, it keeps costs to a minimum.\n\n![no idea why this example is so misaligned lol](resources/quantized-render-pipeline/pointupscale.jpg){right}\n\nThen, to finish off, everything gets point sampled back up to the screen's resolution, which gives every texel a clean uniform block (or corresponding) pixel. No blending, or smoothing: by design.\n\n![wide gamut RGB visualized.](resources/quantized-render-pipeline/WiGaRGB.jpg){left}\n\nQuantization and outlines both run at the target res on purpose: Outlines drawn at 320x180 and then upscaled look proper, outlines drawn at 1080p and then downscaled are an antialiasing mess.\n\n# CIE Lab Colour Matching\n\nThis is the part that most quantization systems miss, but it's well worth talking about.\n\n![Lab space visualize.](resources/quantized-render-pipeline/Labspace.jpg){right}\n\nShort-sighted palette quantization finds the nearest colour by Euclidean distance in RGB space. However, RGB distance is a terrible proxy for visual similarity: it treats red to blue, and dark to light as equivalent distances, which they clearly aren't to a human eye. The result is incorrect palette snapping on saturated colours and muddy gradients.\n\nQRPE converts every pixel to CIE Lab space before searching the palette. Lab is a perceptual colour space: distance in Lab correlates directly with how different two colours look to a human. The L channel is lightness, a is green to red, b is blue to yellow. A distance of 1 Lab unit is roughly the smallest difference a trained observer can detect. The palette search finds the nearest entry by Lab distance, then converts back to RGB for output. Colours snap to visually correct palette entries rather than mathematically convenient ones.\n\n![4x4 ord. bayer dithering.](resources/quantized-render-pipeline/4x4bayer.jpg){left}\n\nOrdered Bayer dithering runs before the palette snap, nudging each pixel's Lab value by a small offset from a 4x4 matrix. Because the dither is applied in Lab space, it adds subtle surface variation that looks like texture instead of a colour error.\n\n![example in the editor.](resources/quantized-render-pipeline/image.jpg){right}\n\n# Outlines\n\nThe outline pass runs a 4-neighbor depth comparison at each pixel. Where the depth delta between a pixel and its neighboring ones exceeds a threshold in the config, an outline is drawn. Depth-only outlines miss surface details on flat geometry (eg: a sphere reads as a single silhouette with no interior edges), so normal-based detection runs alongside the main outline system. The center pixel's normal is compared against the average of its neighbors; where they diverge significantly: is considered a surface difference worth outlining.\n\n# The Palette System\n\nI don't have too much to say regarding this, it's simple for a reason.\nPalettes are just a Color[] array on a ScriptableObject, which means you can hotswap the game's colour mood at runtime by swapping the asset (with zero shader recompilation). The default palette has 64 colours across 4 brightness levels, and 16 hues.\n\n![example palette I found online to fill the empty space lol.](resources/quantized-render-pipeline/palette.jpg){left}\n\nWe also developed a \"palette designer\" tool in Unity, that generates palettes from parameters like hue count, brightness range, saturation range, and per-level hue shifts.\n\n# Final Notes\n\nHonestly, this is one of my top 5 shader effects I've ever developed, I had tons of fun learning the science behind it, and the inspiration for it was from a YouTube video I got recommended, so I'll leave it as a link below this article in case you're interested.\n\n![an apple for your eye.](resources/quantized-render-pipeline/Screenshot_466.jpg){right}"
   },
   {
     "id": "fft-ocean",
@@ -650,99 +213,15 @@
       "simulation",
       "shader"
     ],
-    "w": 0.28,
-    "ratio": "square",
-    "rotate": 1,
-    "thumb": "resources/fft/Screenshot_3.jpg",
-    "desc": "# Quick Notes\n\nThis covers the FFT ocean system I developed for our studio whilst participating in the Game Name Game Jam 2026.\nAlthough we did not end up submitting our project, the FFT ocean I decided to do on a whim, is definitely worth showing off, because the math behind it, as well as the result are both really interesting.\n(scope creep sucks lol)\n\n# The Math\n\nIn our implementation (and any FFT ocean), it's not simulated wave by wave. Instead, the surface is described statistically as a distribution of energy, across frequencies and directions. This is called the JONSWAP spectrum, which is a model developed for real oceanographic use, originally for naval engineering (who would've thought it would be used to simulate the ocean in an unreleased indie title lol).\nIt takes inputs like wind speed, fetch (how far the wind has travelled over the water), and a peak enhancement factor, and outputs how much energy each wave frequency should carry.\n\nThis spectrum lives in the frequency domain. To actually get a surface out of it, you run a Inverse Fast Fourier Transform every frame on the GPU, which converts the frequency-domain description into real vertex displacements across a 512x512 grid (Render Texture) for our case. \nThe FFT and its sister IFFT is what makes this approach viable: transforming the whole grid takes the same time regardless of how many waves are in it.\n\nSomething subtle worth talking about is the conjugate-packing step before the FFT. It ensures the output is in Real values. Without it, you would get complex numbers as the displacement, which is meaningless as geometry. It's an easy detail to look over but it's something I think is interesting, and worth mentioning.\n\nThe horizontal displacements (the ih * K / |K| terms) are what separate this from more simple approaches such as heightfield water. Vertices don't just move up and down, they also curl horizontally in the direction the waves are travelling, which produces that characteristic \"roll\" you see in real ocean swells.\n\nWhere those displacements converge hard enough that the surface folds over itself, the \"Jacobian\" goes negative, and this is how we calculate sea foam.\n\nWe overlap 4 textures of varying size (Close up ripples, mid-range chop, large swells, and distant structures), and that forms the mathematical backend for our ocean, and our shader to render it.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# The Shaders\n\nThe vertex shader samples the four displacement texture arrays, and applies the FFT result directly to the mesh's vertex positions. \nFor optimizations sake (which seems to be a dying art in AAA games), the mesh itself is a clipmap of concentric LOD rings.\nNormals are derived from the slope textures (the spatial derivatives of displacement), then blended with two scrolling detail normal maps for close-up surface texture. A fun detail is that the normal is split into three separate versions for Fresnel, specular, and diffuse (each with its own strength multiplier). Which allows you to tune how agitated each lighting term looks on its own. A calm specular highlight with choppy Fresnel reads very differently than having them locked together.\n\nAs stated previously, the foam is driven by the Jacobian computed by the compute shader, and is sampled per fragment, and multiplied against an optional tiling foam texture. It accumulates and decays for added effect.\n\nReflections are driven by a cubemap, with a sharp sun disc added on top of the reflection direction (that's fun lol). Specular is a full GGX BRDF opposed to Blinn-Phong, which handles the near-glancing sun angles that you want to see in ocean water.\n\n# The Result\n\nI honestly think the results totally speak for themselves. This crazy system, alongside many other ambitious decisions, ultimately led us to give up on releasing anything finished for the Jam. It was still great fun, and I hope to use it in a future project, or maybe place it on the Asset Store.\n\nIf you're curious and want to look deeper into this topic, I couldn't recommend Acerola's series on this topic more. It carried me through implementing this system. It will be linked below.\n\nThank you for reading!\n\nP.S. if you're curious about the pixelated look, this project took advantage of our QRP Extension, there is an article on here regarding that if you're interested.",
-    "breakdown": [],
-    "media": [
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/fft/Screenshot_3.jpg",
-        "caption": "the FFT ocean."
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/fft/JONSWAP.jpg",
-        "caption": "spectral density graph of JONSWAP"
-      },
-      {
-        "type": "image",
-        "src": "resources/fft/JONSWAP2.jpg",
-        "caption": "the domains of JONSWAP"
-      },
-      {
-        "type": "image",
-        "src": "resources/fft/conjugate.jpg",
-        "caption": "conjugate packing halves the compute time!"
-      },
-      {
-        "type": "image",
-        "src": "resources/fft/Screenshot_5.jpg",
-        "caption": "a slice of one of four FFT Render Textures."
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/fft/Screenshot_8.jpg",
-        "caption": "LOD and vertex displacement."
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/fft/Screenshot_9.jpg",
-        "caption": "calm lake example (if your water exists, this system can handle it)"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/fft/Screenshot_1.jpg",
-        "caption": "QRPE off."
-      },
-      {
-        "type": "image",
-        "src": "resources/fft/Screenshot_2.jpg",
-        "caption": "QRPE on."
-      }
-    ],
+    "thumb": "resources/fft-ocean/Screenshot_3.jpg",
     "links": [
       {
         "label": "Acerola's Video",
         "href": "https://www.youtube.com/watch?v=yPfagLeUa7k",
         "primary": true
       }
-    ]
+    ],
+    "body": "# Quick Notes\n\nThis covers the FFT ocean system I developed for our studio whilst participating in the Game Name Game Jam 2026.\nAlthough we did not end up submitting our project, the FFT ocean I decided to do on a whim, is definitely worth showing off, because the math behind it, as well as the result are both really interesting.\n(scope creep sucks lol)\n\n![the FFT ocean.](resources/fft-ocean/Screenshot_3.jpg){right}\n\n# The Math\n\nIn our implementation (and any FFT ocean), it's not simulated wave by wave. Instead, the surface is described statistically as a distribution of energy, across frequencies and directions. This is called the JONSWAP spectrum, which is a model developed for real oceanographic use, originally for naval engineering (who would've thought it would be used to simulate the ocean in an unreleased indie title lol).\nIt takes inputs like wind speed, fetch (how far the wind has travelled over the water), and a peak enhancement factor, and outputs how much energy each wave frequency should carry.\n\nThis spectrum lives in the frequency domain. To actually get a surface out of it, you run a Inverse Fast Fourier Transform every frame on the GPU, which converts the frequency-domain description into real vertex displacements across a 512x512 grid (Render Texture) for our case. \nThe FFT and its sister IFFT is what makes this approach viable: transforming the whole grid takes the same time regardless of how many waves are in it.\n\n![spectral density graph of JONSWAP](resources/fft-ocean/JONSWAP.jpg){left}\n\nSomething subtle worth talking about is the conjugate-packing step before the FFT. It ensures the output is in Real values. Without it, you would get complex numbers as the displacement, which is meaningless as geometry. It's an easy detail to look over but it's something I think is interesting, and worth mentioning.\n\n![the domains of JONSWAP](resources/fft-ocean/JONSWAP2.jpg){right}\n\nThe horizontal displacements (the ih * K / |K| terms) are what separate this from more simple approaches such as heightfield water. Vertices don't just move up and down, they also curl horizontally in the direction the waves are travelling, which produces that characteristic \"roll\" you see in real ocean swells.\n\nWhere those displacements converge hard enough that the surface folds over itself, the \"Jacobian\" goes negative, and this is how we calculate sea foam.\n\n![conjugate packing halves the compute time!](resources/fft-ocean/conjugate.jpg){left}\n\nWe overlap 4 textures of varying size (Close up ripples, mid-range chop, large swells, and distant structures), and that forms the mathematical backend for our ocean, and our shader to render it.\n\n# The Shaders\n\nThe vertex shader samples the four displacement texture arrays, and applies the FFT result directly to the mesh's vertex positions. \nFor optimizations sake (which seems to be a dying art in AAA games), the mesh itself is a clipmap of concentric LOD rings.\nNormals are derived from the slope textures (the spatial derivatives of displacement), then blended with two scrolling detail normal maps for close-up surface texture. A fun detail is that the normal is split into three separate versions for Fresnel, specular, and diffuse (each with its own strength multiplier). Which allows you to tune how agitated each lighting term looks on its own. A calm specular highlight with choppy Fresnel reads very differently than having them locked together.\n\n![a slice of one of four FFT Render Textures.](resources/fft-ocean/Screenshot_5.jpg){right}\n\nAs stated previously, the foam is driven by the Jacobian computed by the compute shader, and is sampled per fragment, and multiplied against an optional tiling foam texture. It accumulates and decays for added effect.\n\n![LOD and vertex displacement.](resources/fft-ocean/Screenshot_8.jpg){left}\n\nReflections are driven by a cubemap, with a sharp sun disc added on top of the reflection direction (that's fun lol). Specular is a full GGX BRDF opposed to Blinn-Phong, which handles the near-glancing sun angles that you want to see in ocean water.\n\n# The Result\n\nI honestly think the results totally speak for themselves. This crazy system, alongside many other ambitious decisions, ultimately led us to give up on releasing anything finished for the Jam. It was still great fun, and I hope to use it in a future project, or maybe place it on the Asset Store.\n\n![calm lake example (if your water exists, this system can handle it)](resources/fft-ocean/Screenshot_9.jpg){right}\n\nIf you're curious and want to look deeper into this topic, I couldn't recommend Acerola's series on this topic more. It carried me through implementing this system. It will be linked below.\n\n![QRPE off.](resources/fft-ocean/Screenshot_1.jpg){left}\n\nThank you for reading!\n\nP.S. if you're curious about the pixelated look, this project took advantage of our QRP Extension, there is an article on here regarding that if you're interested.\n\n![QRPE on.](resources/fft-ocean/Screenshot_2.jpg){right}"
   },
   {
     "id": "volumetric-fog",
@@ -755,92 +234,7 @@
       "3d",
       "shader"
     ],
-    "w": 0.3,
-    "ratio": "square",
-    "rotate": 0.4,
-    "thumb": "resources/vlfog/Screenshot_4.jpg",
-    "desc": "# Quick Notes\n\nVolumetric fog is one of those things you take for granted, but a performant volumetric fog system (or lack thereof) can make or break a games atmosphere.\nUnity's HDRP pipeline has full volumetric fog support, but URP, the multi-platform, and lower end - middle end hardware supporting pipeline, lacks any useful fog.\nThis had plagued our studio ever since its creation, and implementing a system such as this has never been easy. It was only recently that I finally felt confident enough to write one, and I will briefly detail it here (design choices, basic math behind it, optimizations, etc.)\n\n# Why is fog so hard?\n\nThe naive answer to the fog problem is just \"render a coloured overlay with some distance consideration and call it a day,\" that's more or less what Unity's built-in URP fog does. It's cheap, and it's fast. But it looks flat and unconvincing, because real fog isn't a filter applied to a screen. It's the physical process of light scattering through a medium, bouncing off particles, and attenuating as it travels. The colour of fog at any given point is entirely dependent on where the light came from, how far it travelled, and what's actually in the way.\n\nReproducing all of that properly means sampling density at many points along many rays from the camera out through the scene: a raymarcher. The problem is that running a raymarcher at full res, with enough steps to look smooth, is painfully expensive. Simply: it slaughters your framerate. So every design decision in a system like this is fundamentally about getting the visual quality of an expensive technique at a price you can actually afford.\n\n\n\n\n\n# On Our Volumetric Fog Implementation\n\nThe raymarcher runs at half resolution by default, and then gets composited back over the full-resolution scene. Halving the resolution cuts the fragment cost to a quarter, which is the single biggest performance improvement across the whole system. The catch is that half-res fog produces horrible edge halos where geometry meets fog (a thin sliver of blurred fog bleeds onto nearby surfaces). The fix is a bilateral upsample: when reconstructing the full resolution image, each of the four neighboring fog samples are depth-weighted, so samples from behind a geometry edge are discarded instead of being blended in.\n\nThe same depth weighting is applied to the blur passes:\nA 9-tap Gaussian blur runs over the fog buffer before compositing, and any tap whose depth differs significantly from the center pixel is thrown out. Which keeps the blur from spreading over/across silhouettes.\n\n\n\n\n\n\n\n\n\n\n\n\nFor scattering, our shader uses the Henyey-Greenstein phase function, which is the standard approximation used in film and game VFX for how particles scatter light. A single parameter 'g' controls whether the fog is forward-scattering (bright halos around light sources) or back-scattering (brighter when looking away from the light). Sure, it's not physically exact, but it's cheap and controllable.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTemporal jitter using Interleaved Gradient Noise breaks up the banding that low step counts produce. The noise offset advances by the Golden Ratio each frame, cycling through 64 uncorrelated offsets: so no visible pattern ever settles, even at 16 steps.\n\nFor density, the system supports global base fog, an exponential height layer, up to 8 local volumes, and a 3-octave FBM noise field for wisps. The local volumes are just world-space boxes, and they operate additively at no extra performance hit (aside from their individual cost). The volume edges fade smoothly via smoothstep, with a per-volume fade fraction so some boxes can be hard, and others can be more akin to clouds.\n\nLights scatter into the fog automatically. Up to 8 point/spot lights are picked each frame, sorted by luminance-range-distance priority score, so the most visually important ones always win their slots. When the camera moves inside a light's range, the blur radius grows cubically: the closer to the center, the softer the fog buffer (which approximates the look of being inside a visible light volume without any extra passes).\n\nThe whole system runs as a URP Renderer Feature, which means it's one checkbox in the renderer asset, and zero changes to any scene materials. We designed it to work optionally alongside our QRPE system, which allows the quantize pass to run before the fog. (Smooth fog, but a quantized world)\n\n\n\n# Final Notes\n\nThis was a crazy topic to dive down, and this doesn't even do the complexity of a system like this justice. Visual bugs, working with Render Graph, and more.\n\nNext time you play a game with volumetrics, take some time to appreciate the math, and techniques behind getting some light to bounce differently on your screen.\n\nIf you'd like to dive deeper, I've included some good starting resources at the bottom. I'd also highly recommend reading the QRP Extension article on here, it's pretty interesting as well.",
-    "breakdown": [],
-    "media": [
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/vlfog/Screenshot_4.jpg",
-        "caption": "the sun peeking through leaves and volumetric fog (QRPE enabled)"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/vlfog/badfog.jpeg",
-        "caption": "simple distance fog."
-      },
-      {
-        "type": "image",
-        "src": "resources/vlfog/ray-march-diagram.jpg",
-        "caption": "ray marching simplified."
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/vlfog/bilatupsample.jpg",
-        "caption": "bilateral upsampling example."
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/vlfog/gaussian_graph.jpg",
-        "caption": "gaussian blur visualized."
-      },
-      {
-        "type": "image",
-        "src": "resources/vlfog/Henyey-Greenstein.jpg",
-        "caption": "henyey-greenstein phase function."
-      },
-      {
-        "type": "image",
-        "src": "resources/vlfog/noises.jpg",
-        "caption": "interleaved gradient noise vs other noise."
-      },
-      {
-        "type": "image",
-        "src": "resources/vlfog/fBm.jpg",
-        "caption": "FBM noise examples."
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "break"
-      },
-      {
-        "type": "image",
-        "src": "resources/vlfog/Screenshot_10.jpg",
-        "caption": "in editor example."
-      }
-    ],
+    "thumb": "resources/volumetric-fog/Screenshot_4.jpg",
     "links": [
       {
         "label": "Sebastien Hillaire \"Physically Based Shading..\"",
@@ -852,7 +246,8 @@
         "href": "https://www.guerrilla-games.com/read/decima-engine-advances-in-lighting-and-aa",
         "primary": true
       }
-    ]
+    ],
+    "body": "# Quick Notes\n\nVolumetric fog is one of those things you take for granted, but a performant volumetric fog system (or lack thereof) can make or break a games atmosphere.\nUnity's HDRP pipeline has full volumetric fog support, but URP, the multi-platform, and lower end - middle end hardware supporting pipeline, lacks any useful fog.\nThis had plagued our studio ever since its creation, and implementing a system such as this has never been easy. It was only recently that I finally felt confident enough to write one, and I will briefly detail it here (design choices, basic math behind it, optimizations, etc.)\n\n![the sun peeking through leaves and volumetric fog (QRPE enabled)](resources/volumetric-fog/Screenshot_4.jpg){right}\n\n# Why is fog so hard?\n\nThe naive answer to the fog problem is just \"render a coloured overlay with some distance consideration and call it a day,\" that's more or less what Unity's built-in URP fog does. It's cheap, and it's fast. But it looks flat and unconvincing, because real fog isn't a filter applied to a screen. It's the physical process of light scattering through a medium, bouncing off particles, and attenuating as it travels. The colour of fog at any given point is entirely dependent on where the light came from, how far it travelled, and what's actually in the way.\n\nReproducing all of that properly means sampling density at many points along many rays from the camera out through the scene: a raymarcher. The problem is that running a raymarcher at full res, with enough steps to look smooth, is painfully expensive. Simply: it slaughters your framerate. So every design decision in a system like this is fundamentally about getting the visual quality of an expensive technique at a price you can actually afford.\n\n![simple distance fog.](resources/volumetric-fog/badfog.jpeg){left}\n\n# On Our Volumetric Fog Implementation\n\nThe raymarcher runs at half resolution by default, and then gets composited back over the full-resolution scene. Halving the resolution cuts the fragment cost to a quarter, which is the single biggest performance improvement across the whole system. The catch is that half-res fog produces horrible edge halos where geometry meets fog (a thin sliver of blurred fog bleeds onto nearby surfaces). The fix is a bilateral upsample: when reconstructing the full resolution image, each of the four neighboring fog samples are depth-weighted, so samples from behind a geometry edge are discarded instead of being blended in.\n\n![ray marching simplified.](resources/volumetric-fog/ray-march-diagram.jpg){right}\n\nThe same depth weighting is applied to the blur passes:\nA 9-tap Gaussian blur runs over the fog buffer before compositing, and any tap whose depth differs significantly from the center pixel is thrown out. Which keeps the blur from spreading over/across silhouettes.\n\nFor scattering, our shader uses the Henyey-Greenstein phase function, which is the standard approximation used in film and game VFX for how particles scatter light. A single parameter 'g' controls whether the fog is forward-scattering (bright halos around light sources) or back-scattering (brighter when looking away from the light). Sure, it's not physically exact, but it's cheap and controllable.\n\n![bilateral upsampling example.](resources/volumetric-fog/bilatupsample.jpg){left}\n\nTemporal jitter using Interleaved Gradient Noise breaks up the banding that low step counts produce. The noise offset advances by the Golden Ratio each frame, cycling through 64 uncorrelated offsets: so no visible pattern ever settles, even at 16 steps.\n\n![gaussian blur visualized.](resources/volumetric-fog/gaussian_graph.jpg){right}\n\nFor density, the system supports global base fog, an exponential height layer, up to 8 local volumes, and a 3-octave FBM noise field for wisps. The local volumes are just world-space boxes, and they operate additively at no extra performance hit (aside from their individual cost). The volume edges fade smoothly via smoothstep, with a per-volume fade fraction so some boxes can be hard, and others can be more akin to clouds.\n\n![henyey-greenstein phase function.](resources/volumetric-fog/Henyey-Greenstein.jpg){left}\n\nLights scatter into the fog automatically. Up to 8 point/spot lights are picked each frame, sorted by luminance-range-distance priority score, so the most visually important ones always win their slots. When the camera moves inside a light's range, the blur radius grows cubically: the closer to the center, the softer the fog buffer (which approximates the look of being inside a visible light volume without any extra passes).\n\nThe whole system runs as a URP Renderer Feature, which means it's one checkbox in the renderer asset, and zero changes to any scene materials. We designed it to work optionally alongside our QRPE system, which allows the quantize pass to run before the fog. (Smooth fog, but a quantized world)\n\n![interleaved gradient noise vs other noise.](resources/volumetric-fog/noises.jpg){right}\n\n# Final Notes\n\nThis was a crazy topic to dive down, and this doesn't even do the complexity of a system like this justice. Visual bugs, working with Render Graph, and more.\n\n![FBM noise examples.](resources/volumetric-fog/fBm.jpg){left}\n\nNext time you play a game with volumetrics, take some time to appreciate the math, and techniques behind getting some light to bounce differently on your screen.\n\nIf you'd like to dive deeper, I've included some good starting resources at the bottom. I'd also highly recommend reading the QRP Extension article on here, it's pretty interesting as well.\n\n![in editor example.](resources/volumetric-fog/Screenshot_10.jpg){right}"
   },
   {
     "id": "ford-probe",
@@ -864,16 +259,10 @@
     "tags": [
       "irl"
     ],
-    "w": 0.41,
-    "ratio": "wide",
-    "rotate": 1,
-    "thumb": "resources/fpgt/ford probe2.jpg",
-    "desc": "My 1993 Ford Probe GT.",
-    "breakdown": [],
-    "media": [
-
-    ],
-    "links": []
+    "thumb": "resources/ford-probe-gt/ford probe2.jpg",
+    "links": [],
+    "body": "My 1993 Ford Probe GT.",
+    "media": []
   },
   {
     "id": "trad-dig-art",
@@ -887,14 +276,10 @@
       "irl",
       "2d"
     ],
-    "w": 0.25,
-    "ratio": "tall",
-    "rotate": -0.7,
-    "thumb": "resources/traddigart/IMG_7258.jpg",
-    "desc": "",
-    "breakdown": [],
-    "media": [],
-    "links": []
+    "thumb": "resources/traditional-digital-art/IMG_7258.jpg",
+    "links": [],
+    "body": "",
+    "media": []
   },
   {
     "id": "honourable-models-renders",
@@ -908,39 +293,36 @@
       "3d",
       "blender"
     ],
-    "w": 0.25,
-    "ratio": "square",
-    "rotate": 0.7,
-    "thumb": "resources/honmodels/HOC_Complete2-min.jpg",
-    "desc": "",
-    "breakdown": [],
+    "thumb": "resources/3d-renders/HOC_Complete2-min.jpg",
+    "links": [],
+    "body": "",
     "media": [
       {
         "type": "group",
         "label": "1993 Ford Probe GT Model and Renders (2 Day Project)",
         "images": [
           {
-            "src": "resources/honmodels/Sort of photoreal.png",
+            "src": "resources/3d-renders/Sort of photoreal.webp",
             "caption": "Proper render (sorta photoreal)"
           },
-                    {
-            "src": "resources/honmodels/TestRender1.png",
+          {
+            "src": "resources/3d-renders/TestRender1.webp",
             "caption": "1."
           },
           {
-            "src": "resources/honmodels/TestRender2.png",
+            "src": "resources/3d-renders/TestRender2.webp",
             "caption": "2."
           },
           {
-            "src": "resources/honmodels/TestRender3.png",
+            "src": "resources/3d-renders/TestRender3.webp",
             "caption": "3."
           },
           {
-            "src": "resources/honmodels/TestRender4.png",
+            "src": "resources/3d-renders/TestRender4.webp",
             "caption": "4."
           },
           {
-            "src": "resources/honmodels/TestRender5.png",
+            "src": "resources/3d-renders/TestRender5.webp",
             "caption": "5."
           }
         ]
@@ -950,67 +332,67 @@
         "label": "'Harbinger Of Chaos' TotK CM model/render (50 hour project)",
         "images": [
           {
-            "src": "resources/honmodels/HOC_Complete2-min.jpg",
+            "src": "resources/3d-renders/HOC_Complete2-min.jpg",
             "caption": "Full render + emission."
           },
           {
-            "src": "resources/honmodels/HOC_Complete3-min.jpg",
+            "src": "resources/3d-renders/HOC_Complete3-min.jpg",
             "caption": "Full render, no emission."
           },
           {
-            "src": "resources/honmodels/Screenshot_359.jpg",
+            "src": "resources/3d-renders/Screenshot_359.jpg",
             "caption": "Unshaded."
           },
           {
-            "src": "resources/honmodels/Screenshot_358.jpg",
+            "src": "resources/3d-renders/Screenshot_358.jpg",
             "caption": "Wireframe."
           }
         ]
       },
       {
         "type": "image",
-        "src": "resources/honmodels/Screenshot_428.jpg",
-        "caption": "Inspired by the chainsaw man graveyard, I created it for a segment in a video essay I was working on." 
+        "src": "resources/3d-renders/Screenshot_428.jpg",
+        "caption": "Inspired by the chainsaw man graveyard, I created it for a segment in a video essay I was working on."
       },
       {
         "type": "image",
-        "src": "resources/honmodels/Screenshot_466.jpg",
-        "caption": "All seeing eye (Unity Engine)." 
+        "src": "resources/3d-renders/Screenshot_466.jpg",
+        "caption": "All seeing eye (Unity Engine)."
       },
       {
         "type": "group",
         "label": "'Elevated' Assets and Renders",
         "images": [
           {
-            "src": "resources/honmodels/Screenshot_826.jpg",
+            "src": "resources/3d-renders/Screenshot_826.jpg",
             "caption": "Human + Raptor hybrid full rig and model."
           },
           {
-            "src": "resources/honmodels/Screenshot_802.jpg",
+            "src": "resources/3d-renders/Screenshot_802.jpg",
             "caption": "Wendigo model."
           },
           {
-            "src": "resources/honmodels/Screenshot_25.jpg",
+            "src": "resources/3d-renders/Screenshot_25.jpg",
             "caption": "Human + Raptor model and rig, unshaded."
           },
           {
-            "src": "resources/honmodels/WendigoRender1.jpg",
+            "src": "resources/3d-renders/WendigoRender1.jpg",
             "caption": "Wendigo render."
           },
           {
-            "src": "resources/honmodels/Screenshot_849.jpg",
+            "src": "resources/3d-renders/Screenshot_849.jpg",
             "caption": "Human + Raptor hybrid in-engine."
           },
           {
-            "src": "resources/honmodels/Screenshot_801.jpg",
+            "src": "resources/3d-renders/Screenshot_801.jpg",
             "caption": "Wendigo shaded."
           },
           {
-            "src": "resources/honmodels/Screenshot_796.jpg",
+            "src": "resources/3d-renders/Screenshot_796.jpg",
             "caption": "Wendigo skull."
           },
           {
-            "src": "resources/honmodels/Screenshot_845.jpg",
+            "src": "resources/3d-renders/Screenshot_845.jpg",
             "caption": "Microscope asset."
           }
         ]
@@ -1020,19 +402,19 @@
         "label": "Celestial Collection",
         "images": [
           {
-            "src": "resources/honmodels/Celestial Hourglass.jpg",
+            "src": "resources/3d-renders/Celestial Hourglass.jpg",
             "caption": "Celestial Hourglass (Blender + Compositing)"
           },
           {
-            "src": "resources/honmodels/Celestial hourglass 1.jpg",
+            "src": "resources/3d-renders/Celestial hourglass 1.jpg",
             "caption": "Celestial Hourglass (Blender)"
           },
           {
-            "src": "resources/honmodels/123.jpg",
+            "src": "resources/3d-renders/123.jpg",
             "caption": "Galaxy sim screenshot 1 (Unity Engine)."
           },
           {
-            "src": "resources/honmodels/125.jpg",
+            "src": "resources/3d-renders/125.jpg",
             "caption": "Galaxy sim screenshot 2 (Unity Engine)."
           }
         ]
@@ -1042,19 +424,19 @@
         "label": "'GEEKED' Assets and Renders",
         "images": [
           {
-            "src": "resources/honmodels/WendigoPromo2.jpg",
+            "src": "resources/3d-renders/WendigoPromo2.jpg",
             "caption": "Wendigo promo render 1."
           },
           {
-            "src": "resources/honmodels/Geeked2.jpg",
+            "src": "resources/3d-renders/Geeked2.jpg",
             "caption": "Wendigo promo render 2."
           },
           {
-            "src": "resources/honmodels/Screenshot_216.jpg",
+            "src": "resources/3d-renders/Screenshot_216.jpg",
             "caption": "Various decorative assets."
           },
           {
-            "src": "resources/honmodels/Screenshot_142.jpg",
+            "src": "resources/3d-renders/Screenshot_142.jpg",
             "caption": "In engine shot of the player model."
           }
         ]
@@ -1064,28 +446,27 @@
         "label": "'Mountain Biking Friend Slop' Assets and Renders",
         "images": [
           {
-            "src": "resources/honmodels/Screenshot_2.jpg",
+            "src": "resources/3d-renders/Screenshot_2.jpg",
             "caption": "Floating islands (Unity Engine)."
           },
           {
-            "src": "resources/honmodels/Screenshot_279.jpg",
+            "src": "resources/3d-renders/Screenshot_279.jpg",
             "caption": "Trees (Unity Engine)."
           },
           {
-            "src": "resources/honmodels/Screenshot_258.jpg",
+            "src": "resources/3d-renders/Screenshot_258.jpg",
             "caption": "Vertex Colour Shader Demo 1/2 (Unity Engine)."
           },
           {
-            "src": "resources/honmodels/Screenshot_257.jpg",
+            "src": "resources/3d-renders/Screenshot_257.jpg",
             "caption": "Vertex Colour Shader Demo 2/2 (Unity Engine)."
           },
           {
-            "src": "resources/honmodels/Screenshot_225.jpg",
+            "src": "resources/3d-renders/Screenshot_225.jpg",
             "caption": "Player and their bike (Blender)."
           }
         ]
       }
-    ],
-    "links": []
+    ]
   }
 ]

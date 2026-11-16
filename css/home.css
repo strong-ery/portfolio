@@ -1,0 +1,349 @@
+@font-face {
+  font-family: "Hylia Serif";
+  src: url("../fonts/HyliaSerifBeta-Regular.otf") format("opentype");
+  font-display: swap;
+}
+
+.intro-wrap {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--line);
+}
+
+.intro-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.intro-left .hero {
+  border-bottom: 1px solid var(--line);
+  flex: 1;
+}
+
+.intro-left .about-section {
+  border-bottom: none;
+}
+
+.intro-right {
+  flex: 1;
+  border-left: 1px solid var(--line);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.denji-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0.88;
+  transform-origin: 50% 100%;
+  animation: denji-sway 9s ease-in-out infinite;
+  /* The picture has an empty strip along the bottom (about a fifth of its width); pull the section up past it. */
+  margin-bottom: -21%;
+}
+
+@keyframes denji-sway {
+  0%, 100% { transform: rotate(-0.45deg) translateY(0); }
+  50% { transform: rotate(0.45deg) translateY(-2px); }
+}
+
+@media (prefers-reduced-motion: reduce) { .denji-img { animation: none; } }
+
+@media (max-width: 700px) {
+  .denji-img { margin-bottom: 0; }
+  .intro-wrap { flex-direction: column; }
+  .intro-right { width: 100%; height: 280px; border-left: none; border-top: 1px solid var(--line); }
+}
+
+.hero {
+  min-height: 52vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: clamp(9rem, 38vh, 24rem) 2.5rem 3rem;
+}
+
+.hero-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 1rem;
+}
+
+.hero-name {
+  font-family: "Hylia Serif", var(--font-display);
+  font-size: clamp(3rem, 7.5vw, 6.5rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  margin-bottom: 2rem;
+  position: relative;
+  width: fit-content;
+  /* A band of light slides across the letters like it is running down a blade, then flares at the top right corner. */
+  background: linear-gradient(105deg,
+    #1a1814 0 41%, #2c3340 45%, #5f7aa3 48%, #d6e8ff 49.4%, #5a74a0 50.6%, #2c3340 54%, #1a1814 58% 100%) 0 0 / 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-name::before,
+.hero-name::after {
+  content: "";
+  position: absolute;
+  top: 0.26em;
+  right: -0.04em;
+  pointer-events: none;
+  opacity: 0;
+  -webkit-text-fill-color: initial;
+}
+
+.hero-name::before {
+  width: 0.9em;
+  height: 0.9em;
+  margin: -0.45em -0.45em 0 0;
+  background: radial-gradient(circle, rgba(225, 240, 255, 0.95) 0, rgba(110, 165, 255, 0.6) 30%, transparent 68%);
+  animation: blade-glow 7s ease-in-out 1.2s infinite;
+}
+
+.hero-name::after {
+  width: 0.7em;
+  height: 0.7em;
+  margin: -0.35em -0.35em 0 0;
+  background: #eaf4ff;
+  clip-path: polygon(50% 0, 57% 43%, 100% 50%, 57% 57%, 50% 100%, 43% 57%, 0 50%, 43% 43%);
+  animation: blade-star 7s ease-in-out 1.2s infinite;
+}
+
+@keyframes blade-sweep {
+  0% { background-position: 100% 0; }
+  34% { background-position: 0% 0; }
+  100% { background-position: 0% 0; }
+}
+
+@keyframes blade-glow {
+  0%, 23% { opacity: 0; transform: scale(0.3); }
+  30% { opacity: 1; transform: scale(1); }
+  45%, 100% { opacity: 0; transform: scale(1.3); }
+}
+
+@keyframes blade-star {
+  0%, 23% { opacity: 0; transform: scale(0) rotate(0deg); }
+  30% { opacity: 1; transform: scale(1) rotate(45deg); }
+  43%, 100% { opacity: 0; transform: scale(0.2) rotate(90deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-name { animation: none; background: none; -webkit-text-fill-color: currentColor; }
+  .hero-name::before, .hero-name::after { display: none; }
+}
+
+.hero-about {
+  max-width: 34rem;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.section {
+  padding: 4rem 2.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.section-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 2rem;
+}
+
+.about-section {
+  max-width: 640px;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+/* A small hint that there is more below. It fades once you scroll. */
+.scroll-cue {
+  position: fixed;
+  left: 25%;
+  bottom: 1.4rem;
+  width: 22px;
+  height: 22px;
+  margin-left: -11px;
+  color: var(--dim);
+  pointer-events: none;
+  transition: opacity 0.4s;
+  animation: cue-bob 2.4s ease-in-out infinite;
+}
+
+.scroll-cue.gone { opacity: 0; }
+
+@keyframes cue-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+@media (max-width: 700px) { .scroll-cue { left: 50%; } }
+@media (prefers-reduced-motion: reduce) { .scroll-cue { animation: none; } }
+
+.about-body {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.9;
+  margin-bottom: 1.25rem;
+}
+
+.about-quote {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--dim);
+  line-height: 1.75;
+  border-left: 1px solid var(--line2);
+  padding-left: 1.25rem;
+  margin-top: 0;
+}
+
+.about-quote cite {
+  display: block;
+  font-size: 11px;
+  font-style: normal;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--line2);
+  margin-top: 0.5rem;
+}
+
+.work-section {
+  padding-bottom: 5rem;
+}
+
+.influences-section { padding-top: 3.5rem; padding-bottom: 4.5rem; }
+.influences-section .influences-grid { padding-top: 2.5rem; }
+
+.influences-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.influence-card {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.25rem;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 1px 2px 6px rgba(0,0,0,0.06);
+  flex: 1 1 320px;
+  min-width: 320px;
+  position: relative;
+  min-height: 16rem;
+}
+
+.influence-card:hover,
+.influence-card:focus-visible { z-index: 5; }
+
+.influence-card:hover {
+  background: var(--bg3);
+  box-shadow: 2px 4px 10px rgba(0,0,0,0.1);
+}
+
+.influence-type {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.5rem;
+}
+
+.influence-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.influence-note {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* ── Influence hero cards ─────────────────────────────────────────────────────────── */
+.inf-hero {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.inf-face {
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  color: var(--hero-ink);
+  background:
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.16) 1px, transparent 1.6px) 0 0 / 9px 9px,
+    linear-gradient(145deg, var(--hero-from), var(--hero-to));
+  box-shadow: 3px 6px 16px rgba(0, 0, 0, 0.22);
+  padding: 1.5rem 1.25rem;
+  transform: rotate(-0.8deg) scale(0.97);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.3, 1.2);
+}
+
+.inf-type {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+}
+
+.inf-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.9rem;
+  line-height: 1.05;
+  max-width: 11ch;
+}
+
+.inf-art {
+  position: absolute;
+  right: calc(-2.5rem - var(--hero-dx, 0rem));
+  bottom: calc(-0.5rem - var(--hero-dy, 0rem));
+  width: calc(var(--hero-w) + 3rem);
+  height: auto;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
+  transform: translate(8%, 14%) rotate(2deg) scale(0.92);
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.3, 1.15);
+  user-select: none;
+}
+
+.influence-card:last-child .inf-art { right: calc(0.5rem - var(--hero-dx, 0rem)); }
+
+.influence-card:hover .inf-hero,
+.influence-card:focus-visible .inf-hero { opacity: 1; }
+
+.influence-card:hover .inf-face,
+.influence-card:focus-visible .inf-face { transform: rotate(-0.8deg) scale(1); }
+
+.influence-card:hover .inf-art,
+.influence-card:focus-visible .inf-art { transform: translate(0, 0) rotate(0) scale(1); }
+
+.influence-card:focus-visible { outline: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .inf-hero, .inf-face, .inf-art { transition: opacity 0.2s; }
+  .inf-art { transform: none; }
+}

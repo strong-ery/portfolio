@@ -1,0 +1,8 @@
+{
+  "_about": "images: pictures (album covers etc.) to break into scraps, relative to this folder. List as many as you like (up to 300): the city of windows shrinks its tiles to fit them all. ground: optional transparent PNG strip for the bottom of the footer (a CSM beach or shoreline); the seated pair stands on its upper edge. Leave null for the built-in night beach.",
+  "atlas": "covers/atlas.webp",
+  "size": 112,
+  "cols": 13,
+  "count": 151,
+  "ground": null
+}

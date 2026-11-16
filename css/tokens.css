@@ -1,0 +1,18 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #f2ead8;
+  --bg2:     #ede4ce;
+  --bg3:     #e6dbc4;
+  --line:    #c9bfa8;
+  --line2:   #b5aa94;
+  --text:    #1a1814;
+  --muted:   #7a7060;
+  --dim:     #a89e8a;
+  --accent:  #3d2f1e;
+  --font-display: 'Bricolage Grotesque', 'Archivo', system-ui, sans-serif;
+  --font-hand:    'Covered By Your Grace', cursive;
+  --font-body:    'Archivo', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+  --radius:  10px;
+}

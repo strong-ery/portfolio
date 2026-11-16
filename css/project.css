@@ -1,0 +1,82 @@
+.project-head {
+  padding: 7rem 2.5rem 2.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.project-back {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.project-back:hover { color: var(--text); border-bottom-color: var(--text); }
+
+.project-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--dim);
+  margin-bottom: 0.6rem;
+}
+
+.project-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  font-weight: 800;
+  font-stretch: 90%;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin-bottom: 1.25rem;
+}
+
+.project-tags,
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.project-tags { margin-bottom: 1.25rem; }
+
+.project-tag {
+  font-size: 12px;
+  padding: 1px 10px;
+  border: 1px solid var(--line2);
+  border-radius: 20px;
+  color: var(--muted);
+}
+
+.project-link {
+  font-size: 13px;
+  padding: 0.4rem 1.1rem;
+  border: 1px solid var(--line2);
+  border-radius: 20px;
+  color: var(--muted);
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.project-link:hover { color: var(--text); border-color: var(--text); }
+.project-link.primary { border-color: var(--accent); color: var(--accent); }
+.project-link.primary:hover { background: var(--accent); color: var(--bg); }
+
+.project-neighbours {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  border-top: 1px dashed var(--line2);
+}
+.project-next { color: var(--text); text-decoration: none; font-family: var(--font-display); font-weight: 700; max-width: 45%; }
+.project-next span { display: block; font-family: var(--font-mono); font-size: 11px; font-weight: 400; color: var(--dim); margin-bottom: 0.3rem; }
+.project-next.newer { text-align: right; margin-left: auto; }
+.project-next:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+
+@media (max-width: 700px) {
+  .project-head { padding: 6rem 1.25rem 2rem; }
+}

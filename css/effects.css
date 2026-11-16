@@ -1,0 +1,144 @@
+.paper-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+}
+
+.navi,
+.navi-trail {
+  position: fixed;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.navi {
+  z-index: 9999;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.navi.is-here { opacity: 1; }
+
+.navi {
+  --navi-mid: #e8f6ff;
+  --navi-edge: #9fd3ff;
+  --navi-glow: 120, 190, 255;
+}
+
+/* Over anything you can click, Navi goes yellow (and the real cursor stays hidden). */
+.navi.alert {
+  --navi-mid: #fff4b0;
+  --navi-edge: #ffd02e;
+  --navi-glow: 255, 196, 30;
+}
+
+.has-navi,
+.has-navi * { cursor: none !important; }
+
+.navi svg {
+  position: absolute;
+  left: -20px;
+  top: -20px;
+  overflow: visible;
+  filter: drop-shadow(0 0 5px rgba(var(--navi-glow), 0.95)) drop-shadow(0 0 12px rgba(var(--navi-glow), 0.45));
+  transition: transform 0.2s;
+}
+
+.navi.alert svg { transform: scale(1.18); }
+.navi.pop svg { animation: navi-pop 0.35s ease-out; }
+
+/* Both wings pivot on the body and beat in opposite directions, like a fairy's. */
+.navi-wing {
+  transform-origin: 20px 20px;
+  animation: navi-flap-l 0.2s ease-in-out infinite alternate;
+}
+
+.navi-wing--r { animation-name: navi-flap-r; }
+.navi.alert .navi-wing { animation-duration: 0.12s; }
+
+@keyframes navi-flap-l {
+  from { transform: rotate(-26deg) scale(0.92); }
+  to { transform: rotate(10deg) scale(1); }
+}
+
+@keyframes navi-flap-r {
+  from { transform: rotate(26deg) scale(0.92); }
+  to { transform: rotate(-10deg) scale(1); }
+}
+
+@keyframes navi-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.6); }
+  100% { transform: scale(1); }
+}
+
+/* The faint trail: a few specks of light left behind, fading and shrinking. */
+.navi-trail {
+  z-index: 9998;
+  width: 0;
+  height: 0;
+}
+
+.navi-trail::after {
+  content: "";
+  position: absolute;
+  --s: calc(4px - var(--k) * 0.5px);
+  width: var(--s);
+  height: var(--s);
+  left: calc(var(--s) / -2);
+  top: calc(var(--s) / -2);
+  border-radius: 50%;
+  background: rgb(var(--navi-glow));
+  box-shadow: 0 0 6px rgba(var(--navi-glow), 0.8);
+  opacity: calc(0.3 - var(--k) * 0.045);
+}
+
+.navi-say {
+  position: absolute;
+  left: 14px;
+  top: -40px;
+  padding: 3px 9px 4px;
+  background: #fbf7ea;
+  border: 1.5px solid #3d2f1e;
+  border-radius: 10px 10px 10px 2px;
+  font-family: var(--font-hand);
+  font-size: 1.05rem;
+  line-height: 1.1;
+  color: #3d2f1e;
+  white-space: nowrap;
+  animation: say-in 0.25s ease-out;
+}
+
+@keyframes say-in {
+  from { opacity: 0; transform: translateY(6px) scale(0.8); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navi-wing, .navi.pop svg { animation: none; }
+  .navi-trail { display: none; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@keyframes up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-eyebrow { animation: up 0.7s 0.1s ease both; }
+.hero-name    { animation: up 0.7s 0.2s ease both, blade-sweep 7s ease-in-out 1.2s infinite; }
+.hero-facts   { animation: up 0.7s 0.35s ease both; }
+
+@media (prefers-reduced-motion: reduce) { .hero-name { animation: up 0.7s 0.2s ease both; } }
