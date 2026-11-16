@@ -12,12 +12,14 @@
 const FOLDER = "resources/footer/sfx/";
 const MASTER = 0.62;
 const OCEAN_LEVEL = 0.2;
+const PAPER = 0.67;
 
 let ctx = null;
 let master = null;
 let reverb = null;
 let allowed = true;
 let armed = false;
+let unlocked = false;
 let library = { launch: [], burst: [], crackle: [], hover: [], click: [] };
 let ocean = null;
 let wantOcean = false;
@@ -87,9 +89,11 @@ function buildContext() {
 function arm() {
   if (armed) return;
   armed = true;
+  if (!ctx) buildContext();   // starts suspended; building it now means the sounds are loaded by the first click
   const start = () => {
     window.removeEventListener("pointerdown", start, true);
     window.removeEventListener("keydown", start, true);
+    unlocked = true;
     if (!ctx && !buildContext()) return;
     if (ctx.state === "suspended") ctx.resume();
   };
@@ -239,7 +243,7 @@ function noiseBurst(at, { type, freq, q, peak, attack, decay, pan, rate = 1 }) {
   filter.Q.value = q;
   const amp = ctx.createGain();
   amp.gain.setValueAtTime(0.0001, at);
-  amp.gain.linearRampToValueAtTime(peak, at + attack);
+  amp.gain.linearRampToValueAtTime(peak * PAPER, at + attack);
   amp.gain.exponentialRampToValueAtTime(0.0001, at + attack + decay);
   src.connect(filter);
   filter.connect(amp);
@@ -264,7 +268,7 @@ function uiSounds() {
   if (uiBound) return;
   uiBound = true;
   const tick = (kind, gain) => {
-    if (!ready(kind)) return;
+    if (!allowed || !ctx || !unlocked || !library[kind].length) return;
     play(pick(library[kind]), { at: ctx.currentTime, gain, rate: range(0.97, 1.03) });
   };
   document.addEventListener("pointerover", e => {
@@ -274,14 +278,49 @@ function uiSounds() {
     const now = performance.now();
     if (now - lastHover < 70) return;
     lastHover = now;
-    tick("hover", 0.5);
+    tick("hover", 0.25);
   });
-  document.addEventListener("pointerdown", () => tick("click", 0.7));
+  document.addEventListener("pointerdown", () => tick("click", 0.35));
 }
 
 let nextShake = 0;
 
+// A page being turned: a soft lift, a long dry swish that sweeps from low to high as the sheet
+// passes through the air, then the small flap as it settles.
+function pageTurn() {
+  if (!allowed || !ctx || ctx.state !== "running") return;
+  const at = ctx.currentTime + 0.02;
+  const src = ctx.createBufferSource();
+  src.buffer = noiseBuffer();
+  src.playbackRate.value = range(0.9, 1.1);
+  const band = ctx.createBiquadFilter();
+  band.type = "bandpass";
+  band.Q.value = 0.9;
+  band.frequency.setValueAtTime(1100, at);
+  band.frequency.exponentialRampToValueAtTime(4200, at + 0.3);
+  band.frequency.exponentialRampToValueAtTime(2200, at + 0.55);
+  const amp = ctx.createGain();
+  amp.gain.setValueAtTime(0.0001, at);
+  amp.gain.linearRampToValueAtTime(0.16 * PAPER, at + 0.12);
+  amp.gain.linearRampToValueAtTime(0.1 * PAPER, at + 0.32);
+  amp.gain.exponentialRampToValueAtTime(0.0001, at + 0.6);
+  const pan = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+  src.connect(band);
+  band.connect(amp);
+  if (pan) {
+    pan.pan.setValueAtTime(-0.35, at);
+    pan.pan.linearRampToValueAtTime(0.35, at + 0.5);
+    amp.connect(pan);
+    pan.connect(master);
+  } else amp.connect(master);
+  src.start(at, Math.random(), 0.7);
+  // The soft thump of the page landing.
+  noiseBurst(at + 0.42, { type: "lowpass", freq: 650, q: 0.7, peak: 0.1, attack: 0.006, decay: 0.07, pan: 0.3 });
+}
+
 export const sfx = {
+  pageTurn,
+
   // One paper rustle, used when a stack of scraps is laid out.
   rustle(strength = 1) {
     if (!allowed || !ctx || ctx.state !== "running") return;

@@ -4,6 +4,7 @@ import { articleHtml, formatDesc } from "./article.js";
 import { renderGallery } from "./gallery.js";
 import { initAudioPlayers } from "./audio-player.js";
 import { initCursor, initPaperTexture } from "./effects.js";
+import { sfx } from "./finale-sfx.js";
 
 function headerHtml(p) {
   const links = (p.links || []).map(l =>
@@ -21,6 +22,7 @@ function headerHtml(p) {
 
 async function start() {
   initCursor();
+  sfx.init();
   initPaperTexture();
   initAudioPlayers();
 
